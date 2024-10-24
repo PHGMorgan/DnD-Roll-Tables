@@ -1,0 +1,123 @@
+import random
+
+
+exit = False
+
+
+list_of_characters = []
+
+
+class Character:
+    def __init__(self, char_id):
+        self.__char_stats_dict__ = {"STR": 0, "DEX": 0, "CON": 0, "INT": 0, "WIS": 0, "CHA": 0}
+        self.__char_race__ = None
+        self.__rolls_for_stats__ = []
+        self.char_id = char_id
+        self.name_roll()
+        self.race_roll()
+        self.stats_roll()
+        self.stats_compile()
+        self.class_roll()
+    
+    def name_roll(self):
+        name_list = [
+            "John",
+            "Joe",
+            "Jim",
+            "Bob"
+        ]
+        self.name = random.choices(name_list, k=1)[0]
+
+    def race_roll(self):
+        races_list = [
+            ("Dragonborn", {"STR": 2, "CHA": 1}),
+            ("Dwarf", {"STR": 2, "CON": 2}),
+            ("Elf", {"DEX": 2, "INT": 1}),
+            ("Gnome", {"CON": 1, "INT": 2}),
+            ("Half-Elf", {"CHA": 2}),
+            ("Half-Orc", {"STR": 2, "CON": 1}),
+            ("Halfling", {"DEX": 2, "CHA": 1}),
+            ("Human", {"STR": 1, "DEX": 1, "CON": 1, "INT": 1, "WIS": 1, "CHA": 1}),
+            ("Tiefling", {"INT": 1, "CHA": 2})
+        ]
+        self.__char_race__ = random.choices(races_list, k = 1)[0]
+
+    def stats_roll(self):
+        self.__rolls_for_stats__ = []
+        for i in range(6):
+            stat_roll = self.four_six_drop_low()
+            self.__rolls_for_stats__.append(stat_roll)
+
+    def four_six_drop_low(self):
+        rolls_list = []
+        for i in range(4):
+            rolls_list.append(random.randint(1, 6))
+        rolls_list.remove(min(rolls_list))
+        return rolls_list[0] + rolls_list[1] + rolls_list[2]
+
+    def stats_compile(self):
+        self.__char_stats_dict__["STR"] = self.__rolls_for_stats__[0]
+        self.__char_stats_dict__["DEX"] = self.__rolls_for_stats__[1]
+        self.__char_stats_dict__["CON"] = self.__rolls_for_stats__[2]
+        self.__char_stats_dict__["INT"] = self.__rolls_for_stats__[3]
+        self.__char_stats_dict__["WIS"] = self.__rolls_for_stats__[4]
+        self.__char_stats_dict__["CHA"] = self.__rolls_for_stats__[5]
+        race_bonus_dict = self.__char_race__[1]
+        for race_bonus in race_bonus_dict:
+            if race_bonus in self.__char_stats_dict__:
+                self.__char_stats_dict__[race_bonus] += race_bonus_dict[race_bonus]
+                
+    def class_roll(self):
+        classes_list = [
+            "Wizard",
+            "Fighter",
+            "Sorcerer",
+            "Barbarian",
+            "Cleric",
+            "Rogue"
+        ]
+        self.char_class = random.choices(classes_list, k = 1)[0]
+
+    def __str__(self):
+        return (
+            f"Character name: {self.name} \n"
+            f"Character race: {self.__char_race__[0]} \n"
+            f"Character stats: {self.__char_stats_dict__} \n"
+            f"Character class: {self.char_class} \n"
+        )
+
+
+
+def __main__():
+    global exit
+    if input("Press Enter to create an NPC character. Type \"quit\" to exit. ") == "quit":
+        exit = True
+        return exit
+    char_id = int(random.random() * 100000)
+    char_id = Character(char_id)
+    print(char_id)
+    while input("Would you like to reroll this character's name? Type \"y\" for yes, and \"n\" for no. ") == "y":
+        char_id.name_roll()
+        print(f"This character's name is now {char_id.name}.")
+    while input("Would you like to reroll this character's race? Type \"y\" for yes, and \"n\" for no. ") == "y":
+        char_id.race_roll()
+        char_id.stats_compile()
+        print(f"This character's race is now {char_id.__char_race__[0]}.")
+    while input("Would you like to reroll this character's stats? Type \"y\" for yes, and \"n\" for no. ") == "y":
+        char_id.stats_roll()
+        char_id.stats_compile()
+        print(f"This character's stats are now {char_id.__char_stats_dict__}.")
+    while input("Would you like to reroll this character's class? Type \"y\" for yes, and \"n\" for no. ") == "y":
+        char_id.class_roll()
+        print(f"This character's class is now {char_id.char_class}.")
+    char_details = (char_id.char_id, char_id.name, char_id.__char_race__[0], char_id.__char_stats_dict__, char_id.char_class)
+    while input("Would you like to save this character? Type \"y\" for yes, and \"n\" for no. ") == "y":
+        list_of_characters.append(char_details)
+        print(f"Characters created so far: {list_of_characters}")
+        return
+    return
+
+
+if __name__ == "__main__":
+    while exit == False:
+        __main__()
