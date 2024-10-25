@@ -5,15 +5,22 @@ import csv
 
 exit = False
 
-
+#Check if saved characters file exists. If it doesn't, create it and write the header.
 if os.path.exists("saved_characters.csv"):
     print("Saved characters directory csv file exists!")
 else:
-    with open("saved_characters.csv", mode="w") as file:
+    with open("saved_characters.csv", mode="w") as csvfile:
+        file_writer = csv.writer(csvfile, delimiter = ",", quotechar = '"')
+        file_writer.writerow(["Character ID", "Name", "Race", "Stats", "Class"])
         print("Saved characters directory csv file created!")
 
 
-list_of_characters = []
+#Create the global names list variable from the data in the names.csv file.
+names_list = []
+with open("names.csv", mode = "r", newline = "") as namefile:
+    file_reader = csv.reader(namefile)
+    for row in file_reader:
+        names_list.append(row[0])
 
 
 class Character:
@@ -29,13 +36,8 @@ class Character:
         self.class_roll()
     
     def name_roll(self):
-        name_list = [
-            "John",
-            "Joe",
-            "Jim",
-            "Bob"
-        ]
-        self.name = random.choices(name_list, k=1)[0]
+        global names_list
+        self.name = random.choices(names_list, k=1)[0]
 
     def race_roll(self):
         races_list = [
@@ -174,14 +176,16 @@ def __main__():
             break
 
     #Final part of creation loop. Displays final character details and prompts user if they would like to save it.
-    char_details = (char_id.char_id, char_id.name, char_id.__char_race__[0], char_id.__char_stats_dict__, char_id.char_class)
     user_input = input("Would you like to save this character? Press Enter to discard and start over. Type \"y\" for yes. Type \"quit\" or \"exit\" to discard and exit. ")
     if  user_input == "quit" or user_input == "exit":
         exit = True
         return exit
     if user_input == "y":
-        list_of_characters.append(char_details)
-        print(f"Characters created so far: {list_of_characters}")
+        with open("saved_characters.csv", mode = "a", newline = "") as csvfile:
+            file_writer = csv.writer(csvfile, delimiter = ",", quotechar = '"')
+            file_writer.writerow([char_id.char_id, char_id.name, char_id.__char_race__[0], char_id.__char_stats_dict__, char_id.char_class])
+            print(char_id)
+            print("Character saved!")
         return
     return
 
