@@ -1,7 +1,16 @@
 import random
+import os
+import csv
 
 
 exit = False
+
+
+if os.path.exists("saved_characters.csv"):
+    print("Saved characters directory csv file exists!")
+else:
+    with open("saved_characters.csv", mode="w") as file:
+        print("Saved characters directory csv file created!")
 
 
 list_of_characters = []
@@ -87,31 +96,90 @@ class Character:
         )
 
 
-
+     
 def __main__():
+    #Have main funciton use global exit variable.
     global exit
-    if input("Press Enter to create an NPC character. Type \"quit\" to exit. ") == "quit":
+    
+    #Create user_input variable and prompt user with a quesiton.
+    user_input = input("Press Enter to create an NPC character. Type \"quit\" or \"exit\" to exit. ")
+    
+    #First part of creation loop. Exits program if user input is exit or quit. Otherwise creates a Character class object then displays it.
+    if  user_input == "quit" or user_input == "exit":
         exit = True
         return exit
     char_id = int(random.random() * 100000)
     char_id = Character(char_id)
     print(char_id)
-    while input("Would you like to reroll this character's name? Type \"y\" for yes, and \"n\" for no. ") == "y":
-        char_id.name_roll()
-        print(f"This character's name is now {char_id.name}.")
-    while input("Would you like to reroll this character's race? Type \"y\" for yes, and \"n\" for no. ") == "y":
-        char_id.race_roll()
-        char_id.stats_compile()
-        print(f"This character's race is now {char_id.__char_race__[0]}.")
-    while input("Would you like to reroll this character's stats? Type \"y\" for yes, and \"n\" for no. ") == "y":
-        char_id.stats_roll()
-        char_id.stats_compile()
-        print(f"This character's stats are now {char_id.__char_stats_dict__}.")
-    while input("Would you like to reroll this character's class? Type \"y\" for yes, and \"n\" for no. ") == "y":
-        char_id.class_roll()
-        print(f"This character's class is now {char_id.char_class}.")
+    user_input = "y"
+
+    #Second part of creation loop. Prompts user for reroll, and gives option to exit program.
+    while user_input == "y" or user_input == "exit" or user_input == "quit":
+        user_input = input("Would you like to reroll this character's name? Press Enter to continue. Type \"y\" to reroll. Type \"quit\" or \"exit\" to exit. ")
+        if  user_input == "quit" or user_input == "exit":
+            exit = True
+            return exit
+        if user_input == "y":
+            char_id.name_roll()
+            print(f"This character's name is now {char_id.name}.")
+            print(char_id)
+            user_input = "y"
+        if user_input != "y" and user_input != "exit" and user_input != "quit":
+            user_input = "y"
+            break
+
+    #Third part of creation loop. Prompts user for reroll, and gives option to exit program.
+    while user_input == "y" or user_input == "exit" or user_input == "quit":
+        user_input = input("Would you like to reroll this character's race? Press Enter to continue. Type \"y\" to reroll. Type \"quit\" or \"exit\" to exit. ")
+        if  user_input == "quit" or user_input == "exit":
+            exit = True
+            return exit
+        if user_input == "y":
+            char_id.race_roll()
+            char_id.stats_compile()
+            print(f"This character's race is now {char_id.__char_race__[0]}.")
+            print(char_id)
+            user_input
+        if user_input != "y" and user_input != "exit" and user_input != "quit":
+            user_input = "y"
+            break
+
+    #Fourth part of creation loop. Prompts user for reroll, and gives option to exit program.
+    while user_input == "y" or user_input == "exit" or user_input == "quit":
+        user_input = input("Would you like to reroll this character's stats? Press Enter to continue. Type \"y\" to reroll. Type \"quit\" or \"exit\" to exit. ")
+        if  user_input == "quit" or user_input == "exit":
+            exit = True
+            return exit
+        if user_input == "y":
+            char_id.stats_roll()
+            char_id.stats_compile()
+            print(f"This character's stats are now {char_id.__char_stats_dict__}.")
+            print(char_id)
+        if user_input != "y" and user_input != "exit" and user_input != "quit":
+            user_input = "y"
+            break
+
+    #Fifth part of creation loop. Prompts user for reroll, and gives option to exit program.
+    while user_input == "y" or user_input == "exit" or user_input == "quit":
+        user_input = input("Would you like to reroll this character's class? Press Enter to continue. Type \"y\" to reroll. Type \"quit\" or \"exit\" to exit. ")
+        if  user_input == "quit" or user_input == "exit":
+            exit = True
+            return exit
+        if user_input == "y":
+            char_id.class_roll()
+            print(f"This character's class is now {char_id.char_class}.")
+            print(char_id)
+        if user_input != "y" and user_input != "exit" and user_input != "quit":
+            user_input = "y"
+            break
+
+    #Final part of creation loop. Displays final character details and prompts user if they would like to save it.
     char_details = (char_id.char_id, char_id.name, char_id.__char_race__[0], char_id.__char_stats_dict__, char_id.char_class)
-    while input("Would you like to save this character? Type \"y\" for yes, and \"n\" for no. ") == "y":
+    user_input = input("Would you like to save this character? Press Enter to discard and start over. Type \"y\" for yes. Type \"quit\" or \"exit\" to discard and exit. ")
+    if  user_input == "quit" or user_input == "exit":
+        exit = True
+        return exit
+    if user_input == "y":
         list_of_characters.append(char_details)
         print(f"Characters created so far: {list_of_characters}")
         return
