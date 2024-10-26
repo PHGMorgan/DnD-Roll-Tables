@@ -15,10 +15,8 @@ class Character:
         self.name_roll()
         self.random_gender()
         self.race_roll()
-        '''
         self.stats_roll()
         self.stats_compile()
-        '''
 
 
     #Block of get functions
@@ -32,7 +30,7 @@ class Character:
         return self.__gender__
     
     def get_race(self):
-        return self.__char_race__
+        return self.__char_race__[0]
     
     def get_class(self):
         return self.__char_class__
@@ -48,7 +46,7 @@ class Character:
             file_reader = csv.reader(namefile)
             for row in file_reader:
                 names_list.append(row[0])
-        self.name = random.choices(names_list, k=1)[0]
+        self.__name__ = random.choice(names_list)
     
     def random_gender(self):
         char_sex = random.randint(1, 2)
@@ -72,10 +70,13 @@ class Character:
         self.__char_race__ = random.choices(races_list, k = 1)[0]
 
     def stats_roll(self):
-        self.rolls_for_stats = []
-        for i in range(6):
-            stat_roll = self.four_six_drop_low()
-            self.rolls_for_stats.append(stat_roll)
+        self.rolls_for_stats = [0, 0, 0, 0, 0, 0]
+        while self.rolls_for_stats[self.key_stat_index()] == 0 or self.rolls_for_stats[self.key_stat_index()] < max(self.rolls_for_stats):
+            numbers_rolled = []
+            for i in range(6):
+                stat_roll = self.four_six_drop_low()
+                numbers_rolled.append(stat_roll)
+            self.rolls_for_stats = numbers_rolled
 
     def four_six_drop_low(self):
         rolls_list = []
@@ -112,67 +113,118 @@ class Artificer(Character):
         super().__init__(char_id)
         self.__char_class__= "Artificer"
 
+    def key_stat_index(self):
+        return 3
+
 class Barbarian(Character):
     def __init__(self, char_id):
         super().__init__(char_id)
         self.__char_class__= "Barbarian"
+
+    def key_stat_index(self):
+        return 0
 
 class Bard(Character):
     def __init__(self, char_id):
         super().__init__(char_id)
         self.__char_class__= "Bard"
 
+    def key_stat_index(self):
+        return 5
+
 class Cleric(Character):
     def __init__(self, char_id):
         super().__init__(char_id)
         self.__char_class__= "Cleric"
+
+    def key_stat_index(self):
+        return 4
 
 class Commoner(Character):
     def __init__(self, char_id):
         super().__init__(char_id)
         self.__char_class__= "Commoner"
 
+    def key_stat_index(self):
+        return 2
+    
+    def stats_roll(self):
+        self.rolls_for_stats = [0, 0, 0, 0, 0, 0]
+        while self.rolls_for_stats[self.key_stat_index()] == 0 or self.rolls_for_stats[self.key_stat_index()] < max(self.rolls_for_stats):
+            numbers_rolled = []
+            for i in range(6):
+                stat_roll = random.choices([6, 7, 8, 9, 10, 11, 12, 13, 14], weights = [1, 2, 3, 4, 5, 4, 3, 2, 1], k=1)[0]
+                numbers_rolled.append(stat_roll)
+            self.rolls_for_stats = numbers_rolled
+
 class Druid(Character):
     def __init__(self, char_id):
         super().__init__(char_id)
         self.__char_class__= "Druid"
+
+    def key_stat_index(self):
+        return 4
 
 class Fighter(Character):
     def __init__(self, char_id):
         super().__init__(char_id)
         self.__char_class__= "Fighter"
 
+    def key_stat_index(self):
+        return random.randint(0, 1)
+
 class Monk(Character):
     def __init__(self, char_id):
         super().__init__(char_id)
         self.__char_class__= "Monk"
+
+    def key_stat_index(self):
+        return random.choice([1, 4])
 
 class Paladin(Character):
     def __init__(self, char_id):
         super().__init__(char_id)
         self.__char_class__= "Paladin"
 
+    def key_stat_index(self):
+        return 5
+
 class Ranger(Character):
     def __init__(self, char_id):
         super().__init__(char_id)
         self.__char_class__= "Ranger"
+
+    def key_stat_index(self):
+        return 1
 
 class Rogue(Character):
     def __init__(self, char_id):
         super().__init__(char_id)
         self.__char_class__= "Rogue"
 
+    def key_stat_index(self):
+        return 1
+
 class Sorcerer(Character):
     def __init__(self, char_id):
         super().__init__(char_id)
         self.__char_class__= "Sorcerer"
+
+    def key_stat_index(self):
+        return 5
 
 class Warlock(Character):
     def __init__(self, char_id):
         super().__init__(char_id)
         self.__char_class__= "Warlock"
 
+    def key_stat_index(self):
+        return 5
+
 class Wizard(Character):
     def __init__(self, char_id):
         super().__init__(char_id)
         self.__char_class__= "Wizard"
+
+    def key_stat_index(self):
+        return 3

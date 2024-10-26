@@ -13,7 +13,7 @@ if os.path.exists("saved_characters.csv"):
 else:
     with open("saved_characters.csv", mode="w") as csvfile:
         file_writer = csv.writer(csvfile, delimiter = ",", quotechar = '"')
-        file_writer.writerow(["Character ID", "Name", "Race", "Stats", "Class"])
+        file_writer.writerow(["Character ID", "Name", "Gender", "Race", "Class" "Stats"])
         print("Saved characters directory csv file created!")
 
 class_mapping = {
@@ -36,8 +36,6 @@ class_mapping = {
 def class_roll():
     global class_mapping
     return random.choices(list(class_mapping.keys()), weights = [1, 1, 1, 1, 20, 1, 1, 1, 1, 1, 1, 1, 1, 1], k=1)[0]
-    
-
 
 
 def __main__():
@@ -65,8 +63,8 @@ def __main__():
         if user_input == "y":
             pass
         if user_input != "y" and user_input != "exit" and user_input != "quit":
-            char_id_num = int(random.random() * 100000)
-            char_id = class_mapping[char_class](char_id_num)
+            char_id = class_mapping[char_class](random.randint(100000, 999999))
+            print(char_id)
             user_input = "y"
             break
 
@@ -116,20 +114,6 @@ def __main__():
             user_input = "y"
             break
 
-    #Sixth part of creation loop. Prompts user for reroll, and gives option to exit program.
-    while user_input == "y" or user_input == "exit" or user_input == "quit":
-        user_input = input("Would you like to reroll this character's class? Press Enter to continue. Type \"y\" to reroll. Type \"quit\" or \"exit\" to exit. ")
-        if  user_input == "quit" or user_input == "exit":
-            exit = True
-            return exit
-        if user_input == "y":
-            char_id.class_roll()
-            print(f"This character's class is now {char_id.char_class}.")
-            print(char_id)
-        if user_input != "y" and user_input != "exit" and user_input != "quit":
-            user_input = "y"
-            break
-
     #Final part of creation loop. Displays final character details and prompts user if they would like to save it.
     user_input = input("Would you like to save this character? Press Enter to discard and start over. Type \"y\" for yes. Type \"quit\" or \"exit\" to discard and exit. ")
     if  user_input == "quit" or user_input == "exit":
@@ -138,7 +122,7 @@ def __main__():
     if user_input == "y":
         with open("saved_characters.csv", mode = "a", newline = "") as csvfile:
             file_writer = csv.writer(csvfile, delimiter = ",", quotechar = '"')
-            file_writer.writerow([char_id.get_char_id(), char_id.get_name(), char_id.get_race(), char_id.get_stats(), char_id.get_class()])
+            file_writer.writerow([char_id.get_char_id(), char_id.get_name(), char_id.get_gender(), char_id.get_race(), char_id.get_stats(), char_id.get_class()])
             print(char_id)
             print("Character saved!")
         return
