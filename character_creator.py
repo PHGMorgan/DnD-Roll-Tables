@@ -1,9 +1,11 @@
 import random
 import os
 import csv
+from Character_Classes import *
 
 
 exit = False
+
 
 #Check if saved characters file exists. If it doesn't, create it and write the header.
 if os.path.exists("saved_characters.csv"):
@@ -14,91 +16,30 @@ else:
         file_writer.writerow(["Character ID", "Name", "Race", "Stats", "Class"])
         print("Saved characters directory csv file created!")
 
+class_mapping = {
+        "Artificer": Artificer,
+        "Barbarian": Barbarian,
+        "Bard": Bard,
+        "Cleric": Cleric,
+        "Commoner": Commoner,
+        "Druid": Druid,
+        "Fighter": Fighter,
+        "Monk": Monk,
+        "Paladin": Paladin,
+        "Ranger": Ranger,
+        "Rogue": Rogue,
+        "Sorcerer": Sorcerer,
+        "Warlock": Warlock,
+        "Wizard": Wizard
+    }
 
-#Create the global names list variable from the data in the names.csv file.
-names_list = []
-with open("names.csv", mode = "r", newline = "") as namefile:
-    file_reader = csv.reader(namefile)
-    for row in file_reader:
-        names_list.append(row[0])
-
-
-class Character:
-    def __init__(self, char_id):
-        self.__char_stats_dict__ = {"STR": 0, "DEX": 0, "CON": 0, "INT": 0, "WIS": 0, "CHA": 0}
-        self.__char_race__ = None
-        self.__rolls_for_stats__ = []
-        self.char_id = char_id
-        self.name_roll()
-        self.race_roll()
-        self.stats_roll()
-        self.stats_compile()
-        self.class_roll()
+def class_roll():
+    global class_mapping
+    return random.choices(list(class_mapping.keys()), weights = [1, 1, 1, 1, 20, 1, 1, 1, 1, 1, 1, 1, 1, 1], k=1)[0]
     
-    def name_roll(self):
-        global names_list
-        self.name = random.choices(names_list, k=1)[0]
-
-    def race_roll(self):
-        races_list = [
-            ("Dragonborn", {"STR": 2, "CHA": 1}),
-            ("Dwarf", {"STR": 2, "CON": 2}),
-            ("Elf", {"DEX": 2, "INT": 1}),
-            ("Gnome", {"CON": 1, "INT": 2}),
-            ("Half-Elf", {"CHA": 2}),
-            ("Half-Orc", {"STR": 2, "CON": 1}),
-            ("Halfling", {"DEX": 2, "CHA": 1}),
-            ("Human", {"STR": 1, "DEX": 1, "CON": 1, "INT": 1, "WIS": 1, "CHA": 1}),
-            ("Tiefling", {"INT": 1, "CHA": 2})
-        ]
-        self.__char_race__ = random.choices(races_list, k = 1)[0]
-
-    def stats_roll(self):
-        self.__rolls_for_stats__ = []
-        for i in range(6):
-            stat_roll = self.four_six_drop_low()
-            self.__rolls_for_stats__.append(stat_roll)
-
-    def four_six_drop_low(self):
-        rolls_list = []
-        for i in range(4):
-            rolls_list.append(random.randint(1, 6))
-        rolls_list.remove(min(rolls_list))
-        return rolls_list[0] + rolls_list[1] + rolls_list[2]
-
-    def stats_compile(self):
-        self.__char_stats_dict__["STR"] = self.__rolls_for_stats__[0]
-        self.__char_stats_dict__["DEX"] = self.__rolls_for_stats__[1]
-        self.__char_stats_dict__["CON"] = self.__rolls_for_stats__[2]
-        self.__char_stats_dict__["INT"] = self.__rolls_for_stats__[3]
-        self.__char_stats_dict__["WIS"] = self.__rolls_for_stats__[4]
-        self.__char_stats_dict__["CHA"] = self.__rolls_for_stats__[5]
-        race_bonus_dict = self.__char_race__[1]
-        for race_bonus in race_bonus_dict:
-            if race_bonus in self.__char_stats_dict__:
-                self.__char_stats_dict__[race_bonus] += race_bonus_dict[race_bonus]
-                
-    def class_roll(self):
-        classes_list = [
-            "Wizard",
-            "Fighter",
-            "Sorcerer",
-            "Barbarian",
-            "Cleric",
-            "Rogue"
-        ]
-        self.char_class = random.choices(classes_list, k = 1)[0]
-
-    def __str__(self):
-        return (
-            f"Character name: {self.name} \n"
-            f"Character race: {self.__char_race__[0]} \n"
-            f"Character stats: {self.__char_stats_dict__} \n"
-            f"Character class: {self.char_class} \n"
-        )
 
 
-     
+
 def __main__():
     #Have main funciton use global exit variable.
     global exit
@@ -110,12 +51,26 @@ def __main__():
     if  user_input == "quit" or user_input == "exit":
         exit = True
         return exit
-    char_id = int(random.random() * 100000)
-    char_id = Character(char_id)
-    print(char_id)
     user_input = "y"
+    print("First, roll for a class.")
 
-    #Second part of creation loop. Prompts user for reroll, and gives option to exit program.
+    #Second part of creation loop. Prompts user to roll for class, and gives option to exit program. Once class is selected, it initializes the appropriate class.
+    while user_input == "y" or user_input == "exit" or user_input == "quit":
+        char_class = class_roll()
+        print(f"Character's class is {char_class}.")
+        user_input = input("Would you like to reroll this character's class? Press Enter to continue. Type \"y\" to reroll. Type \"quit\" or \"exit\" to exit. ")
+        if  user_input == "quit" or user_input == "exit":
+            exit = True
+            return exit
+        if user_input == "y":
+            pass
+        if user_input != "y" and user_input != "exit" and user_input != "quit":
+            char_id_num = int(random.random() * 100000)
+            char_id = class_mapping[char_class](char_id_num)
+            user_input = "y"
+            break
+
+    #Third part of creation loop. Prompts user for reroll, and gives option to exit program.
     while user_input == "y" or user_input == "exit" or user_input == "quit":
         user_input = input("Would you like to reroll this character's name? Press Enter to continue. Type \"y\" to reroll. Type \"quit\" or \"exit\" to exit. ")
         if  user_input == "quit" or user_input == "exit":
@@ -130,7 +85,7 @@ def __main__():
             user_input = "y"
             break
 
-    #Third part of creation loop. Prompts user for reroll, and gives option to exit program.
+    #Fourth part of creation loop. Prompts user for reroll, and gives option to exit program.
     while user_input == "y" or user_input == "exit" or user_input == "quit":
         user_input = input("Would you like to reroll this character's race? Press Enter to continue. Type \"y\" to reroll. Type \"quit\" or \"exit\" to exit. ")
         if  user_input == "quit" or user_input == "exit":
@@ -146,7 +101,7 @@ def __main__():
             user_input = "y"
             break
 
-    #Fourth part of creation loop. Prompts user for reroll, and gives option to exit program.
+    #Fifth part of creation loop. Prompts user for reroll, and gives option to exit program.
     while user_input == "y" or user_input == "exit" or user_input == "quit":
         user_input = input("Would you like to reroll this character's stats? Press Enter to continue. Type \"y\" to reroll. Type \"quit\" or \"exit\" to exit. ")
         if  user_input == "quit" or user_input == "exit":
@@ -161,7 +116,7 @@ def __main__():
             user_input = "y"
             break
 
-    #Fifth part of creation loop. Prompts user for reroll, and gives option to exit program.
+    #Sixth part of creation loop. Prompts user for reroll, and gives option to exit program.
     while user_input == "y" or user_input == "exit" or user_input == "quit":
         user_input = input("Would you like to reroll this character's class? Press Enter to continue. Type \"y\" to reroll. Type \"quit\" or \"exit\" to exit. ")
         if  user_input == "quit" or user_input == "exit":
@@ -183,7 +138,7 @@ def __main__():
     if user_input == "y":
         with open("saved_characters.csv", mode = "a", newline = "") as csvfile:
             file_writer = csv.writer(csvfile, delimiter = ",", quotechar = '"')
-            file_writer.writerow([char_id.char_id, char_id.name, char_id.__char_race__[0], char_id.__char_stats_dict__, char_id.char_class])
+            file_writer.writerow([char_id.get_char_id(), char_id.get_name(), char_id.get_race(), char_id.get_stats(), char_id.get_class()])
             print(char_id)
             print("Character saved!")
         return
