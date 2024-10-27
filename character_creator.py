@@ -1,9 +1,7 @@
-import random
-import os
 import csv
-from Character_Classes import *
+import os
+from DnD_classes import *
 from variables_page import class_odds_list
-
 
 exit = False
 
