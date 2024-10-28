@@ -3,6 +3,7 @@ import os
 from DnD_classes import *
 from variables_page import class_odds_list
 
+
 exit = True
 
 
@@ -45,8 +46,35 @@ def help():
     print("If you've rolled a character, type \"level\" to reroll character's level.")
     print("If you've rolled a character, type \"save\" to save the character")
     print("Type \"fast\" to roll and save a character without prompts.")
-    print("Type \"bulk X\" to roll and save X many characters without prompts.")
+    print("Type \"bulk\" to roll and save many characters without prompts.")
     return input("Character rolled! Please type what you would like to do next. Type \"help\" for a list of available commands! ")
+
+def fast_roll():
+    char_class = class_roll()
+    char_id = class_mapping[char_class](random.randint(100000, 999999))
+    with open("saved_characters.csv", mode = "a", newline = "") as csvfile:
+        file_writer = csv.writer(csvfile, delimiter = ",", quotechar = '"')
+        file_writer.writerow([char_id.get_char_id(),
+                            char_id.get_name(),
+                            char_id.get_gender(),
+                            char_id.get_race(),
+                            char_id.get_stats(),
+                            char_id.get_class(),
+                            char_id.get_char_level(),
+                            char_id.get_char_hp()
+                        ])
+    print(char_id)
+    print("Character saved!")
+
+def bulk_fast_roll():
+        while True:
+            try:
+                function_input = int(input("Please enter the number of characters you would like to roll: "))
+                break
+            except:
+                print("User input is not a number. Please try again.")
+        for i in range(function_input):
+            fast_roll()
 
 
 
@@ -55,13 +83,19 @@ def main():
     while exit:
         user_input = input(f"Press Enter to start rolling a character! Type \"help\" for a full list of commands. ")
         while exit:
+            if user_input.lower() == "fast":
+                fast_roll()
+                break
+            if user_input.lower() == "bulk":
+                bulk_fast_roll()
+                break
             char_class = class_roll()
             print(f"Character's class is {char_class}.")
             user_input = input("Would you like to reroll this character's class? Press Enter to continue. Type \"r\" to reroll. ")
             if  user_input == "quit" or user_input == "exit":
                 exit = False
                 continue
-            if user_input == "r":
+            elif user_input == "r":
                 continue
             else:
                 char_id = class_mapping[char_class](random.randint(100000, 999999))
@@ -128,10 +162,12 @@ def main():
                         else:
                             user_input = input("Invalid reponse. Please try again and type \"y\" for yes and \"n\" for no. ")
                     break
-                #elif user_input.lower() == "input8 asking to make and save multiple characters at once":
-                #    some_function5()
-                #elif user_input.lower() == "input9 asking to save the created character":
-                #    some_function6()
+                elif user_input.lower() == "fast":
+                    fast_roll()
+                    break
+                elif user_input.lower() == "bulk":
+                    bulk_fast_roll()
+                    break
                 else:
                     user_input = input("User input not recognized. Please try again. Type \"help\" for a list of available commands! ")
             break
