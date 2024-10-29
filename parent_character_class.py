@@ -1,7 +1,8 @@
+import ast
 import random
 import csv
 from DnD_classes import *
-from variables_page import max_char_level, char_level_odds, stat_mod_dict
+from variables_page import max_char_level, char_level_odds, stat_mod_dict, shield_chance
 
 class Character:
     def __init__(self, char_id):
@@ -12,31 +13,40 @@ class Character:
         self.__char_race__ = "None"
         self.__char_stats_dict__ = {"STR": 0, "DEX": 0, "CON": 0, "INT": 0, "WIS": 0, "CHA": 0}
         self.rolls_for_stats = []
+        self.armor_list = []
+        self.weapon_list = []
         #Run randomizers for each character variable
         self.name_roll()
         self.random_gender()
         self.race_roll()
         self.stats_roll()
         self.stats_compile()
+        self.random_char_level()
+        self.roll_hp()
+        self.make_equipment_list()
+        self.roll_armor()
+        self.roll_weapon()
+        self.roll_shield()
+        self.calculate_ac()
 
 
     #Block of get functions
     def get_char_id(self):
         return self.__char_id__
     
-    def get_name(self):
+    def get_char_name(self):
         return self.__name__
     
-    def get_gender(self):
+    def get_char_gender(self):
         return self.__gender__
     
-    def get_race(self):
+    def get_char_race(self):
         return self.__char_race__[0]
     
-    def get_class(self):
+    def get_char_class(self):
         return self.__char_class__
 
-    def get_stats(self):
+    def get_char_stats(self):
         return self.__char_stats_dict__
     
     def get_char_level(self):
@@ -44,6 +54,24 @@ class Character:
     
     def get_char_hp(self):
         return self.__hp__
+    
+    def get_char_ac(self):
+        return self.__ac__
+    
+    def get_char_armor(self):
+        if self.__armor__ == "None":
+            return "None"
+        return self.__armor__[2]
+    
+    def get_char_weapon(self):
+        if self.__weapon__ == "None":
+            return "None"
+        return self.__weapon__[2]
+    
+    def get_char_shield(self):
+        if self.__shield__ == "None":
+            return "None"
+        return self.__shield__[2]
     
     
     #Create the global names list variable from the data in the names.csv file.
@@ -139,6 +167,50 @@ class Character:
         hp += (stat_mod_dict[self.__char_stats_dict__["CON"]] * self.__char_level__)
         self.__hp__ = hp
 
+    def roll_armor(self):
+        if len(self.armor_list) > 0:
+            self.__armor__ = random.choice(self.armor_list)
+
+    def roll_weapon(self):
+        if len(self.weapon_list) > 0:
+            self.__weapon__ = random.choice(self.weapon_list)
+
+    def roll_shield(self):
+        if random.randint(1, shield_chance) <= 10:
+            self.__shield__ = self.shield_availability
+
+    def make_equipment_list(self):
+        self.__shield__ = "None"
+        self.__armor__ = "None"
+        self.__weapon__ = "None"
+        self.shield_availability = "None"
+        with open("equipment.csv", mode = "r", newline = "") as csvfile:
+            file_reader = csv.reader(csvfile)
+            for row in file_reader:
+                if row[0] == "Armor" and self.__char_class__ in row[1]:
+                    self.armor_list.append(row)
+                if row[0] == "Weapon" and self.__char_class__ in row[1]:
+                    self.weapon_list.append(row)
+                if row[0] == "Shield" and self.__char_class__ in row[1]:
+                    self.shield_availability = row
+    
+    def calculate_ac(self):
+        if self.__armor__ == "None":
+            if self.__shield__ == "None":
+                self.__ac__ = 10 + stat_mod_dict[self.__char_stats_dict__["DEX"]]
+            else:
+                self.__ac__ = 12 + stat_mod_dict[self.__char_stats_dict__["DEX"]]
+        elif self.__shield__ == "None":
+            if self.__char_stats_dict__["DEX"] > int(ast.literal_eval(self.__armor__[3])[0]):
+                self.__ac__ = int(ast.literal_eval(self.__armor__[3])[1]) + int(ast.literal_eval(self.__armor__[3])[0])
+            else:
+                self.__ac__ = int(ast.literal_eval(self.__armor__[3])[1]) + stat_mod_dict[self.__char_stats_dict__["DEX"]]
+        else:
+            if self.__char_stats_dict__["DEX"] > int(ast.literal_eval(self.__armor__[3])[0]):
+                self.__ac__ = int(ast.literal_eval(self.__armor__[3])[1]) + int(ast.literal_eval(self.__armor__[3])[0]) + 2
+            else:
+                self.__ac__ = int(ast.literal_eval(self.__armor__[3])[1]) + stat_mod_dict[self.__char_stats_dict__["DEX"]] + 2
+
     def __str__(self):
         return (
             f"Character name: {self.__name__} \n"
@@ -147,5 +219,9 @@ class Character:
             f"Character class: {self.__char_class__} \n"
             f"Character stats: {self.__char_stats_dict__} \n"
             f"Character level: {self.__char_level__} \n"
-            f"Character HP: {self.__hp__}"
+            f"Character HP: {self.__hp__} \n"
+            f"Character AC: {self.__ac__} \n"
+            f"Character weapon: {self.get_char_weapon()} \n"
+            f"Character armor: {self.get_char_armor()} \n"
+            f"Character shield: {self.get_char_shield()}"
         )

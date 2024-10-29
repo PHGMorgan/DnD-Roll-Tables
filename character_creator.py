@@ -14,7 +14,7 @@ if os.path.exists("saved_characters.csv"):
 else:
     with open("saved_characters.csv", mode="w") as csvfile:
         file_writer = csv.writer(csvfile, delimiter = ",", quotechar = '"')
-        file_writer.writerow(["Character ID", "Name", "Gender", "Race", "Class", "Stats", "Level", "HP"])
+        file_writer.writerow(["Character ID", "Name", "Gender", "Race", "Stats", "Class", "Level", "HP", "AC", "Weapon", "Armor", "Shield"])
         print("Saved characters directory csv file created!")
 
 class_mapping = {
@@ -47,6 +47,9 @@ def help():
     print("If you've rolled a character, type \"race\" to reroll character's race.")
     print("If you've rolled a character, type \"stat\" or \"stats\" to reroll character's stats.")
     print("If you've rolled a character, type \"level\" to reroll character's level.")
+    print("If you've rolled a character, type \"weapon\" to reroll character's weapon.")
+    print("If you've rolled a character, type \"armor\" to reroll character's armor.")
+    print("If you've rolled a character, type \"shield\" to reroll if a character has a shield.")
     print("If you've rolled a character, type \"save\" to save the character")
     print("If you've rolled a character, type \"character\" to see all the information on the character.")
     print("Type \"fast\" to roll and save a character without prompts.")
@@ -59,13 +62,17 @@ def fast_roll():
     with open("saved_characters.csv", mode = "a", newline = "") as csvfile:
         file_writer = csv.writer(csvfile, delimiter = ",", quotechar = '"')
         file_writer.writerow([char_id.get_char_id(),
-                            char_id.get_name(),
-                            char_id.get_gender(),
-                            char_id.get_race(),
-                            char_id.get_stats(),
-                            char_id.get_class(),
+                            char_id.get_char_name(),
+                            char_id.get_char_gender(),
+                            char_id.get_char_race(),
+                            char_id.get_char_stats(),
+                            char_id.get_char_class(),
                             char_id.get_char_level(),
-                            char_id.get_char_hp()
+                            char_id.get_char_hp(),
+                            char_id.get_char_ac(),
+                            char_id.get_char_armor(),
+                            char_id.get_char_weapon(),
+                            char_id.get_char_shield()
                         ])
     print(char_id)
     print("Character saved!")
@@ -118,6 +125,7 @@ def main():
                     print("---Exiting Program---")
                     continue
                 elif user_input == "r":
+                    char_class = class_roll()
                     continue
                 elif user_input not in ["", "r", exit_keywords_list[0], exit_keywords_list[1], "help", "fast", "bulk"]:
                     print("---Command not recognized. Please try again.---")
@@ -140,26 +148,26 @@ def main():
                             user_input = input("Please type what you would like to do next. Type \"help\" for a list of available commands! ")
                         elif user_input.lower() == "name":
                             char_id.name_roll()
-                            print(f"This character's name is now {char_id.get_name()}.")
+                            print(f"This character's name is now {char_id.get_char_name()}.")
                             print(char_id)
                             user_input = input("Character rolled! Please type what you would like to do next. Type \"help\" for a list of available commands! ")
                         elif user_input.lower() == "gender":
                             char_id.change_gender()
-                            print(f"This character's gender is now {char_id.get_gender()}.")
+                            print(f"This character's gender is now {char_id.get_char_gender()}.")
                             print(char_id)
                             user_input = input("Character rolled! Please type what you would like to do next. Type \"help\" for a list of available commands! ")
                         elif user_input.lower() == "race":
                             char_id.race_roll()
                             char_id.stats_compile()
                             char_id.roll_hp()
-                            print(f"This character's race is now {char_id.get_race()}.")
+                            print(f"This character's race is now {char_id.get_char_race()}.")
                             print(char_id)
                             user_input = input("Character rolled! Please type what you would like to do next. Type \"help\" for a list of available commands! ")
                         elif user_input.lower() in ["stat", "stats"]:
                             char_id.stats_roll()
                             char_id.stats_compile()
                             char_id.roll_hp()
-                            print(f"This character's stats are now {char_id.get_stats()}.")
+                            print(f"This character's stats are now {char_id.get_char_stats()}.")
                             print(char_id)
                             user_input = input("Character rolled! Please type what you would like to do next. Type \"help\" for a list of available commands! ")
                         elif user_input.lower() == "level":
@@ -168,17 +176,38 @@ def main():
                             print(f"This character's level is now {char_id.get_char_level()}.")
                             print(char_id)
                             user_input = input("Character rolled! Please type what you would like to do next. Type \"help\" for a list of available commands! ")
+                        elif user_input.lower() == "weapon":
+                            char_id.roll_weapon()
+                            print(f"This character is now wielding a {char_id.get_char_weapon()}.")
+                            print(char_id)
+                            user_input = input("Character rolled! Please type what you would like to do next. Type \"help\" for a list of available commands! ")
+                        elif user_input.lower() == "armor":
+                            char_id.roll_armor()
+                            char_id.calculate_ac()
+                            print(f"This character is now wearing {char_id.get_char_armor()}.")
+                            print(char_id)
+                            user_input = input("Character rolled! Please type what you would like to do next. Type \"help\" for a list of available commands! ")
+                        elif user_input.lower() == "shield":
+                            char_id.roll_shield()
+                            char_id.calculate_ac()
+                            print(f"This character character's shield is now {char_id.get_char_shield()}.")
+                            print(char_id)
+                            user_input = input("Character rolled! Please type what you would like to do next. Type \"help\" for a list of available commands! ")
                         elif user_input.lower() == "save":
                             with open("saved_characters.csv", mode = "a", newline = "") as csvfile:
                                 file_writer = csv.writer(csvfile, delimiter = ",", quotechar = '"')
                                 file_writer.writerow([char_id.get_char_id(),
-                                                    char_id.get_name(),
-                                                    char_id.get_gender(),
-                                                    char_id.get_race(),
-                                                    char_id.get_stats(),
-                                                    char_id.get_class(),
+                                                    char_id.get_char_name(),
+                                                    char_id.get_char_gender(),
+                                                    char_id.get_char_race(),
+                                                    char_id.get_char_stats(),
+                                                    char_id.get_char_class(),
                                                     char_id.get_char_level(),
-                                                    char_id.get_char_hp()
+                                                    char_id.get_char_hp(),
+                                                    char_id.get_char_ac(),
+                                                    char_id.get_char_weapon(),
+                                                    char_id.get_char_armor(),
+                                                    char_id.get_char_shield()
                                                 ])
                             print(char_id)
                             print("Character saved!")

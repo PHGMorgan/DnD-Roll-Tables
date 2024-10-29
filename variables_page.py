@@ -7,6 +7,9 @@ char_level_odds = 1.35
 # Chance for a rolled character to be a Commoner. Higher values make commoners more likely.
 commoner_chance = 20
 
+# Chance for a rolled character to have a shield if eligible. Odds are 1 in 10/number selected. E.g. 100 = 1 in 10, 90 = 1 in 9, 80 = 1 in 8, etc.
+shield_chance = 100
+
 
 # Do not alter the below fields.
 stat_mod_dict = {1:-5,2:-4,3:-4,4:-3,5:-3,6:-2,7:-2,8:-1,9:-1,10:0,11:0,12:1,13:1,14:2,15:2,16:3,17:3,18:4,19:4,20:5}
