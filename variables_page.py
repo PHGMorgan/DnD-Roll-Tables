@@ -8,7 +8,7 @@ char_level_odds = 1.35
 commoner_chance = 20
 
 # Chance for a rolled character to have a shield if eligible. Odds are 1 in 10/number selected. E.g. 100 = 1 in 10, 90 = 1 in 9, 80 = 1 in 8, etc.
-shield_chance = 100
+shield_chance = 50
 
 
 # Do not alter the below fields.

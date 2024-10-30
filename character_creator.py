@@ -70,8 +70,8 @@ def fast_roll():
                             char_id.get_char_level(),
                             char_id.get_char_hp(),
                             char_id.get_char_ac(),
-                            char_id.get_char_armor(),
                             char_id.get_char_weapon(),
+                            char_id.get_char_armor(),
                             char_id.get_char_shield()
                         ])
     print(char_id)

@@ -30,7 +30,7 @@ class Character:
         self.calculate_ac()
 
 
-    #Block of get functions
+    # Block of get functions
     def get_char_id(self):
         return self.__char_id__
     
@@ -93,7 +93,8 @@ class Character:
     def change_gender(self):
         if self.__gender__ == "Male":
             self.__gender__ = "Female"
-        self.__gender__ = "Male"
+        else:
+            self.__gender__ = "Male"
 
     def race_roll(self):
         races_list = [

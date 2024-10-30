@@ -8,9 +8,9 @@ Armor,"['Artificer', 'Cleric', 'Fighter', 'Paladin', 'Ranger']",Scale Mail Armor
 Armor,"['Artificer', 'Cleric', 'Fighter', 'Paladin', 'Ranger']",Breastplate Armor,"['2', '14']"
 Armor,"['Artificer', 'Cleric', 'Fighter', 'Paladin', 'Ranger']",Half Plate Armor,"['2', '15']", Stealth Disadvantage
 Armor,"['Fighter', 'Paladin']",Ring Mail Armor,"['0', '14']", Stealth Disadvantage
-Armor,"['Fighter', 'Paladin']",Chain Mail Armor,"['0', '14']", Stealth Disadvantage
-Armor,"['Fighter', 'Paladin']",Splint Armor,"['0', '14']", Stealth Disadvantage
-Armor,"['Fighter', 'Paladin']",Plate Armor,"['0', '14']", Stealth Disadvantage
+Armor,"['Fighter', 'Paladin']",Chain Mail Armor,"['0', '16']", Stealth Disadvantage
+Armor,"['Fighter', 'Paladin']",Splint Armor,"['0', '17']", Stealth Disadvantage
+Armor,"['Fighter', 'Paladin']",Plate Armor,"['0', '18']", Stealth Disadvantage
 Shield,"['Artificer', 'Barbarian', 'Cleric', 'Druid', 'Fighter', 'Paladin', 'Ranger']",Shield,"['0', '2']"
 Weapon,"['Artificer', 'Barbarian', 'Bard', 'Cleric', 'Druid', 'Fighter', 'Monk', 'Paladin', 'Ranger', 'Rogue', 'Warlock']",Club,"['1', '4']","['Light']"
 Weapon,"['Artificer', 'Barbarian', 'Bard', 'Cleric', 'Druid', 'Fighter', 'Monk', 'Paladin', 'Ranger', 'Rogue', 'Sorcerer', 'Warlock', 'Wizard']",Dagger,"['1', '4']","['Finesse', 'Light', 'Thrown (range 20/60)']"
