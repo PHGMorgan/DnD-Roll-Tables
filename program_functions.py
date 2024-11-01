@@ -1,4 +1,3 @@
-# Function that rolls a random class. Odds determined by "class_odds_list" on variables_page.py
 import csv
 import random
 from DnD_classes import *
@@ -76,7 +75,7 @@ def help_race(char_id):
     char_id.race_roll()
     char_id.stats_compile()
     char_id.roll_hp()
-    print(f"This character's race is now {char_id.get_char_race()}.")
+    print(f"This character's race is now {char_id.race.get_name()}.")
     print(char_id)
 
 def help_stat(char_id):
@@ -116,7 +115,7 @@ def help_save(char_id):
                             char_id.get_char_name(),
                             char_id.get_char_gender(),
                             char_id.get_char_race(),
-                            char_id.get_char_stats(),
+                            ','.join(f"{key}: {value}" for key, value in char_id.__char_stats_dict__.items()),
                             char_id.get_char_class(),
                             char_id.get_char_level(),
                             char_id.get_char_hp(),
@@ -143,7 +142,7 @@ def fast_roll():
                             char_id.get_char_name(),
                             char_id.get_char_gender(),
                             char_id.get_char_race(),
-                            char_id.get_char_stats(),
+                            ','.join(f"{key}: {value}" for key, value in char_id.__char_stats_dict__.items()),
                             char_id.get_char_class(),
                             char_id.get_char_level(),
                             char_id.get_char_hp(),

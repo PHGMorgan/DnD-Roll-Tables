@@ -12,7 +12,7 @@ class Artificer(Character):
         super().__init__(char_id)
         
     def key_stat_index(self):
-        return 3
+        return [3, "INT"]
     
     def hp_stat_index(self):
         return 8
@@ -25,7 +25,7 @@ class Barbarian(Character):
         print(self.armor_list)
 
     def key_stat_index(self):
-        return 0
+        return [0, "STR"]
     
     def hp_stat_index(self):
         return 12
@@ -43,7 +43,7 @@ class Bard(Character):
         super().__init__(char_id)
 
     def key_stat_index(self):
-        return 5
+        return [5, "CHA"]
     
     def hp_stat_index(self):
         return 8
@@ -55,7 +55,7 @@ class Cleric(Character):
         super().__init__(char_id)
 
     def key_stat_index(self):
-        return 4
+        return [4, "WIS"]
     
     def hp_stat_index(self):
         return 8
@@ -68,14 +68,14 @@ class Commoner(Character):
         super().__init__(char_id)
 
     def key_stat_index(self):
-        return 2
+        return [2, "CON"]
     
     def random_char_level(self):
         self.__char_level__ = 0
     
     def stats_roll(self):
         self.rolls_for_stats = [0, 0, 0, 0, 0, 0]
-        while self.rolls_for_stats[self.key_stat_index()] == 0 or self.rolls_for_stats[self.key_stat_index()] < max(self.rolls_for_stats):
+        while self.rolls_for_stats[self.key_stat_index()[0]] == 0 or self.rolls_for_stats[self.key_stat_index()[0]] < max(self.rolls_for_stats):
             numbers_rolled = []
             for i in range(6):
                 stat_roll = random.choices([6, 7, 8, 9, 10, 11, 12, 13, 14], weights = [1, 2, 3, 4, 5, 4, 3, 2, 1], k=1)[0]
@@ -95,7 +95,7 @@ class Druid(Character):
         super().__init__(char_id)
 
     def key_stat_index(self):
-        return 4
+        return [4, "WIS"]
     
     def hp_stat_index(self):
         return 8
@@ -107,7 +107,11 @@ class Fighter(Character):
         super().__init__(char_id)
 
     def key_stat_index(self):
-        return random.randint(0, 1)
+        self.key_stat = random.randint(0, 1)
+        if self.key_stat == 0:
+            return [0, "STR"]
+        else:
+            return [1, "DEX"]
     
     def hp_stat_index(self):
         return 10
@@ -127,7 +131,17 @@ class Monk(Character):
         super().__init__(char_id)
 
     def key_stat_index(self):
-        return random.choice([1, 4])
+        self.key_stat = random.choice([1, 4])
+        if self.key_stat == 1:
+            return [1, "DEX"]
+        else:
+            return [4, "WIS"]
+    
+    def secondary_score(self):
+        if self.key_stat == 1:
+            return [4, "WIS"]
+        else:
+            return [1, "STR"]
     
     def hp_stat_index(self):
         return 8
@@ -148,7 +162,17 @@ class Paladin(Character):
         super().__init__(char_id)
 
     def key_stat_index(self):
-        return 5
+        self.key_stat = random.choice(0, 5)
+        if self.key_stat == 0:
+            return [0, "STR"]
+        else:
+            return [5, "CHA"]
+        
+    def secondary_score(self):
+        if self.key_stat == 0:
+            return [5, "CHA"]
+        else:
+            return [0, "STR"]
     
     def hp_stat_index(self):
         return 10
@@ -160,7 +184,7 @@ class Ranger(Character):
         super().__init__(char_id)
 
     def key_stat_index(self):
-        return 1
+        return [1, "DEX"]
     
     def hp_stat_index(self):
         return 10
@@ -172,7 +196,7 @@ class Rogue(Character):
         super().__init__(char_id)
 
     def key_stat_index(self):
-        return 1
+        return [1, "DEX"]
     
     def hp_stat_index(self):
         return 8
@@ -190,7 +214,7 @@ class Sorcerer(Character):
         super().__init__(char_id)        
 
     def key_stat_index(self):
-        return 5
+        return [5, "CHA"]
     
     def hp_stat_index(self):
         return 6
@@ -202,7 +226,7 @@ class Warlock(Character):
         super().__init__(char_id)
 
     def key_stat_index(self):
-        return 5
+        return [5, "CHA"]
     
     def hp_stat_index(self):
         return 8
@@ -214,7 +238,7 @@ class Wizard(Character):
         super().__init__(char_id)
 
     def key_stat_index(self):
-        return 3
+        return [3, "INT"]
     
     def hp_stat_index(self):
         return 6
