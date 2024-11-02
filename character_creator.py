@@ -68,6 +68,10 @@ def main():
                 case "r":
                     char_class = class_roll()
                 case "":
+                    char_id = class_mapping[char_class](random.randint(100000, 999999))
+                    break
+                case "artificer" | "barbarian" | "bard" | "cleric" | "commoner" | "druid" | "fighter" | "monk" | "paladin" | "ranger" | "rogue" | "sorcerer" | "warlock" | "wizard":
+                    char_id = class_mapping[user_input.title()](random.randint(100000, 999999))
                     break
                 case _:
                     print("---Command not recognized. Please try again. Type \"help\" for a list of available commands!---")
@@ -78,7 +82,6 @@ def main():
         if program_exit:
             break
             
-        char_id = class_mapping[char_class](random.randint(100000, 999999))
         print(char_id)
         print("Character rolled!")
                     

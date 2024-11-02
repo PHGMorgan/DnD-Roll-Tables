@@ -2,8 +2,10 @@ import ast
 import random
 import csv
 from DnD_classes import *
-from parent_race_class import *
+from race_class import *
 from variables_page import max_char_level, char_level_odds, stat_mod_dict, shield_chance
+
+
 
 class Character:
     def __init__(self, char_id):
@@ -12,10 +14,7 @@ class Character:
         self.__name__ = None
         self.__gender__ = None
         self.__char_stats_dict__ = {"STR": 0, "DEX": 0, "CON": 0, "INT": 0, "WIS": 0, "CHA": 0}
-        self.rolls_for_stats = []
-        self.armor_list = []
-        self.weapon_list = []
-        self.__features__ = []
+        self.rolls_for_stats, self.armor_list, self.weapon_list, self.__features__ = [], [], [], []
         #Run randomizers for each character variable
         self.name_roll()
         self.random_gender()
@@ -80,12 +79,18 @@ class Character:
     # Create the global names list variable from the data in the names.csv file.
     def name_roll(self):
         names_list = []
-        with open("names.csv", mode = "r", newline = "") as namefile:
-            file_reader = csv.reader(namefile)
-            for row in file_reader:
-                names_list.append(row[0])
-        self.__name__ = random.choice(names_list)
-    
+        try:
+            with open("names.csv", mode = "r", newline = "") as namefile:
+                file_reader = csv.reader(namefile)
+                for row in file_reader:
+                    names_list.append(row[0])
+            self.__name__ = random.choice(names_list)
+        except:
+            Exception
+
+
+
+    # Functions controlling character gender.
     def random_gender(self):
         char_sex = random.randint(1, 2)
         if char_sex == 1:
@@ -99,8 +104,6 @@ class Character:
         else:
             self.__gender__ = "Male"
 
-    def secondary_score(self):
-        return [2, "CON"]
 
 
     # This section is for all the functions used in rolling a character's race
@@ -110,8 +113,8 @@ class Character:
             Aasimar,
             Bugbear,
             Centaur,
-            #Changeling,
-            #Dragonborn,
+            Changeling,
+            Dragonborn,
             #Dwarf, (Duergar too)
             #Elf, (Eladrin,	Sea Elf, Shadar-Kai too)
             #Fairy,
@@ -147,14 +150,15 @@ class Character:
         race = random.choice(races_list)
         self.race = race()
 
-
+    def secondary_score(self):
+        return [2, "CON"]
 
     # The following are functions related to rolling a character's stats and adding all stat bonuses together.
     def stats_roll(self):
         self.rolls_for_stats = [0, 0, 0, 0, 0, 0]
         while self.rolls_for_stats[self.key_stat_index()[0]] == 0 or self.rolls_for_stats[self.key_stat_index()[0]] < max(self.rolls_for_stats):
             for i in range(6):
-                self.rolls_for_stats.append(self.four_six_drop_low())
+                self.rolls_for_stats[i] = self.four_six_drop_low()
 
     def four_six_drop_low(self):
         rolls_list = []
@@ -172,9 +176,9 @@ class Character:
             "WIS": self.rolls_for_stats[4],
             "CHA": self.rolls_for_stats[5]
         })
-        for race_bonus in self.race.get_race_stats(self.key_stat_index()[1], self.secondary_score()[1]):
-            if race_bonus in self.__char_stats_dict__:
-                self.__char_stats_dict__[race_bonus] += self.race.get_race_stats(self.key_stat_index()[1], self.secondary_score()[1])[race_bonus]
+        race_bonus = self.race.get_race_stats(self.key_stat_index()[1], self.secondary_score()[1])
+        for bonus in race_bonus:
+            self.__char_stats_dict__[bonus] += race_bonus[bonus]
 
 
 
@@ -194,22 +198,17 @@ class Character:
             odds_value = int(round(char_level_odds * odds_value))
         self.__char_level__ = random.choices(levels_list, weights=weights_list, k=1)[0]
 
-
-
-    # Rolls HP stat. Starts by setting hp to 0 for a fresh start, then creates a list of numbers for each number in hp_stat_index (to represent dice faces).
-    # HP is added for free (for level 1), then the list is iterated over a number of times equal to character_level - 1 (for levels 2 and up).
-    # Lastly, CON mod is added in by multiplying it by the character_levels. self.__hp__ is then set to this value.
     def roll_hp(self):
-        dice_faces_list = []
-        hp = 0
-        for i in range(self.hp_stat_index()):
+        dice_faces_list = [] # Create an empty list for the hit dice
+        hp = 0 # Create hp variable and set it equal to 0
+        for i in range(self.hp_stat_index()): # Call hp_stat_index to get size of hit die. Function returns a number (either 6, 8, 10, or 12).
             i += 1
-            dice_faces_list.append(i)
-        hp += self.hp_stat_index()
-        for i in range(self.__char_level__ - 1):
-            hp += random.choice(dice_faces_list)
-        hp += (stat_mod_dict[self.__char_stats_dict__["CON"]] * self.__char_level__)
-        self.__hp__ = hp
+            dice_faces_list.append(i) # Add a number to the list a number of times equal to the hit die. This list is our d6, d8, d10, or d12.
+        hp += self.hp_stat_index() # Increase health by max roll to represent level 1 hp.
+        for i in range(self.__char_level__ - 1): # Roll a number of times equal to 1 - character level to represent rolling for health for each level after the 1st.
+            hp += random.choice(dice_faces_list) # Increase health by a random number from the die_face_list to represent rolling the die.
+        hp += (stat_mod_dict[self.__char_stats_dict__["CON"]] * self.__char_level__) # Add an amount of hp = CON modifier * level.
+        self.__hp__ = hp # Set self.__hp__ to our hp variable.
 
 
 
@@ -227,6 +226,7 @@ class Character:
             self.__shield__ = self.shield_availability
 
     def make_equipment_list(self):
+        print(f"Using character class: {self.__char_class__}")
         self.__shield__ = "None"
         self.__armor__ = "None"
         self.__weapon__ = "None"
@@ -264,7 +264,7 @@ class Character:
             f"Character gender: {self.get_char_gender()} \n"
             f"Character race: {self.race.get_name()} \n"
             f"Character class: {self.get_char_class()} \n"
-            f"Character stats: {','.join(f'{key}: {value}' for key, value in self.__char_stats_dict__.items())} \n"
+            f"Character stats: {', '.join(f'{key}: {value}' for key, value in self.__char_stats_dict__.items())} \n"
             f"Character level: {self.__char_level__} \n"
             f"Character HP: {self.__hp__} \n"
             f"Character AC: {self.__ac__} \n"

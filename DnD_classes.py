@@ -22,7 +22,6 @@ class Barbarian(Character):
     def __init__(self, char_id):
         self.__char_class__= "Barbarian"
         super().__init__(char_id)
-        print(self.armor_list)
 
     def key_stat_index(self):
         return [0, "STR"]
@@ -162,7 +161,7 @@ class Paladin(Character):
         super().__init__(char_id)
 
     def key_stat_index(self):
-        self.key_stat = random.choice(0, 5)
+        self.key_stat = random.choice([0, 5])
         if self.key_stat == 0:
             return [0, "STR"]
         else:

@@ -142,7 +142,7 @@ def fast_roll():
                             char_id.get_char_name(),
                             char_id.get_char_gender(),
                             char_id.get_char_race(),
-                            ','.join(f"{key}: {value}" for key, value in char_id.__char_stats_dict__.items()),
+                            ', '.join(f"{key}: {value}" for key, value in char_id.__char_stats_dict__.items()),
                             char_id.get_char_class(),
                             char_id.get_char_level(),
                             char_id.get_char_hp(),
