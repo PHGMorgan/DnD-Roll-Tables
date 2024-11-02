@@ -98,7 +98,7 @@ class Aasimar(Race):
             "Radiant Soul"
         ]
         return random.choice(function_list)
-    
+
 
 
 class Bugbear(Race):
@@ -111,7 +111,9 @@ class Bugbear(Race):
 
     def subrace_roll(self):
         return random.choice(self.bugbear_subrace_list)
-    
+
+
+
 class Centaur(Race):
     def __init__(self):
         self.centaur_subrace_list = [
@@ -125,6 +127,8 @@ class Centaur(Race):
 
     def get_speed(self):
         return "Speed: 40"
+
+
 
 class Changeling(Race):
     def __init__(self):
@@ -143,7 +147,9 @@ class Changeling(Race):
         if random.choice([0,1]) == 1:
             return "Size: Medium"
         return "Size: Small"
-    
+
+
+
 class Dragonborn(Race): # COME BACK TO THIS RACE SINCE IT HAS A FEATURE THAT ONLY COMES ONLINE AT LEVEL 5
     def __init__(self):
         self.dragonborn_color()
@@ -367,23 +373,182 @@ class Genasi(Race):
 #class Kobold(Race):
 #class Lizardfolk(Race):
 #class Minotaur(Race):
-#class Orc(Race):
-#class Owlin(Race):
-#class Satyr(Race):
-#class Shifter(Race):
-#class Tabaxi(Race):
-#class Tiefling(Race):
-#class Tortle(Race):
-#class Triton(Race):
-#class Verdan(Race):
+
+class Orc(Race):
+    def __init__(self):
+        self.orc_subrace_list = [
+            ("Orc", {"custom_stat_1": 2, "custom_stat_2": 1}, ("Darkvision: 60", "Adrenaline Rush", "Powerful Build", "Relentless Endurance", "Languages: Common/Other")),
+            ("Orc", {"STR": 2, "CON": 1}, ("Darkvision: 60", "Aggressive", "Primal Intuition", "Powerful Build", "Languages: Common/Orc")),  
+            ("Orc", {"STR": 2, "CON": 1}, ("Darkvision: 60", "Menacing", "Relentless Endurance", "Savage Attacks", "Languages: Common/Orc"))
+        ]
+        super().__init__()
+
+    def subrace_roll(self):
+        return random.choice(self.orc_subrace_list)
+
+
+
+class Owlin(Race):
+    def __init__(self):
+        super().__init__()
+
+    def subrace_roll(self):
+        return ("Owlin", {"custom_stat_1": 2, "custom_stat_2": 1}, ("Darkvision: 120", "Flight: 30", "Silent Feathers", "Languages: Common/Other"))
+    
+    def get_size(self):
+        if random.choice([0,1]) == 1:
+            return "Size: Medium"
+        return "Size: Small"
+
+
+
+class Satyr(Race):
+    def __init__(self):
+        self.satyr_subrace_list = [
+            ("Satyr", {"custom_stat_1": 2, "custom_stat_2": 1}, ("Ram", "Magic Resistance", "Mirthful Leaps", "Reveler", "Languages: Common/Other")), 
+            ("Satyr", {"CHA": 2, "DEX": 1}, ("Ram", "Magic Resistance", "Mirthful Leaps", "Reveler", "Languages: Common/Sylvan")) 
+        ]
+        super().__init__()
+
+    def subrace_roll(self):
+        return random.choice(self.satyr_subrace_list)
+    
+    def get_speed(self):
+        return "Speed: 35"
+
+
+
+class Shifter(Race):
+    def __init__(self):
+        self.ancestor()
+        self.shifter_subrace_list = [
+            ("Shifter", {"custom_stat_1": 2, "custom_stat_2": 1}, ("Darkvision: 60", "Bestial Instincts", f"Shifting: {self.ancestor_lycan[0]}", "Languages: Common/Other")),
+            ("Shifter", {"custom_stat_1": 2, "custom_stat_2": 1}, ("Darkvision: 60", "Keen Senses", "Shifting","Subrace", "Languages: Common")),
+            ("Beasthide Shifter", {"CON": 2, "STR": 1}, ("Darkvision: 60", "Keen Senses", "Shifting","Subrace", "Natural Athlete", "Shifting Feature", "Languages: Common/Other")),
+            ("Longtooth Shifter", {"STR": 2, "DEX": 1}, ("Darkvision: 60", "Bestial Instincts", "Shifting", "Fierce", "Shifting Feature", "Languages: Common/Other")),
+            ("Swiftstride Shifter", {"DEX": 2, "CHA": 1}, ("Darkvision: 60", "Bestial Instincts", "Shifting", "Graceful", "Shifting Feature", "Languages: Common/Other")),  
+            ("Wildhunt Shifter", {"WIS": 2}, ("Darkvision: 60", "Bestial Instincts", "Shifting", "Mark the Scent", "Shifting Feature", "Languages: Common/Other"))
+        ]
+        super().__init__()
+
+    def subrace_roll(self):
+        return random.choice(self.shifter_subrace_list)
+    
+    def ancestor(self):
+        lycanthrope_list = [
+            ("Werebear", "Beasthide"),
+            ("Wereboar", "Beasthide"),
+            ("Wererat", "Swiftstride"),
+            ("Weretiger", "Swiftstride"),
+            ("Werewolf (Wolflike)", "Longtooth"),
+            ("Werewolf (Doglike)", "Wildhunt")
+        ]
+        self.ancestor_lycan = random.choice(lycanthrope_list)
+
+
+
+class Tabaxi(Race):
+    def __init__(self):
+        self.tabaxi_subrace_list =[
+            ("Tabaxi", {"custom_stat_1": 2, "custom_stat_2": 1}, ("Darkvision: 60", "Cat's Claws", "Cat's Talent", "Feline Agility", "Languages: Common/Other")),
+            ("Tabaxi", {"DEX": 2, "CHA": 1}, ("Darkvision: 60", "Cat's Claws", "Cat's Talent", "Feline Agility", "Languages: Common/Other"))
+        ]
+        super().__init__()
+
+    def subrace_roll(self):
+        return random.choice(self.tabaxi_subrace_list)
+    
+    def get_speed(self):
+        if self.subrace == self.tabaxi_subrace_list[0]:
+            return "Speed: 30, Climb: 30"
+        return "Speed: 30"
+
+    def get_size(self):
+            if self.subrace != self.tabaxi_subrace_list[0]:
+                return "Size: Medium"
+            if random.choice([0,1]) == 1:
+                return "Size: Medium"
+            return "Size: Small"
+
+
+
+class Tiefling(Race):
+    def __init__(self):
+        self.tiefling_subrace_list = [
+            ("Tiefling", {"CHA": 2}, ("Darkvision: 60", "Hellish Resistance", "Languages: Common/Infernal")),
+            ("Bloodline of Asmodeus Tiefling", {"CHA": 2, "INT": 1}, ("Darkvision: 60", "Hellish Resistance", "Infernal Legacy", "Languages: Common/Infernal")),
+            ("Bloodline of Baalzebul Tiefling", {"CHA": 2, "INT": 1}, ("Darkvision: 60", "Hellish Resistance", "Legacy of Maladomini", "Languages: Common/Infernal")),
+            ("Bloodline of Dispater Tiefling", {"CHA": 2, "DEX": 1}, ("Darkvision: 60", "Hellish Resistance", "Legacy of Dis", "Languages: Common/Infernal")),
+            ("Bloodline of Fierna Tiefling", {"CHA": 2, "WIS": 1}, ("Darkvision: 60", "Hellish Resistance", "Legacy of Phlegethos", "Languages: Common/Infernal")),
+            ("Bloodline of Glasya Tiefling", {"CHA": 2, "DEX": 1}, ("Darkvision: 60", "Hellish Resistance", "Legacy of Malbolge", "Languages: Common/Infernal")),
+            ("Bloodline of Levistus Tiefling", {"CHA": 2, "CON": 1}, ("Darkvision: 60", "Hellish Resistance", "Legacy of Stygia", "Languages: Common/Infernal")),
+            ("Bloodline of Mammon Tiefling", {"CHA": 2, "INT": 1}, ("Darkvision: 60", "Hellish Resistance", "Legacy of Minauros", "Languages: Common/Infernal")),
+            ("Bloodline of Mephistopheles Tiefling", {"CHA": 2, "INT": 1}, ("Darkvision: 60", "Hellish Resistance", "Legacy of Cania", "Languages: Common/Infernal")),
+            ("Bloodline of Zariel Tiefling", {"CHA": 2, "STR": 1}, ("Darkvision: 60", "Hellish Resistance", "Legacy of Avernus", "Languages: Common/Infernal"))
+        ]
+        super().__init__()
+
+    def subrace_roll(self):
+        return random.choice(self.tiefling_subrace_list)
+
+
+
+class Tortle(Race):
+    def __init__(self):
+        self.tortle_subrace_list = [
+            ("Tortle", {"custom_stat_1": 2, "custom_stat_2": 1}, ("Claws", "Hold Breath", "Natural Armor", "Nature's Intuition", "Shell Defense", "Languages: Common/Other")),  
+            ("Tortle", {"STR": 2, "WIS": 1}, ("Claws", "Hold Breath", "Natural Armor", "Shell Defense","Survival Instinct", "Languages: Common/Aquan"))
+        ]
+        super().__init__()
+
+    def subrace_roll(self):
+        return random.choice(self.tortle_subrace_list)
+    
+    def get_size(self):
+        if self.subrace != self.tortle_subrace_list[0]:
+            return "Size: Medium"
+        if random.choice([0,1]) == 1:
+            return "Size: Medium"
+        return "Size: Small"
+
+
+
+class Triton(Race):
+    def __init__(self):
+        self.triton_subrace_list = [
+            ("Triton", {"custom_stat_1": 2, "custom_stat_2": 1}, ("Darkvision: 60", "Amphibious", "Control Air and Water", "Emissary of the Sea", "Guardians of the Depths", "Languages: Common/Other")),  
+            ("Triton", {"STR": 1, "CON": 1, "CHA": 1}, ("Darkvision: 60", "Amphibious", "Control Air and Water", "Emissary of the Sea", "Guardians of the Depths", "Languages: Common/Primordial"))
+        ]
+        super().__init__()
+
+    def subrace_roll(self):
+        return random.choice(self.triton_subrace_list)
+    
+    def get_speed(self):
+        return "Speed: 30, Swim: 30"
+
+
+
+class Verdan(Race): # COME BACK TO THIS RACE SINCE IT HAS A FEATURE THAT ONLY COMES ONLINE AT LEVEL 5
+    def __init__(self):
+        self.verdan_subrace_list = [
+            ("Verdan", {"CHA": 2, "CON": 1}, ("Black Blood Healing", "Limited Telepathy", "Persuasive", "Telepathic Insight" ,"Languages: Common/Goblin/Other"))  
+        ]
+        super().__init__()
+
+    def subrace_roll(self):
+        return random.choice(self.verdan_subrace_list)
+
+
+
 class YuanTi(Race):
     def __init__(self):
-        self.yuanti_subrace_list =[
+        self.yuanti_subrace_list = [
             ("Yuan-Ti", {"custom_stat_1": 2, "custom_stat_2": 1}, ("Darkvision: 60", "Magic Resistance", "Poison Resilience", "Serpentine Spellcasting" ,"Languages: Common/Other")),
             ("Yuan-Ti", {"CHA": 2, "INT": 1}, ("Darkvision: 60", "Innate Spellcasting", "Magic Resistance", "Poison Immunity","Languages: Common/Abyssal/Draconic"))
         ]
         super().__init__()
-    
+
     def subrace_roll(self):
         return random.choice(self.yuanti_subrace_list)
 
