@@ -118,8 +118,8 @@ class Character:
             Dragonborn,
             Dwarf,
             Elf,
-            #Fairy,
-            #Firbolg,
+            Fairy,
+            Firbolg,
             #Genasi,
             #Githyanki,
             #Githzerai,
@@ -148,7 +148,7 @@ class Character:
             #Verdan,
             #Yuan-Ti
         ]
-        race = random.choices(races_list, weights=race_weights[:8:], k=1)[0]
+        race = random.choices(races_list, weights=race_weights[:10:], k=1)[0]
         self.race = race()
 
     def secondary_score(self):
@@ -297,4 +297,3 @@ class Character:
             f"Character armor: {self.get_char_armor()} \n"
             f"Character shield: {self.get_char_shield()}"
         )
-    

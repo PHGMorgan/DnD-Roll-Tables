@@ -105,7 +105,7 @@ class Bugbear(Race):
     def __init__(self):
         self.bugbear_subrace_list = [
             ("Bugbear", {"custom_stat_1": 2, "custom_stat_2": 1}, ("Darkvision: 60", "Fey Ancestry", "Long-Limbed", "Powerful Build", "Sneaky", "Surprise Attack", "Languages: Common/Other")),
-            ("Bugbear", {"STR": 2, "DEX": 1}, "Darkvision: 60", "Long-Limbed", "Powerful Build", "Sneaky", "Surprise Attack", "Languages: Common/Goblin")
+            ("Bugbear", {"STR": 2, "DEX": 1}, ("Darkvision: 60", "Long-Limbed", "Powerful Build", "Sneaky", "Surprise Attack", "Languages: Common/Goblin"))
         ]
         super().__init__()
 
@@ -243,6 +243,8 @@ class Dwarf(Race): # # COME BACK TO THIS RACE SINCE IT HAS A FEATURE THAT ONLY C
         else:
             return []
 
+
+
 class Elf(Race):
     def __init__(self):
         self.eladrin_season()
@@ -286,10 +288,69 @@ class Elf(Race):
         season_list = ["Autum", "Winter", "Spring", "Summer"]
         self.season = random.choice(season_list)
 
+
+
+class Fairy(Race):
+    def __init__(self):
+        super().__init__()
+
+    def subrace_roll(self):
+        return ("Fairy", {"custom_stat_1": 2, "custom_stat_2": 1},("Fairy Magic", "Flight", "Languages: Common/Other"))
+        
+    def get_size(self):
+        return "Size: Small"
+    
+    def get_speed(self):
+        return "Speed : 30, Fly: 30"
+
+
+
+class Firbolg(Race):
+    def __init__(self):
+        self.firbolg_subrace_list = [
+            ("Firbolg", {"custom_stat_1": 2, "custom_stat_2": 1}, ("Firbolg Magic", "Hidden Step", "Powerful Build", "Speech of Beast and Leaf", "Languages: Common/Other")),
+            ("Firbolg", {"WIS": 2, "STR": 1}, ("Firbolg Magic", "Hidden Step", "Powerful Build", "Speech of Beast and Leaf", "Languages: Common/Elvish/Giant"))
+        ]
+        super().__init__()
+
+    def subrace_roll(self):
+        return random.choice(self.firbolg_subrace_list)
+
+
+
+class Genasi(Race):
+    def __init__(self):
+        self.genasi_subrace_list = [
+            ("Name", {"custom_stat_1": 2, "custom_stat_2": 1}, ("Darkvision: 60", "Unending Breath", "Lightning Resistance", "Mingle with the Wind", "Languages: Common/Other")),
+            ("Name", {"CON": 2, "DEX": 1}, ("Unending Breath", "Mingle with the Wind", "Languages: Common/Primordial")),
+            ("Name", {"custom_stat_1": 2, "custom_stat_2": 1}, ("Languages: Common/Other")),
+            ("Name", {"CON": 2, "STR": 1}, ("Languages: Common/Primordial")),
+            ("Name", {"custom_stat_1": 2, "custom_stat_2": 1}, ("Languages: Common/Other")),
+            ("Name", {"stat": 2, "stat": 1}, ("Languages: Common/Primordial")),
+            ("Name", {"custom_stat_1": 2, "custom_stat_2": 1}, ("Languages: Common/Other")),
+            ("Name", {"stat": 2, "stat": 1}, ("Languages: Common/Primordial"))
+            ]
+        super().__init__()
+
+    def subrace_roll(self):
+        return random.choice(self.genasi_subrace_list)
+    
+    def get_size(self):
+        if self.subrace not in [self.genasi_subrace_list[0], self.genasi_subrace_list[2], self.genasi_subrace_list[4], self.genasi_subrace_list[6]]:
+            return "Size: Medium"
+        if random.choice([0,1]) == 1:
+            return "Size: Medium"
+        return "Size: Small"
+    
+    def get_speed(self):
+        if self.subrace != self.genasi_subrace_list[0]:
+            return "Speed: 30"
+        return "Speed: 35"
+    
+
 #[("Name", {"custom_stat_1": 2, "custom_stat_2": 1}, ("Languages: ")), ("Name", {"stat": 2, "stat": 1}, ("Languages: "))]
-#class Fairy(Race):
-#class Firbolg(Race):
-#class Genasi(Race):
+
+
 #class Githyanki(Race):
 #class Githzerai(Race):
 #class Gnome(Race): (Deep Gnome too)
@@ -315,4 +376,20 @@ class Elf(Race):
 #class Tortle(Race):
 #class Triton(Race):
 #class Verdan(Race):
-#class Yuan-Ti(Race):
+class YuanTi(Race):
+    def __init__(self):
+        self.yuanti_subrace_list =[
+            ("Yuan-Ti", {"custom_stat_1": 2, "custom_stat_2": 1}, ("Darkvision: 60", "Magic Resistance", "Poison Resilience", "Serpentine Spellcasting" ,"Languages: Common/Other")),
+            ("Yuan-Ti", {"CHA": 2, "INT": 1}, ("Darkvision: 60", "Innate Spellcasting", "Magic Resistance", "Poison Immunity","Languages: Common/Abyssal/Draconic"))
+        ]
+        super().__init__()
+    
+    def subrace_roll(self):
+        return random.choice(self.yuanti_subrace_list)
+
+    def get_size(self):
+        if self.subrace != self.yuanti_subrace_list[0]:
+            return "Size: Medium"
+        if random.choice([0,1]) == 1:
+            return "Size: Medium"
+        return "Size: Small"
