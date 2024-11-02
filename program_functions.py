@@ -110,23 +110,28 @@ def help_shield(char_id):
     print(char_id)
 
 def help_save(char_id):
-    with open("saved_characters.csv", mode = "a", newline = "") as csvfile:
-        file_writer = csv.writer(csvfile, delimiter = ",", quotechar = '"')
-        file_writer.writerow([char_id.get_char_id(),
-                            char_id.get_char_name(),
-                            char_id.get_char_gender(),
-                            char_id.get_char_race(),
-                            ','.join(f"{key}: {value}" for key, value in char_id.__char_stats_dict__.items()),
-                            char_id.get_char_class(),
-                            char_id.get_char_level(),
-                            char_id.get_char_hp(),
-                            char_id.get_char_ac(),
-                            char_id.get_char_weapon(),
-                            char_id.get_char_armor(),
-                            char_id.get_char_shield()
-                        ])
-    print(char_id)
-    print("---Character saved!---")
+    try:
+        with open("saved_characters.csv", mode = "a", newline = "") as csvfile:
+            file_writer = csv.writer(csvfile, delimiter = ",", quotechar = '"')
+            file_writer.writerow(
+                [char_id.get_char_id(),
+                char_id.get_char_name(),
+                char_id.get_char_gender(),
+                char_id.get_char_race(),
+                ', '.join(f"{key}: {value}" for key, value in char_id.__char_stats_dict__.items()),
+                char_id.get_char_class(),
+                char_id.get_char_level(),
+                char_id.get_char_hp(),
+                char_id.get_char_ac(),
+                char_id.get_char_weapon(),
+                char_id.get_char_armor(),
+                char_id.get_char_shield()
+            ])
+        print(char_id)
+        print("---Character saved!---")
+    except Exception as e:
+        print(e)
+    
 
 def help_character(char_id):
     print(char_id)
@@ -137,23 +142,28 @@ def help_character(char_id):
 def fast_roll():
     char_class = class_roll()
     char_id = class_mapping[char_class](random.randint(100000, 999999))
-    with open("saved_characters.csv", mode = "a", newline = "") as csvfile:
-        file_writer = csv.writer(csvfile, delimiter = ",", quotechar = '"')
-        file_writer.writerow([char_id.get_char_id(),
-                            char_id.get_char_name(),
-                            char_id.get_char_gender(),
-                            char_id.get_char_race(),
-                            ', '.join(f"{key}: {value}" for key, value in char_id.__char_stats_dict__.items()),
-                            char_id.get_char_class(),
-                            char_id.get_char_level(),
-                            char_id.get_char_hp(),
-                            char_id.get_char_ac(),
-                            char_id.get_char_weapon(),
-                            char_id.get_char_armor(),
-                            char_id.get_char_shield()
-                        ])
-    print(char_id)
-    print("Character saved!")
+    try:
+        with open("saved_characters.csv", mode = "a", newline = "") as csvfile:
+            file_writer = csv.writer(csvfile, delimiter = ",", quotechar = '"')
+            file_writer.writerow(
+                [char_id.get_char_id(),
+                char_id.get_char_name(),
+                char_id.get_char_gender(),
+                char_id.get_char_race(),
+                ', '.join(f"{key}: {value}" for key, value in char_id.__char_stats_dict__.items()),
+                char_id.get_char_class(),
+                char_id.get_char_level(),
+                char_id.get_char_hp(),
+                char_id.get_char_ac(),
+                char_id.get_char_weapon(),
+                char_id.get_char_armor(),
+                char_id.get_char_shield()
+            ])
+        print(char_id)
+        print("---Character saved!---")
+    except Exception as e:
+        print(e)
+    
 
 # Bull fast roll function that rolls and saves an amount of characters decided by the user without any prompts
 def bulk_fast_roll():

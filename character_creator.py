@@ -7,13 +7,16 @@ from program_functions import *
 
 
 #Check if saved characters file exists. If it doesn't, create it and write the header.
-if os.path.exists("saved_characters.csv"):
-    print("Saved characters directory csv file exists!")
-else:
-    with open("saved_characters.csv", mode="w") as csvfile:
-        file_writer = csv.writer(csvfile, delimiter = ",", quotechar = '"')
-        file_writer.writerow(["Character ID", "Name", "Gender", "Race", "Stats", "Class", "Level", "HP", "AC", "Weapon", "Armor", "Shield"])
-        print("Saved characters directory csv file created!")
+try:
+    if os.path.exists("saved_characters.csv"):
+        print("Saved characters directory csv file exists!")
+    else:
+        with open("saved_characters.csv", mode="w") as csvfile:
+            file_writer = csv.writer(csvfile, delimiter = ",", quotechar = '"')
+            file_writer.writerow(["Character ID", "Name", "Gender", "Race", "Stats", "Class", "Level", "HP", "AC", "Weapon", "Armor", "Shield"])
+            print("Saved characters directory csv file created!")
+except Exception as e:
+    print(e)
 
 
 

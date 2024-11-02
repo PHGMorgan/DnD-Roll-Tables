@@ -3,7 +3,7 @@ import random
 import csv
 from DnD_classes import *
 from race_class import *
-from variables_page import max_char_level, char_level_odds, stat_mod_dict, shield_chance
+from variables_page import max_char_level, char_level_odds, stat_mod_dict, shield_chance, race_weights
 
 
 
@@ -86,8 +86,8 @@ class Character:
                 for row in file_reader:
                     names_list.append(row[0])
             self.__name__ = random.choice(names_list)
-        except:
-            Exception
+        except Exception as e:
+            print(e)
 
 
 
@@ -117,7 +117,7 @@ class Character:
             Changeling,
             Dragonborn,
             Dwarf,
-            #Elf, (Eladrin,	Sea Elf, Shadar-Kai too)
+            Elf,
             #Fairy,
             #Firbolg,
             #Genasi,
@@ -148,7 +148,7 @@ class Character:
             #Verdan,
             #Yuan-Ti
         ]
-        race = random.choice(races_list)
+        race = random.choices(races_list, weights=race_weights[:8:], k=1)[0]
         self.race = race()
 
     def secondary_score(self):
@@ -253,15 +253,18 @@ class Character:
         self.__armor__ = "None"
         self.__weapon__ = "None"
         self.shield_availability = "None"
-        with open("equipment.csv", mode = "r", newline = "") as csvfile:
-            file_reader = csv.reader(csvfile)
-            for row in file_reader:
-                if row[0] == "Armor" and  any(item in row[1] for item in self.proficiencies):
-                    self.armor_list.append(row)
-                if row[0] == "Weapon" and any(item in row[1] for item in self.proficiencies):
-                    self.weapon_list.append(row)
-                if row[0] == "Shield" and any(item in row[1] for item in self.proficiencies):
-                    self.shield_availability = row
+        try:
+            with open("equipment.csv", mode = "r", newline = "") as csvfile:
+                file_reader = csv.reader(csvfile)
+                for row in file_reader:
+                    if row[0] == "Armor" and  any(item in row[1] for item in self.proficiencies):
+                        self.armor_list.append(row)
+                    if row[0] == "Weapon" and any(item in row[1] for item in self.proficiencies):
+                        self.weapon_list.append(row)
+                    if row[0] == "Shield" and any(item in row[1] for item in self.proficiencies):
+                        self.shield_availability = row
+        except Exception as e:
+            print(e)
     
     def calculate_ac(self):
         if self.__armor__ == "None":

@@ -216,22 +216,21 @@ class Dwarf(Race): # # COME BACK TO THIS RACE SINCE IT HAS A FEATURE THAT ONLY C
             ("Hill Dwarf", {"CON": 2, "WIS": 1}, ("Darkvision 60", "Dwarven Resilience", "Dwarven Combat Training", "Tool Proficiency", "Stonecunning", "Dwarven Toughnes", "Languages: Common/Dwarvish")),
             ("Mountain Dwarf", {"CON": 2, "STR": 1}, ("Darkvision 60", "Dwarven Resilience", "Dwarven Combat Training", "Tool Proficiency", "Stonecunning", "Dwarven Armor Training", "Languages: Common/Dwarvish")),
             ("Mark of Warding Dwarf", {"CON": 2, "INT": 1}, ("Darkvision 60", "Dwarven Resilience", "Dwarven Combat Training", "Tool Proficiency", "Stonecunning", "Warder's Intuition", "Wards and Seals", "Spells of the Mark", "Languages: Common/Dwarvish")),
-            ("Kaladesh Dwarf", {"CON": 2, "WIS": 1}, ("Darkvision: 60", "Dwarven Resilience", "Dwarven Toughness", "Artisan's Expertise", "Languages: Common/Dwarvish")),
             ("Duergar", {"custom_stat_1": 2, "custom_stat_2": 1}, ("Darkvision: 120", "Dwarven Resilience", "Psionic Fortitude", "Languages: Common/Other")),
             ("Duergar", {"CON": 2, "STR": 1}, ("Superior Darkvision: 120", "Duergar Resilience", "Dwarven Combat Training", "Tool Proficiency", "Stonecunning", "Sulight Sensitivity", "Languages: Common/Dwarvish"))
         ]
         super().__init__()
 
     def subrace_roll(self):
-        return random.choice(self.dwarf_subrace_list)
+        return random.choices(self.dwarf_subrace_list, weights=[5,5,5,2,2],k=1)[0]
 
     def get_speed(self):
-        if self.subrace == self.dwarf_subrace_list[4]:
+        if self.subrace == self.dwarf_subrace_list[3]:
             return "Speed: 30"
         return "Speed: 25"
     
     def tough_flag(self):
-        if self.subrace in [self.dwarf_subrace_list[0], self.dwarf_subrace_list[3]]:
+        if self.subrace == self.dwarf_subrace_list[0]:
             return True
         else:
             return False
@@ -239,16 +238,55 @@ class Dwarf(Race): # # COME BACK TO THIS RACE SINCE IT HAS A FEATURE THAT ONLY C
     def get_proficiencies(self):
         if self.subrace == self.dwarf_subrace_list[1]:
             return ["light armor", "medium armor"]
-        elif self.subrace == self.dwarf_subrace_list[5]:
+        elif self.subrace == self.dwarf_subrace_list[4]:
             return ["battleaxe", "handaxe", "light hammer", "warhammer"]
         else:
             return []
 
+class Elf(Race):
+    def __init__(self):
+        self.eladrin_season()
+        self.elf_subrace_list = [
+            ("Dark Elf", {"DEX": 2, "CHA": 1}, ("Superior Darkvision: 120", "Sunlight Sensitivity", "Drow Magic", "Drow Weapon Training", "Fey Ancestry", "Trance", "Keen Senses", "Languages: Common/Elven")),
+            ("High Elf", {"DEX": 2, "INT": 1}, ("Darkvision: 60", "Cantrip", "Elf Weapon Training", "Extra Language", "Fey Ancestry", "Trance", "Keen Senses", "Languages: Common/Elven/Other")),
+            ("Wood Elf", {"DEX": 2, "WIS": 1}, ("Darkvision: 60", "Elf Weapon Training", "Fleet of Foot", "Mask of the Wild", "Fey Ancestry", "Trance", "Keen Senses", "Languages: Common/Elven")),
+            ("Pallid Elf", {"DEX": 2, "WIS": 1}, ("Darkvision: 60", "Incisive Sense", "Blessing of the Moonweaver", "Fey Ancestry", "Trance", "Keen Senses", "Languages: Common/Elven")),
+            ("Mark of Shadow Elf", {"DEX": 2, "CHA": 1}, ("Darkvision: 60", "Cunning Intuition", "Shape Shadows", "Spells of the Mark", "Fey Ancestry", "Trance", "Keen Senses", "Languages: Common/Elven")),
+            (f"{self.season} Eladrin", {"custom_stat_1": 2, "custom_stat_2": 1}, ("Darkvision: 60", "Fey Ancestry", "Fey Step", "Keen Senses", "Trance", "Languages: Common/Other")),
+            (f"{self.season} Eladrin", {"DEX": 2, "CHA": 1}, ("Darkvision: 60", "Fey Ancestry", "Trance", "Keen Senses", "Fey Step", "Languages: Common/Elven")),
+            ("Sea Elf", {"custom_stat_1": 2, "custom_stat_2": 1}, ("Darkvision: 60", "Child of the Sea", "Fey Ancestry", "Friend of the Sea", "Keen Senses", "Trance", "Languages: Common/Other")),
+            ("Sea Elf", {"DEX": 2, "CON": 1}, ("Darkvision: 60", "Fey Ancestry", "Trance", "Keen Senses", "Sea Elf Training", "Child of the Sea", "Friend of the Sea", "Languages: Common/Elven/Aquan")),
+            ("Shadar-Kai", {"custom_stat_1": 2, "custom_stat_2": 1}, ("Darkvision: 60", "Blessing of the Raven Queen", "Fey Ancestry", "Keen Senses", "Necrotic Resistance", "Trance", "Languages: Common/Other")),
+            ("Shadar-Kai", {"DEX": 2, "CON": 1}, ("Darkvision: 60", "Fey Ancestry", "Trance", "Keen Senses", "Necrotic Resistance", "Blessing of the Raven Queen", "Languages: Common/Elven"))
+        ]
+        super().__init__()
+
+    def subrace_roll(self):
+        return random.choices(self.elf_subrace_list, weights=[5,5,5,5,3,1,1,1,1,1,1], k=1)[0]
+        
+    def get_proficiencies(self):
+        if self.subrace == self.elf_subrace_list[0]:
+            return ["rapier", "shorsword", "hand crossbow"]
+        elif self.subrace in [self.elf_subrace_list[1], self.elf_subrace_list[2]]:
+            return ["longsword", "shortsword", "shortbow", "longbow"]
+        elif self.subrace == self.elf_subrace_list[8]:
+            return ["spear", "trident", "light crossbow", "net"]
+        else:
+            return []
+
+    def get_speed(self):
+        if self.subrace == self.elf_subrace_list[2]:
+            return "Speed: 35"
+        elif self.subrace == self.elf_subrace_list[7]:
+            return "Speed: 30, Swim: 30"
+        else:
+            return "Speed: 30"
+        
+    def eladrin_season(self):
+        season_list = ["Autum", "Winter", "Spring", "Summer"]
+        self.season = random.choice(season_list)
 
 #[("Name", {"custom_stat_1": 2, "custom_stat_2": 1}, ("Languages: ")), ("Name", {"stat": 2, "stat": 1}, ("Languages: "))]
-
-
-#class Elf(Race): (Eladrin,	Sea Elf, Shadar-Kai too)
 #class Fairy(Race):
 #class Firbolg(Race):
 #class Genasi(Race):
