@@ -40,6 +40,7 @@ def help_loop_two():
     print("Type \"fast\" to roll and save a character without prompts.")
     print("Type \"bulk\" to roll and save many characters without prompts.")
     print("Type \"r\" to reroll your character's class!")
+    print("Type the name of the class you want to use that character class.")
     print("Press Enter to accept your character's class and roll out the character!")
 
 def help_loop_three():

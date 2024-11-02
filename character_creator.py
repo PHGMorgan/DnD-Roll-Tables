@@ -25,7 +25,7 @@ def main():
     while not program_exit:
 
         while not program_exit:
-            user_input = input(f"Press Enter to start rolling a character! Type \"help\" for a full list of commands. ").lower()
+            user_input = input(f"Press Enter to start rolling a character! Type \"help\" for a full list of commands. ").lower().strip()
             match user_input:
                 case "exit" | "quit":
                     if help_exit():
@@ -49,7 +49,7 @@ def main():
 
         # Second while loop. Prompts the user to roll a character class while still enabling the fast, bulk, and help options without advancing the program. Also allows for exit.
         while not program_exit:
-            user_input = input(f"Character's class is {char_class}. Would you like to reroll this character's class? Press Enter to continue. Type \"r\" to reroll. Type \"help\" for a full list of commands. ").lower()
+            user_input = input(f"Character's class is {char_class}. Would you like to reroll this character's class? Press Enter to continue. Type \"r\" to reroll. Type \"help\" for a full list of commands. ").lower().strip()
             match user_input:
                 case "exit" | "quit":
                     if help_exit():
@@ -87,7 +87,7 @@ def main():
                     
         #  Third while loop. Prompts the user to enter commands to finalize character creation, and handles saves. Still allows for the fast, bulk, and help options without advancing the program. Also allows for exit.
         while not program_exit:
-            user_input = input("Please type what you would like to do next. Type \"help\" for a list of available commands! ").lower()
+            user_input = input("Please type what you would like to do next. Type \"help\" for a list of available commands! ").lower().strip()
             match user_input:
                 case "exit" | "quit":
                     if help_exit():

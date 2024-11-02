@@ -16,6 +16,9 @@ class Artificer(Character):
     
     def hp_stat_index(self):
         return 8
+    
+    def get_class_proficiencies(self):
+        return ["light armor", "medium armor", "shield", "simple weapons"]
 
 
 class Barbarian(Character):
@@ -35,6 +38,9 @@ class Barbarian(Character):
         else:
             self.__ac__ = 12 + stat_mod_dict[self.__char_stats_dict__["DEX"]] + stat_mod_dict[self.__char_stats_dict__["CON"]]
 
+    def get_class_proficiencies(self):
+        return ["shield", "simple weapon", "martial weapon"]
+
 
 class Bard(Character):
     def __init__(self, char_id):
@@ -46,6 +52,9 @@ class Bard(Character):
     
     def hp_stat_index(self):
         return 8
+    
+    def get_class_proficiencies(self):
+        return ["light armor", "simple weapon", "hand crossbow", "longsword", "rapier", "shortsword"]
 
 
 class Cleric(Character):
@@ -58,6 +67,9 @@ class Cleric(Character):
     
     def hp_stat_index(self):
         return 8
+    
+    def get_class_proficiencies(self):
+        return ["light armor", "medium armor", "shield", "simple weapon"]
 
 
 # Commoner is the only different child class and sets the character level to 0, uses its own stat roll function (which limits its range), and roll hp function ().
@@ -87,6 +99,9 @@ class Commoner(Character):
     def calculate_ac(self):
         self.__ac__ = 10 + stat_mod_dict[self.__char_stats_dict__["DEX"]]
 
+    def get_class_proficiencies(self):
+        return []
+
 
 class Druid(Character):
     def __init__(self, char_id):
@@ -98,6 +113,9 @@ class Druid(Character):
     
     def hp_stat_index(self):
         return 8
+    
+    def get_class_proficiencies(self):
+        return ["light armor", "medium armor", "shield", "club", "dagger", "dart", "javelin", "mace", "quarterstaff", "scimitar", "sickle", "sling", "spear"]
 
 
 class Fighter(Character):
@@ -122,6 +140,9 @@ class Fighter(Character):
                 break
             elif self.__char_stats_dict__["DEX"] <= self.__char_stats_dict__["STR"]:
                 break
+
+    def get_class_proficiencies(self):
+        return ["light armor", "medium armor", "heavy armor", "shield", "simple weapon", "martial weapon"]
 
 
 class Monk(Character):
@@ -154,6 +175,9 @@ class Monk(Character):
     def calculate_ac(self):
         self.__ac__ = 10 + stat_mod_dict[self.__char_stats_dict__["DEX"]] + stat_mod_dict[self.__char_stats_dict__["WIS"]]
 
+    def get_class_proficiencies(self):
+        return ["simple weapon", "shortsword"]
+
 
 class Paladin(Character):
     def __init__(self, char_id):
@@ -176,6 +200,8 @@ class Paladin(Character):
     def hp_stat_index(self):
         return 10
 
+    def get_class_proficiencies(self):
+        return ["light armor", "medium armor", "heavy armor", "shield", "simple weapon", "martial weapon"]
 
 class Ranger(Character):
     def __init__(self, char_id):
@@ -188,6 +214,8 @@ class Ranger(Character):
     def hp_stat_index(self):
         return 10
 
+    def get_class_proficiencies(self):
+        return ["light armor", "medium armor", "shield", "simple weapon", "martial weapon"]
 
 class Rogue(Character):
     def __init__(self, char_id):
@@ -206,6 +234,8 @@ class Rogue(Character):
             if "Finesse" in ast.literal_eval(self.__weapon__[4]):
                 break
 
+    def get_class_proficiencies(self):
+        return ["light armor", "simple weapon", "hand crossbow", "longsword", "rapier", "shortsword"]
 
 class Sorcerer(Character):
     def __init__(self, char_id):
@@ -217,6 +247,9 @@ class Sorcerer(Character):
     
     def hp_stat_index(self):
         return 6
+    
+    def get_class_proficiencies(self):
+        return ["dagger", "dart", "sling", "quarterstaff", "light crossbow"]
 
 
 class Warlock(Character):
@@ -229,6 +262,9 @@ class Warlock(Character):
     
     def hp_stat_index(self):
         return 8
+    
+    def get_class_proficiencies(self):
+        return ["light armor", "simple weapon"]
 
 
 class Wizard(Character):
@@ -241,3 +277,6 @@ class Wizard(Character):
     
     def hp_stat_index(self):
         return 6
+    
+    def get_class_proficiencies(self):
+        return ["dagger", "dart", "sling", "quarterstaff", "light crossbow"]

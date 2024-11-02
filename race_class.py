@@ -31,6 +31,12 @@ class Race:
         if race_stats.get("custom_stat_2", False) == 1:
             race_stats = {list(race_stats.keys())[0]: list(race_stats.values())[0], secondary_stat: 1}
         return race_stats
+    
+    def get_proficiencies(self):
+        return []
+    
+    def tough_flag(self):
+        return False
 
 
 
@@ -204,9 +210,44 @@ class Dragonborn(Race): # COME BACK TO THIS RACE SINCE IT HAS A FEATURE THAT ONL
 
 
 
-#[("Name", {"custom_stat_1": 2, "custom_stat_2": 1}, ("Languages: ")), ("Name", {"stat": number, "stat": number}, ("Languages: "))]
+class Dwarf(Race): # # COME BACK TO THIS RACE SINCE IT HAS A FEATURE THAT ONLY COMES ONLINE AT LEVEL 3
+    def __init__(self):
+        self.dwarf_subrace_list = [
+            ("Hill Dwarf", {"CON": 2, "WIS": 1}, ("Darkvision 60", "Dwarven Resilience", "Dwarven Combat Training", "Tool Proficiency", "Stonecunning", "Dwarven Toughnes", "Languages: Common/Dwarvish")),
+            ("Mountain Dwarf", {"CON": 2, "STR": 1}, ("Darkvision 60", "Dwarven Resilience", "Dwarven Combat Training", "Tool Proficiency", "Stonecunning", "Dwarven Armor Training", "Languages: Common/Dwarvish")),
+            ("Mark of Warding Dwarf", {"CON": 2, "INT": 1}, ("Darkvision 60", "Dwarven Resilience", "Dwarven Combat Training", "Tool Proficiency", "Stonecunning", "Warder's Intuition", "Wards and Seals", "Spells of the Mark", "Languages: Common/Dwarvish")),
+            ("Kaladesh Dwarf", {"CON": 2, "WIS": 1}, ("Darkvision: 60", "Dwarven Resilience", "Dwarven Toughness", "Artisan's Expertise", "Languages: Common/Dwarvish")),
+            ("Duergar", {"custom_stat_1": 2, "custom_stat_2": 1}, ("Darkvision: 120", "Dwarven Resilience", "Psionic Fortitude", "Languages: Common/Other")),
+            ("Duergar", {"CON": 2, "STR": 1}, ("Superior Darkvision: 120", "Duergar Resilience", "Dwarven Combat Training", "Tool Proficiency", "Stonecunning", "Sulight Sensitivity", "Languages: Common/Dwarvish"))
+        ]
+        super().__init__()
 
-#class Dwarf(Race): (Duergar too)
+    def subrace_roll(self):
+        return random.choice(self.dwarf_subrace_list)
+
+    def get_speed(self):
+        if self.subrace == self.dwarf_subrace_list[4]:
+            return "Speed: 30"
+        return "Speed: 25"
+    
+    def tough_flag(self):
+        if self.subrace in [self.dwarf_subrace_list[0], self.dwarf_subrace_list[3]]:
+            return True
+        else:
+            return False
+        
+    def get_proficiencies(self):
+        if self.subrace == self.dwarf_subrace_list[1]:
+            return ["light armor", "medium armor"]
+        elif self.subrace == self.dwarf_subrace_list[5]:
+            return ["battleaxe", "handaxe", "light hammer", "warhammer"]
+        else:
+            return []
+
+
+#[("Name", {"custom_stat_1": 2, "custom_stat_2": 1}, ("Languages: ")), ("Name", {"stat": 2, "stat": 1}, ("Languages: "))]
+
+
 #class Elf(Race): (Eladrin,	Sea Elf, Shadar-Kai too)
 #class Fairy(Race):
 #class Firbolg(Race):

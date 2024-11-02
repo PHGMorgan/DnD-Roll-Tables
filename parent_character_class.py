@@ -22,6 +22,7 @@ class Character:
         self.stats_roll()
         self.stats_compile()
         self.random_char_level()
+        self.proficiency_compiler()
         self.roll_hp()
         self.make_equipment_list()
         self.roll_armor()
@@ -115,7 +116,7 @@ class Character:
             Centaur,
             Changeling,
             Dragonborn,
-            #Dwarf, (Duergar too)
+            Dwarf,
             #Elf, (Eladrin,	Sea Elf, Shadar-Kai too)
             #Fairy,
             #Firbolg,
@@ -198,6 +199,26 @@ class Character:
             odds_value = int(round(char_level_odds * odds_value))
         self.__char_level__ = random.choices(levels_list, weights=weights_list, k=1)[0]
 
+    def proficiency_compiler(self):
+        proficiency_list = []
+        proficiency_list.extend(self.get_class_proficiencies()) # Get list of base class proficiencies and add to list.
+        proficiency_list.extend(self.race.get_proficiencies()) # Get list of racial proficiencies and add to list.
+        #proficiency_list.extend(self. subclass_and_level_proficiencies()) # Get proficiencies from subclass and level and add to list.
+        self.proficiencies = proficiency_list
+
+
+
+    # The following section is for functions used to calculate a character's HP.
+    def tough_flag(self):
+        return False
+
+    def check_for_tough(self):
+        if self.tough_flag():
+            return True
+        if self.race.tough_flag():
+            return True
+        return False
+
     def roll_hp(self):
         dice_faces_list = [] # Create an empty list for the hit dice
         hp = 0 # Create hp variable and set it equal to 0
@@ -208,6 +229,8 @@ class Character:
         for i in range(self.__char_level__ - 1): # Roll a number of times equal to 1 - character level to represent rolling for health for each level after the 1st.
             hp += random.choice(dice_faces_list) # Increase health by a random number from the die_face_list to represent rolling the die.
         hp += (stat_mod_dict[self.__char_stats_dict__["CON"]] * self.__char_level__) # Add an amount of hp = CON modifier * level.
+        if self.check_for_tough(): # Check to see if character has a feature to grant extra hp that's signalled with the tough flag.
+            hp =+ self.__char_level__
         self.__hp__ = hp # Set self.__hp__ to our hp variable.
 
 
@@ -226,7 +249,6 @@ class Character:
             self.__shield__ = self.shield_availability
 
     def make_equipment_list(self):
-        print(f"Using character class: {self.__char_class__}")
         self.__shield__ = "None"
         self.__armor__ = "None"
         self.__weapon__ = "None"
@@ -234,11 +256,11 @@ class Character:
         with open("equipment.csv", mode = "r", newline = "") as csvfile:
             file_reader = csv.reader(csvfile)
             for row in file_reader:
-                if row[0] == "Armor" and self.__char_class__ in row[1]:
+                if row[0] == "Armor" and  any(item in row[1] for item in self.proficiencies):
                     self.armor_list.append(row)
-                if row[0] == "Weapon" and self.__char_class__ in row[1]:
+                if row[0] == "Weapon" and any(item in row[1] for item in self.proficiencies):
                     self.weapon_list.append(row)
-                if row[0] == "Shield" and self.__char_class__ in row[1]:
+                if row[0] == "Shield" and any(item in row[1] for item in self.proficiencies):
                     self.shield_availability = row
     
     def calculate_ac(self):
