@@ -13,7 +13,7 @@ try:
     else:
         with open("saved_characters.csv", mode="w") as csvfile:
             file_writer = csv.writer(csvfile, delimiter = ",", quotechar = '"')
-            file_writer.writerow(["Character ID", "Name", "Gender", "Race", "Stats", "Class", "Level", "HP", "AC", "Weapon", "Armor", "Shield"])
+            file_writer.writerow(["Character ID", "Name", "Gender", "Race", "Subrace", "Class", "Speed", "Size", "Stats", "Level", "HP", "AC", "Weapon", "Armor", "Shield", "Proficiencies", "Racial Features"])
             print("Saved characters directory csv file created!")
 except Exception as e:
     print(e)
@@ -121,12 +121,12 @@ def main():
                     "shifter" | "tabaxi" | "tiefling" | "tortle" | "triton" | "verdan"
                 ):
                     char_id.race = user_input.title()
-                # case "halforc" | "half-orc" | "half orc":
-                #     char_id.race = HalfOrc
+                case "halforc" | "half-orc" | "half orc":
+                    char_id.race = HalfOrc
                 case "yuanti" | "yuan-ti" | "yuan ti":
                     char_id.race = YuanTi
-                # case "halfelf" | "half-elf" | "half elf":
-                #     char_id.race = HalfElf
+                case "halfelf" | "half-elf" | "half elf":
+                    char_id.race = HalfElf
                 case "stat" | "stats":
                     help_stat(char_id)
                 case "level":

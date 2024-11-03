@@ -113,15 +113,20 @@ def help_save(char_id):
                 [char_id.get_char_id(),
                 char_id.get_char_name(),
                 char_id.get_char_gender(),
-                char_id.get_char_race(),
-                ', '.join(f"{key}: {value}" for key, value in char_id.__char_stats_dict__.items()),
+                char_id.race.get_race_name(),
+                char_id.race.get_subrace_name(),
                 char_id.get_char_class(),
+                char_id.race.get_speed(),
+                char_id.race.get_size(),
+                ', '.join(f"{key}: {value}" for key, value in char_id.__char_stats_dict__.items()),
                 char_id.get_char_level(),
                 char_id.get_char_hp(),
                 char_id.get_char_ac(),
                 char_id.get_char_weapon(),
                 char_id.get_char_armor(),
-                char_id.get_char_shield()
+                char_id.get_char_shield(),
+                ', '.join(f'{item}' for item in set(char_id.proficiencies())),
+                ', '.join(f'{item}' for item in char_id.race.get_features())
             ])
         print(char_id)
         print("---Character saved!---")
@@ -135,7 +140,8 @@ def help_details(char_id):
     print(
         f"Character name: {char_id.get_char_name()} \n"
         f"Character gender: {char_id.get_char_gender()} \n"
-        f"Character race: {char_id.race.get_name()} \n"
+        f"Character race: {char_id.race.get_race_name()} \n"
+        f"Character subrace: {char_id.race.get_subrace_name()} \n"
         f"Character class: {char_id.get_char_class()} \n"
         f"Character speed: {char_id.race.get_speed()} \n"
         f"Character size: {char_id.race.get_size()} \n"
@@ -163,15 +169,20 @@ def fast_roll():
                 [char_id.get_char_id(),
                 char_id.get_char_name(),
                 char_id.get_char_gender(),
-                char_id.get_char_race(),
-                ', '.join(f"{key}: {value}" for key, value in char_id.__char_stats_dict__.items()),
+                char_id.race.get_race_name(),
+                char_id.race.get_subrace_name(),
                 char_id.get_char_class(),
+                char_id.race.get_speed(),
+                char_id.race.get_size(),
+                ', '.join(f"{key}: {value}" for key, value in char_id.__char_stats_dict__.items()),
                 char_id.get_char_level(),
                 char_id.get_char_hp(),
                 char_id.get_char_ac(),
                 char_id.get_char_weapon(),
                 char_id.get_char_armor(),
-                char_id.get_char_shield()
+                char_id.get_char_shield(),
+                ', '.join(f'{item}' for item in set(char_id.proficiencies())),
+                ', '.join(f'{item}' for item in char_id.race.get_features())
             ])
         print(char_id)
         print("---Character saved!---")

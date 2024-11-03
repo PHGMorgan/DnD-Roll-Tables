@@ -112,21 +112,11 @@ class Character:
         races_list = [
             Aarakocra, Aasimar, Bugbear, Centaur, Changeling, Dragonborn, Dwarf, Elf,
             Fairy, Firbolg, Genasi, Githyanki, Githzerai, Gnome, Goblin, Goliath,
-            Grung,
-            #Half-Elf,
-            #Halfling,
-            #Half-Orc,
-            #Harengon,
-            #Hobgoblin,
-            #Human,
-            #Kenku,
-            #Kobold,
-            #Lizardfolk,
-            #Minotaur,
-            Orc, Owlin, Satyr, Shifter, Tabaxi,
+            Grung, HalfElf, Halfling, HalfOrc, Harengon, Hobgoblin, Human, Kenku,
+            Kobold, Lizardfolk, Minotaur, Orc, Owlin, Satyr, Shifter, Tabaxi,
             Tiefling, Tortle, Triton, Verdan, YuanTi
         ]
-        race = random.choices(races_list, weights=race_weights[:27:], k=1)[0]
+        race = random.choices(races_list, weights=race_weights, k=1)[0]
         self.race = race()
 
     def secondary_score(self):
@@ -156,7 +146,6 @@ class Character:
             "CHA": self.rolls_for_stats[5]
         })
         race_bonus = self.race.get_race_stats(self.key_stat_index()[1], self.secondary_score()[1])
-        print(f"{race_bonus} applied to stats")
         for bonus in race_bonus:
             self.__char_stats_dict__[bonus] += race_bonus[bonus]
 
@@ -188,15 +177,8 @@ class Character:
 
 
     # The following section is for functions used to calculate a character's HP.
-    def tough_flag(self):
-        return False
-
-    def check_for_tough(self):
-        if self.tough_flag():
-            return True
-        if self.race.tough_flag():
-            return True
-        return False
+    def subclass_tough_flag(self):
+        return (False, 0)
 
     def roll_hp(self):
         dice_faces_list = [] # Create an empty list for the hit dice
@@ -208,9 +190,12 @@ class Character:
         for i in range(self.__char_level__ - 1): # Roll a number of times equal to 1 - character level to represent rolling for health for each level after the 1st.
             hp += random.choice(dice_faces_list) # Increase health by a random number from the die_face_list to represent rolling the die.
         hp += (stat_mod_dict[self.__char_stats_dict__["CON"]] * self.__char_level__) # Add an amount of hp = CON modifier * level.
-        if self.check_for_tough(): # Check to see if character has a feature to grant extra hp that's signalled with the tough flag.
-            hp =+ self.__char_level__
-        self.__hp__ = hp # Set self.__hp__ to our hp variable.
+        if self.subclass_tough_flag()[0] or self.race.tough_flag()[0]: # Check to see if character has a feature to grant extra hp that's signalled with the tough flag.
+            hp =+ (self.__char_level__ * self.subclass_tough_flag()[1]) + (self.__char_level__ * self.race.tough_flag()[1])
+        if hp <= 0:
+            self.__hp__ = 1
+        else:
+            self.__hp__ = hp # Set self.__hp__ to our hp variable.
 
 
 
@@ -266,7 +251,7 @@ class Character:
         return (
             f"Character name: {self.get_char_name()} \n"
             f"Character gender: {self.get_char_gender()} \n"
-            f"Character race: {self.race.get_name()} \n"
+            f"Character subrace: {self.race.get_subrace_name()} \n"
             f"Character class: {self.get_char_class()} \n"
             f"Character stats: {', '.join(f'{key}: {value}' for key, value in self.__char_stats_dict__.items())}"
         )
