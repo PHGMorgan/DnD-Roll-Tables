@@ -73,7 +73,10 @@ def main():
                 case "":
                     char_id = class_mapping[char_class](random.randint(100000, 999999))
                     break
-                case "artificer" | "barbarian" | "bard" | "cleric" | "commoner" | "druid" | "fighter" | "monk" | "paladin" | "ranger" | "rogue" | "sorcerer" | "warlock" | "wizard":
+                case (
+                    "artificer" | "barbarian" | "bard" | "cleric" | "commoner" | "druid" | "fighter" | 
+                    "monk" | "paladin" | "ranger" | "rogue" | "sorcerer" | "warlock" | "wizard"
+                ):
                     char_id = class_mapping[user_input.title()](random.randint(100000, 999999))
                     break
                 case _:
@@ -110,6 +113,20 @@ def main():
                     help_gender(char_id)
                 case "race":
                     help_race(char_id)
+                case (
+                    "aarakocra" | "aasimar" | "bugbear" | "centaur" | "changeling" | "dragonborn" | "dwarf" | 
+                    "elf" | "fairy" | "firbolg" | "genasi" | "githyanki" | "githzerai" | "gnome" | 
+                    "goblin" | "goliath" | "grung" | "halfling" | "harengon" | "hobgoblin" | "human" | 
+                    "kenku" | "kobold" | "lizardfolk" | "minotaur" | "orc" | "owlin" | "satyr" | 
+                    "shifter" | "tabaxi" | "tiefling" | "tortle" | "triton" | "verdan"
+                ):
+                    char_id.race = user_input.title()
+                # case "halforc" | "half-orc" | "half orc":
+                #     char_id.race = HalfOrc
+                case "yuanti" | "yuan-ti" | "yuan ti":
+                    char_id.race = YuanTi
+                # case "halfelf" | "half-elf" | "half elf":
+                #     char_id.race = HalfElf
                 case "stat" | "stats":
                     help_stat(char_id)
                 case "level":
@@ -120,8 +137,10 @@ def main():
                     help_armor(char_id)
                 case "shield":
                     help_shield(char_id)
-                case "character":
+                case "character" | "info":
                     help_character(char_id)
+                case "details" | "full":
+                    help_details(char_id)
                 case "save":
                     help_save(char_id)
                     break

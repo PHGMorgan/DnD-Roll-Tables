@@ -47,16 +47,18 @@ def help_loop_three():
     print("Type \"exit\" or \"quit\" to end the program.")
     print("Type \"fast\" to roll and save a character without prompts.")
     print("Type \"bulk\" to roll and save many characters without prompts.")
-    print("If you've rolled a character, type \"name\" to reroll character's name.")
-    print("If you've rolled a character, type \"gender\" to switch character's gender.")
-    print("If you've rolled a character, type \"race\" to reroll character's race.")
-    print("If you've rolled a character, type \"stat\" or \"stats\" to reroll character's stats.")
-    print("If you've rolled a character, type \"level\" to reroll character's level.")
-    print("If you've rolled a character, type \"weapon\" to reroll character's weapon.")
-    print("If you've rolled a character, type \"armor\" to reroll character's armor.")
-    print("If you've rolled a character, type \"shield\" to reroll if a character has a shield.")
-    print("If you've rolled a character, type \"save\" to save the character")
-    print("If you've rolled a character, type \"character\" to see all the information on the character.")
+    print("Type \"name\" to reroll character's name.")
+    print("Type \"gender\" to switch character's gender.")
+    print("Type \"race\" to reroll character's race.")
+    print("Type the name of a race to use that specific race.")
+    print("Type \"stat\" or \"stats\" to reroll character's stats.")
+    print("Type \"level\" to reroll character's level.")
+    print("Type \"weapon\" to reroll character's weapon.")
+    print("Type \"armor\" to reroll character's armor.")
+    print("Type \"shield\" to reroll if a character has a shield.")
+    print("Type \"character\" or \"info\" to see all the information on the character.")
+    print("Type \"details\" or \"full\" to see all character information.")
+    print("Type \"save\" to save the character")    
 
 def help_exit():
     print("---Exiting Program---")
@@ -65,49 +67,43 @@ def help_exit():
 def help_name(char_id):
     char_id.name_roll()
     print(f"This character's name is now {char_id.get_char_name()}.")
-    print(char_id)
 
 def help_gender(char_id):
     char_id.change_gender()
     print(f"This character's gender is now {char_id.get_char_gender()}.")
-    print(char_id)
 
 def help_race(char_id):
     char_id.race_roll()
+    char_id.proficiency_compiler()
+    char_id.make_equipment_list()
     char_id.stats_compile()
     char_id.roll_hp()
     print(f"This character's race is now {char_id.race.get_name()}.")
-    print(char_id)
 
 def help_stat(char_id):
     char_id.stats_roll()
     char_id.stats_compile()
     char_id.roll_hp()
     print(f"This character's stats are now {char_id.get_char_stats()}.")
-    print(char_id)
 
 def help_level(char_id):
     char_id.random_char_level()
     char_id.roll_hp()
     print(f"This character's level is now {char_id.get_char_level()}.")
-    print(char_id)
 
 def help_weapon(char_id):
     char_id.roll_weapon()
     print(f"This character is now wielding a {char_id.get_char_weapon()}.")
-    print(char_id)
 
 def help_armor(char_id):
     char_id.roll_armor()
     char_id.calculate_ac()
     print(f"This character is now wearing {char_id.get_char_armor()}.")
-    print(char_id)
 
 def help_shield(char_id):
     char_id.roll_shield()
     char_id.calculate_ac()
     print(f"This character character's shield is now {char_id.get_char_shield()}.")
-    print(char_id)
 
 def help_save(char_id):
     try:
@@ -131,10 +127,28 @@ def help_save(char_id):
         print("---Character saved!---")
     except Exception as e:
         print(e)
-    
 
 def help_character(char_id):
     print(char_id)
+
+def help_details(char_id):
+    print(
+        f"Character name: {char_id.get_char_name()} \n"
+        f"Character gender: {char_id.get_char_gender()} \n"
+        f"Character race: {char_id.race.get_name()} \n"
+        f"Character class: {char_id.get_char_class()} \n"
+        f"Character speed: {char_id.race.get_speed()} \n"
+        f"Character size: {char_id.race.get_size()} \n"
+        f"Character stats: {', '.join(f'{key}: {value}' for key, value in char_id.__char_stats_dict__.items())} \n"
+        f"Character level: {char_id.__char_level__} \n"
+        f"Character HP: {char_id.__hp__} \n"
+        f"Character AC: {char_id.__ac__} \n"
+        f"Character weapon: {char_id.get_char_weapon()} \n"
+        f"Character armor: {char_id.get_char_armor()} \n"
+        f"Character shield: {char_id.get_char_shield()} \n"
+        f"Character proficiencies: {', '.join(f'{item}' for item in set(char_id.proficiencies))} \n"
+        f"Character racial features: {', '.join(f'{item}' for item in char_id.race.get_features())}"
+    )
 
 
 

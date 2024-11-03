@@ -101,6 +101,9 @@ class Commoner(Character):
 
     def get_class_proficiencies(self):
         return []
+    
+    def secondary_score(self):
+        return random.choice([(0, "STR"), (1, "DEX"), (3, "INT"), (4, "WIS"), (5, "CHA")])
 
 
 class Druid(Character):

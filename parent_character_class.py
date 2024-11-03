@@ -110,23 +110,9 @@ class Character:
     # This section is for all the functions used in rolling a character's race
     def race_roll(self):
         races_list = [
-            Aarakocra,
-            Aasimar,
-            Bugbear,
-            Centaur,
-            Changeling,
-            Dragonborn,
-            Dwarf,
-            Elf,
-            Fairy,
-            Firbolg,
-            #Genasi,
-            #Githyanki,
-            #Githzerai,
-            #Gnome, (Deep Gnome too)
-            #Goblin,
-            #Goliath,
-            #Grung,
+            Aarakocra, Aasimar, Bugbear, Centaur, Changeling, Dragonborn, Dwarf, Elf,
+            Fairy, Firbolg, Genasi, Githyanki, Githzerai, Gnome, Goblin, Goliath,
+            Grung,
             #Half-Elf,
             #Halfling,
             #Half-Orc,
@@ -137,18 +123,10 @@ class Character:
             #Kobold,
             #Lizardfolk,
             #Minotaur,
-            #Orc,
-            #Owlin,
-            #Satyr,
-            #Shifter,
-            #Tabaxi,
-            #Tiefling,
-            #Tortle,
-            #Triton,
-            #Verdan,
-            #Yuan-Ti
+            Orc, Owlin, Satyr, Shifter, Tabaxi,
+            Tiefling, Tortle, Triton, Verdan, YuanTi
         ]
-        race = random.choices(races_list, weights=race_weights[:10:], k=1)[0]
+        race = random.choices(races_list, weights=race_weights[:27:], k=1)[0]
         self.race = race()
 
     def secondary_score(self):
@@ -178,6 +156,7 @@ class Character:
             "CHA": self.rolls_for_stats[5]
         })
         race_bonus = self.race.get_race_stats(self.key_stat_index()[1], self.secondary_score()[1])
+        print(f"{race_bonus} applied to stats")
         for bonus in race_bonus:
             self.__char_stats_dict__[bonus] += race_bonus[bonus]
 
@@ -201,8 +180,8 @@ class Character:
 
     def proficiency_compiler(self):
         proficiency_list = []
-        proficiency_list.extend(self.get_class_proficiencies()) # Get list of base class proficiencies and add to list.
         proficiency_list.extend(self.race.get_proficiencies()) # Get list of racial proficiencies and add to list.
+        proficiency_list.extend(self.get_class_proficiencies()) # Get list of base class proficiencies and add to list.
         #proficiency_list.extend(self. subclass_and_level_proficiencies()) # Get proficiencies from subclass and level and add to list.
         self.proficiencies = proficiency_list
 
@@ -289,11 +268,5 @@ class Character:
             f"Character gender: {self.get_char_gender()} \n"
             f"Character race: {self.race.get_name()} \n"
             f"Character class: {self.get_char_class()} \n"
-            f"Character stats: {', '.join(f'{key}: {value}' for key, value in self.__char_stats_dict__.items())} \n"
-            f"Character level: {self.__char_level__} \n"
-            f"Character HP: {self.__hp__} \n"
-            f"Character AC: {self.__ac__} \n"
-            f"Character weapon: {self.get_char_weapon()} \n"
-            f"Character armor: {self.get_char_armor()} \n"
-            f"Character shield: {self.get_char_shield()}"
+            f"Character stats: {', '.join(f'{key}: {value}' for key, value in self.__char_stats_dict__.items())}"
         )
