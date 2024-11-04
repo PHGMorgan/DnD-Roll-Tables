@@ -1,7 +1,9 @@
 import csv
 import random
 from DnD_classes import *
+from parent_character_class import *
 from variables_page import class_odds_list
+
 
 
 # These two functions are for loop 2 of the main function and make it so a class object is only created after character class has been decided.
@@ -40,6 +42,7 @@ def help_loop_two():
     print("Type \"fast\" to roll and save a character without prompts.")
     print("Type \"bulk\" to roll and save many characters without prompts.")
     print("Type \"r\" to reroll your character's class!")
+    print("Type \"class info\" for a list of all available classes!")
     print("Type the name of the class you want to use that character class.")
     print("Press Enter to accept your character's class and roll out the character!")
 
@@ -51,6 +54,7 @@ def help_loop_three():
     print("Type \"gender\" to switch character's gender.")
     print("Type \"race\" to reroll character's race.")
     print("Type the name of a race to use that specific race.")
+    print("Type \"race info\" for a list of all available races!")
     print("Type \"stat\" or \"stats\" to reroll character's stats.")
     print("Type \"level\" to reroll character's level.")
     print("Type \"weapon\" to reroll character's weapon.")
@@ -78,7 +82,15 @@ def help_race(char_id):
     char_id.make_equipment_list()
     char_id.stats_compile()
     char_id.roll_hp()
-    print(f"This character's race is now {char_id.race.get_name()}.")
+    print(f"This character's race is now {char_id.race.get_subrace_name()}.")
+
+def help_race_select(char_id, input_string):
+    char_id.race = globals()[input_string.title()]()
+    char_id.proficiency_compiler()
+    char_id.make_equipment_list()
+    char_id.stats_compile()
+    char_id.roll_hp()
+    print(f"This character's race is now: {char_id.race.get_subrace_name()}.")
 
 def help_stat(char_id):
     char_id.stats_roll()
@@ -125,7 +137,7 @@ def help_save(char_id):
                 char_id.get_char_weapon(),
                 char_id.get_char_armor(),
                 char_id.get_char_shield(),
-                ', '.join(f'{item}' for item in set(char_id.proficiencies())),
+                ', '.join(f'{item}' for item in set(char_id.proficiencies)),
                 ', '.join(f'{item}' for item in char_id.race.get_features())
             ])
         print(char_id)
@@ -181,7 +193,7 @@ def fast_roll():
                 char_id.get_char_weapon(),
                 char_id.get_char_armor(),
                 char_id.get_char_shield(),
-                ', '.join(f'{item}' for item in set(char_id.proficiencies())),
+                ', '.join(f'{item}' for item in set(char_id.proficiencies)),
                 ', '.join(f'{item}' for item in char_id.race.get_features())
             ])
         print(char_id)

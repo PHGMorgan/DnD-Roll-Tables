@@ -6,7 +6,6 @@ class Race:
     def __init__(self):
        self.race_bonus = {}
        self.subrace = self.subrace_roll()
-       self.name = self.get_name()
        self.size = self.get_size()
        self.speed = self.get_speed()
        self.get_proficiencies()
@@ -92,8 +91,8 @@ class Race:
 class Aarakocra(Race):
     def __init__(self):
         self.aarakocra_subrace_list = [
-            ("Aarakocra", "Aarakocra", ({"custom_stat_1": 2, "custom_stat_2": 1}, {"custom_stat_1": 1, "custom_stat_2": 1, "custom_stat_3": 1}), ("Flight", "Talons", "Wind Caller", "Languages- Common/Other")),
-            ("Aarakocra", "Aarakocra", [{"DEX": 2, "WIS": 1}], ("Flight", "Talons", "Languages- Common/Aarakocra/Auran"))
+            ("Aarakocra", "Aarakocra", ({"custom_stat_1": 2, "custom_stat_2": 1}, {"custom_stat_1": 1, "custom_stat_2": 1, "custom_stat_3": 1}), ((1, "Flight"), (1, "Talons"), (1, "Wind Caller"), (1, "Languages- Common/Other"))),
+            ("Aarakocra", "Aarakocra", [{"DEX": 2, "WIS": 1}], ((1, "Flight"), (1, "Talons"), (1, "Languages- Common/Aarakocra/Auran")))
         ]
         super().__init__()
 
@@ -111,10 +110,10 @@ class Aarakocra(Race):
 class Aasimar(Race):
     def __init__(self):
         self.aasimar_subrace_list = [
-            ("Aasimar", "Aasimar", ({"custom_stat_1": 2, "custom_stat_2": 1}, {"custom_stat_1": 1, "custom_stat_2": 1, "custom_stat_3": 1}), (self.celestial_feature(), "Darkvision- 60", "Celestial Resistance", "Healing Hands", "Light Bearer", "Celestial Revelation", self.celestial_revelation(), "Languages- Common/Other")),
-            ("Aasimar", "Protector Aasimar", [{"CHA": 2, "WIS": 1}], ("Darkvision- 60", "Celestial Resistance", "Healing Hands", "Light Bearer", "Radiant Soul", "Languages- Common/Celestial")),
-            ("Aasimar", "Scourge Aasimar", [{"CHA": 2, "CON": 1}], ("Darkvision- 60", "Celestial Resistance", "Healing Hands", "Light Bearer", "Radiant Consumption", "Languages- Common/Celestial")),
-            ("Aasimar", "Fallen Aasimar", [{"CHA": 2, "STR": 1}], ("Darkvision- 60", "Celestial Resistance", "Healing Hands", "Light Bearer", "Necrotic Shroud", "Languages- Common/Celestial"))
+            ("Aasimar", "Aasimar", ({"custom_stat_1": 2, "custom_stat_2": 1}, {"custom_stat_1": 1, "custom_stat_2": 1, "custom_stat_3": 1}), ((1, self.celestial_feature()), (1, "Darkvision- 60"), (1, "Celestial Resistance"), (1, "Healing Hands"), (1, "Light Bearer"), (1, "Celestial Revelation"), (1, self.celestial_revelation()), (1, "Languages- Common/Other"))),
+            ("Aasimar", "Protector Aasimar", [{"CHA": 2, "WIS": 1}], ((1, "Darkvision- 60"), (1, "Celestial Resistance"), (1, "Healing Hands"), (1, "Light Bearer"), (1, "Radiant Soul"), (1, "Languages- Common/Celestial"))),
+            ("Aasimar", "Scourge Aasimar", [{"CHA": 2, "CON": 1}], ((1, "Darkvision- 60"), (1, "Celestial Resistance"), (1, "Healing Hands"), (1, "Light Bearer"), (1, "Radiant Consumption"), (1, "Languages- Common/Celestial"))),
+            ("Aasimar", "Fallen Aasimar", [{"CHA": 2, "STR": 1}], ((1, "Darkvision- 60"), (1, "Celestial Resistance"), (1, "Healing Hands"), (1, "Light Bearer"), (1, "Necrotic Shroud"), (1, "Languages- Common/Celestial")))
         ]
         super().__init__()
          
@@ -153,8 +152,8 @@ class Aasimar(Race):
 class Bugbear(Race):
     def __init__(self):
         self.bugbear_subrace_list = [
-            ("Bugbear", "Bugbear", ({"custom_stat_1": 2, "custom_stat_2": 1}, {"custom_stat_1": 1, "custom_stat_2": 1, "custom_stat_3": 1}), ("Darkvision- 60", "Fey Ancestry", "Long-Limbed", "Powerful Build", "Sneaky", "Surprise Attack", "Languages- Common/Other")),
-            ("Bugbear", "Bugbear", [{"STR": 2, "DEX": 1}], ("Darkvision- 60", "Long-Limbed", "Powerful Build", "Sneaky", "Surprise Attack", "Languages- Common/Goblin"))
+            ("Bugbear", "Bugbear", ({"custom_stat_1": 2, "custom_stat_2": 1}, {"custom_stat_1": 1, "custom_stat_2": 1, "custom_stat_3": 1}), ((1, "Darkvision- 60"), (1, "Fey Ancestry"), (1, "Long-Limbed"), (1, "Powerful Build"), (1, "Sneaky"), (1, "Surprise Attack"), (1, "Languages- Common/Other"))),
+            ("Bugbear", "Bugbear", [{"STR": 2, "DEX": 1}], ((1, "Darkvision- 60"), (1, "Long-Limbed"), (1, "Powerful Build"), (1, "Sneaky"), (1, "Surprise Attack"), (1, "Languages- Common/Goblin")))
         ]
         super().__init__()
 
@@ -166,8 +165,8 @@ class Bugbear(Race):
 class Centaur(Race):
     def __init__(self):
         self.centaur_subrace_list = [
-            ("Centaur", "Centaur", ({"custom_stat_1": 2, "custom_stat_2": 1}, {"custom_stat_1": 1, "custom_stat_2": 1, "custom_stat_3": 1}), ("Charge", "Equine Build", "Hooves", "Natural Affinity", "Languages- Common/Other")),
-            ("Centaur", "Centaur", [{"STR": 2, "WIS": 1}], ("Fey", "Charge", "Hooves", "Equine Build", "Survivor", "Languages- Common/Sylvan"))
+            ("Centaur", "Centaur", ({"custom_stat_1": 2, "custom_stat_2": 1}, {"custom_stat_1": 1, "custom_stat_2": 1, "custom_stat_3": 1}), ((1, "Charge"), (1, "Equine Build"), (1, "Hooves"), (1, "Natural Affinity"), (1, "Languages- Common/Other"))),
+            ("Centaur", "Centaur", [{"STR": 2, "WIS": 1}], ((1, "Fey"), (1, "Charge"), (1, "Hooves"), (1, "Equine Build"), (1, "Survivor"), (1, "Languages- Common/Sylvan")))
         ]
         super().__init__()
 
@@ -182,8 +181,8 @@ class Centaur(Race):
 class Changeling(Race):
     def __init__(self):
         self.changeling_subrace_list = [
-            ("Changeling", "Changeling", ({"custom_stat_1": 2, "custom_stat_2": 1}, {"custom_stat_1": 1, "custom_stat_2": 1, "custom_stat_3": 1}), ("Changeling Instincts", "Shapechanger", "Languages- Common/Other")),
-            ("Changeling", "Changeling", [{"CHA": 2, "custom_stat_2": 1}], ("Shapechanger", "Changeline Instincts", "Languages- Common/Other/Other"))
+            ("Changeling", "Changeling", ({"custom_stat_1": 2, "custom_stat_2": 1}, {"custom_stat_1": 1, "custom_stat_2": 1, "custom_stat_3": 1}), ((1, "Changeling Instincts"), (1, "Shapechanger"), (1, "Languages- Common/Other"))),
+            ("Changeling", "Changeling", [{"CHA": 2, "custom_stat_2": 1}], ((1, "Shapechanger"), (1, "Changeline Instincts"), (1, "Languages- Common/Other/Other")))
         ]
         super().__init__()
     
@@ -199,19 +198,19 @@ class Changeling(Race):
 
 
 
-class Dragonborn(Race): # COME BACK TO THIS RACE SINCE IT HAS A FEATURE THAT ONLY COMES ONLINE AT LEVEL 5
+class Dragonborn(Race):
     def __init__(self):
         self.dragonborn_color()
         self.chromatic_ancestry()
         self.metallic_ancestry()
         self.gem_ancestry()
         self.dragonborn_subrace_list = [
-            ("Dragonborn", f"{self.dragon_color[0]} Dragonborn", [{"STR": 2, "CHA": 1}], (f"Draconic Ancestry- {self.dragon_color[0]} Dragon", f"Breath Weapon- {self.dragon_color[1]} {self.dragon_color[2]}", f"Damage Resistance- {self.dragon_color[1]}", "Languages- Common/Draconic")),
-            ("Dragonborn", f"{self.dragon_color[0]} Draconblood Dragonborn", [{"INT": 2, "CHA": 1}], ("Darkvision- 60", "Forceful Presence", f"Draconic Ancestry- {self.dragon_color[0]} Dragon", f"Breath Weapon- {self.dragon_color[1]} {self.dragon_color[2]}", "Languages- Common/Draconic")),
-            ("Dragonborn", f"{self.dragon_color[0]} Ravenite Dragonborn", [{"STR": 2, "CON": 1}], ("Darkvision- 60", "Vegeful Assault", f"Draconic Ancestry- {self.dragon_color[0]} Dragon", f"Breath Weapon- {self.dragon_color[1]} {self.dragon_color[2]}", "Languages- Common/Draconic")),
-            ("Dragonborn", "Chromatic Dragonborn", ({"custom_stat_1": 2, "custom_stat_2": 1}, {"custom_stat_1": 1, "custom_stat_2": 1, "custom_stat_3": 1}), (f"Chromatic Ancestry- {self.chromatic_color[0]}", "Breath Weapon- 5 by 30ft. line (DEX save)", f"Draconic Resistance- {self.chromatic_color[1]}", "Languages- Common/Other")),
-            ("Dragonborn", "Metallic Dragonborn", ({"custom_stat_1": 2, "custom_stat_2": 1}, {"custom_stat_1": 1, "custom_stat_2": 1, "custom_stat_3": 1}), (f"Metallic Ancestry- {self.metallic_color[0]}", "Breath Weapon- 15ft. cone (DEX save)", f"Draconic Resistance- {self.metallic_color[1]}", "Languages- Common/Other")),
-            ("Dragonborn", "Gem Dragonborn", ({"custom_stat_1": 2, "custom_stat_2": 1}, {"custom_stat_1": 1, "custom_stat_2": 1, "custom_stat_3": 1}), (f"Gem Ancestry- {self.gem_color[0]}", "Breath Weapon- 15ft. cone (DEX save)", "Psionic Mind", f"Draconic Resistance- {self.gem_color[1]}", "Languages- Common/Other")),
+            ("Dragonborn", f"{self.dragon_color[0]} Dragonborn", [{"STR": 2, "CHA": 1}], ((1, f"Draconic Ancestry- {self.dragon_color[0]} Dragon"), (1, f"Breath Weapon- {self.dragon_color[1]} {self.dragon_color[2]}"), (1, f"Damage Resistance- {self.dragon_color[1]}"), (1, "Languages- Common/Draconic"))),
+            ("Dragonborn", f"{self.dragon_color[0]} Draconblood Dragonborn", [{"INT": 2, "CHA": 1}], ((1, "Darkvision- 60"), (1, "Forceful Presence"), (1, f"Draconic Ancestry- {self.dragon_color[0]} Dragon"), (1, f"Breath Weapon- {self.dragon_color[1]} {self.dragon_color[2]}"), (1, "Languages- Common/Draconic"))),
+            ("Dragonborn", f"{self.dragon_color[0]} Ravenite Dragonborn", [{"STR": 2, "CON": 1}], ((1, "Darkvision- 60"), (1, "Vegeful Assault"), (1, f"Draconic Ancestry- {self.dragon_color[0]} Dragon"), (1, f"Breath Weapon- {self.dragon_color[1]} {self.dragon_color[2]}"), (1, "Languages- Common/Draconic"))),
+            ("Dragonborn", "Chromatic Dragonborn", ({"custom_stat_1": 2, "custom_stat_2": 1}, {"custom_stat_1": 1, "custom_stat_2": 1, "custom_stat_3": 1}), ((1, f"Chromatic Ancestry- {self.chromatic_color[0]}"), (1, "Breath Weapon- 5 by 30ft. line (DEX save)"), (1, f"Draconic Resistance- {self.chromatic_color[1]}"), (5, "Chromatic Warding"), (1, "Languages- Common/Other"))),
+            ("Dragonborn", "Metallic Dragonborn", ({"custom_stat_1": 2, "custom_stat_2": 1}, {"custom_stat_1": 1, "custom_stat_2": 1, "custom_stat_3": 1}), ((1, f"Metallic Ancestry- {self.metallic_color[0]}"), (1, "Breath Weapon- 15ft. cone (DEX save)"), (1, f"Draconic Resistance- {self.metallic_color[1]}"), (5, "Metallic Breath Weapon"), (1, "Languages- Common/Other"))),
+            ("Dragonborn", "Gem Dragonborn", ({"custom_stat_1": 2, "custom_stat_2": 1}, {"custom_stat_1": 1, "custom_stat_2": 1, "custom_stat_3": 1}), ((1, f"Gem Ancestry- {self.gem_color[0]}"), (1, "Breath Weapon- 15ft. cone (DEX save)"), (1, "Psionic Mind"), (1, f"Draconic Resistance- {self.gem_color[1]}"), (5, "Gem Flight"), (1, "Languages- Common/Other"))),
         ]
         super().__init__()
 
@@ -265,14 +264,14 @@ class Dragonborn(Race): # COME BACK TO THIS RACE SINCE IT HAS A FEATURE THAT ONL
 
 
 
-class Dwarf(Race): # COME BACK TO THIS RACE SINCE IT HAS A FEATURE THAT ONLY COMES ONLINE AT LEVEL 3
+class Dwarf(Race):
     def __init__(self):
         self.dwarf_subrace_list = [
-            ("Dwarf", "Hill Dwarf", [{"CON": 2, "WIS": 1}], ("Darkvision 60", "Dwarven Resilience", "Dwarven Combat Training", "Tool Proficiency", "Stonecunning", "Dwarven Toughnes", "Languages- Common/Dwarvish")),
-            ("Dwarf", "Mountain Dwarf", [{"CON": 2, "STR": 1}], ("Darkvision 60", "Dwarven Resilience", "Dwarven Combat Training", "Tool Proficiency", "Stonecunning", "Dwarven Armor Training", "Languages- Common/Dwarvish")),
-            ("Dwarf", "Mark of Warding Dwarf", [{"CON": 2, "INT": 1}], ("Darkvision 60", "Dwarven Resilience", "Dwarven Combat Training", "Tool Proficiency", "Stonecunning", "Warder's Intuition", "Wards and Seals", "Spells of the Mark", "Languages- Common/Dwarvish")),
-            ("Duergar", "Duergar", ({"custom_stat_1": 2, "custom_stat_2": 1}, {"custom_stat_1": 1, "custom_stat_2": 1, "custom_stat_3": 1}), ("Darkvision- 120", "Dwarven Resilience", "Psionic Fortitude", "Languages- Common/Other")),
-            ("Duergar", "Duergar", [{"CON": 2, "STR": 1}], ("Superior Darkvision- 120", "Duergar Resilience", "Dwarven Combat Training", "Tool Proficiency", "Stonecunning", "Sulight Sensitivity", "Languages- Common/Dwarvish"))
+            ("Dwarf", "Hill Dwarf", [{"CON": 2, "WIS": 1}], ((1, "Darkvision- 60"), (1, "Dwarven Resilience"), (1, "Dwarven Combat Training"), (1, "Tool Proficiency"), (1, "Stonecunning"), (1, "Dwarven Toughnes"), (1, "Languages- Common/Dwarvish"))),
+            ("Dwarf", "Mountain Dwarf", [{"CON": 2, "STR": 1}], ((1, "Darkvision- 60"), (1, "Dwarven Resilience"), (1, "Dwarven Combat Training"), (1, "Tool Proficiency"), (1, "Stonecunning"), (1, "Dwarven Armor Training"), (1, "Languages- Common/Dwarvish"))),
+            ("Dwarf", "Mark of Warding Dwarf", [{"CON": 2, "INT": 1}], ((1, "Darkvision- 60"), (1, "Dwarven Resilience"), (1, "Dwarven Combat Training"), (1, "Tool Proficiency"), (1, "Stonecunning"), (1, "Warder's Intuition"), (1, "Wards and Seals"), (1, "Spells of the Mark"), (1, "Languages- Common/Dwarvish"))),
+            ("Duergar", "Duergar", ({"custom_stat_1": 2, "custom_stat_2": 1}, {"custom_stat_1": 1, "custom_stat_2": 1, "custom_stat_3": 1}), ((1, "Darkvision- 120"), (3, "Duergar Magic"), (1, "Dwarven Resilience"), (1, "Psionic Fortitude"), (1, "Languages- Common/Dwarvish"))),
+            ("Duergar", "Duergar", [{"CON": 2, "STR": 1}], ((1, "Superior Darkvision- 120"), (1, "Duergar Resilience"), (1, "Dwarven Combat Training"), (1, "Tool Proficiency"), (1, "Stonecunning"), (3, "Duergar Magic"), (1, "Sulight Sensitivity"), (1, "Languages- Common/Dwarvish")))
         ]
         super().__init__()
 
@@ -304,17 +303,17 @@ class Elf(Race):
     def __init__(self):
         self.eladrin_season()
         self.elf_subrace_list = [
-            ("Elf", "Dark Elf", [{"DEX": 2, "CHA": 1}], ("Superior Darkvision- 120", "Sunlight Sensitivity", "Drow Magic", "Drow Weapon Training", "Fey Ancestry", "Trance", "Keen Senses", "Languages- Common/Elven")),
-            ("Elf", "High Elf", [{"DEX": 2, "INT": 1}], ("Darkvision- 60", "Cantrip", "Elf Weapon Training", "Extra Language", "Fey Ancestry", "Trance", "Keen Senses", "Languages- Common/Elven/Other")),
-            ("Elf", "Wood Elf", [{"DEX": 2, "WIS": 1}], ("Darkvision- 60", "Elf Weapon Training", "Fleet of Foot", "Mask of the Wild", "Fey Ancestry", "Trance", "Keen Senses", "Languages- Common/Elven")),
-            ("Elf", "Pallid Elf", [{"DEX": 2, "WIS": 1}], ("Darkvision- 60", "Incisive Sense", "Blessing of the Moonweaver", "Fey Ancestry", "Trance", "Keen Senses", "Languages- Common/Elven")),
-            ("Elf", "Mark of Shadow Elf", [{"DEX": 2, "CHA": 1}], ("Darkvision- 60", "Cunning Intuition", "Shape Shadows", "Spells of the Mark", "Fey Ancestry", "Trance", "Keen Senses", "Languages- Common/Elven")),
-            ("Eladrin", f"{self.season} Eladrin", ({"custom_stat_1": 2, "custom_stat_2": 1}, {"custom_stat_1": 1, "custom_stat_2": 1, "custom_stat_3": 1}), ("Darkvision- 60", "Fey Ancestry", "Fey Step", "Keen Senses", "Trance", "Languages- Common/Other")),
-            ("Eladrin", f"{self.season} Eladrin", [{"DEX": 2, "CHA": 1}], ("Darkvision- 60", "Fey Ancestry", "Trance", "Keen Senses", "Fey Step", "Languages- Common/Elven")),
-            ("Sea Elf", "Sea Elf", ({"custom_stat_1": 2, "custom_stat_2": 1}, {"custom_stat_1": 1, "custom_stat_2": 1, "custom_stat_3": 1}), ("Darkvision- 60", "Child of the Sea", "Fey Ancestry", "Friend of the Sea", "Keen Senses", "Trance", "Languages- Common/Other")),
-            ("Sea Elf", "Sea Elf", [{"DEX": 2, "CON": 1}], ("Darkvision- 60", "Fey Ancestry", "Trance", "Keen Senses", "Sea Elf Training", "Child of the Sea", "Friend of the Sea", "Languages- Common/Elven/Aquan")),
-            ("Shadar-Kai", "Shadar-Kai", ({"custom_stat_1": 2, "custom_stat_2": 1}, {"custom_stat_1": 1, "custom_stat_2": 1, "custom_stat_3": 1}), ("Darkvision- 60", "Blessing of the Raven Queen", "Fey Ancestry", "Keen Senses", "Necrotic Resistance", "Trance", "Languages- Common/Other")),
-            ("Shadar-Kai", "Shadar-Kai", [{"DEX": 2, "CON": 1}], ("Darkvision- 60", "Fey Ancestry", "Trance", "Keen Senses", "Necrotic Resistance", "Blessing of the Raven Queen", "Languages- Common/Elven"))
+            ("Elf", "Dark Elf", [{"DEX": 2, "CHA": 1}], ((1, "Superior Darkvision- 120"), (1, "Sunlight Sensitivity"), (1, "Drow Magic"), (1, "Drow Weapon Training"), (1, "Fey Ancestry"), (1, "Trance"), (1, "Keen Senses"), (1, "Languages- Common/Elven"))),
+            ("Elf", "High Elf", [{"DEX": 2, "INT": 1}], ((1, "Darkvision- 60"), (1, "Cantrip"), (1, "Elf Weapon Training"), (1, "Extra Language"), (1, "Fey Ancestry"), (1, "Trance"), (1, "Keen Senses"), (1, "Languages- Common/Elven/Other"))),
+            ("Elf", "Wood Elf", [{"DEX": 2, "WIS": 1}], ((1, "Darkvision- 60"), (1, "Elf Weapon Training"), (1, "Fleet of Foot"), (1, "Mask of the Wild"), (1, "Fey Ancestry"), (1, "Trance"), (1, "Keen Senses"), (1, "Languages- Common/Elven"))),
+            ("Elf", "Pallid Elf", [{"DEX": 2, "WIS": 1}], ((1, "Darkvision- 60"), (1, "Incisive Sense"), (1, "Blessing of the Moonweaver"), (1, "Fey Ancestry") (1, "Trance"), (1, "Keen Senses"), (1, "Languages- Common/Elven"))),
+            ("Elf", "Mark of Shadow Elf", [{"DEX": 2, "CHA": 1}], ((1, "Darkvision- 60"), (1, "Cunning Intuition"), (1, "Shape Shadows"), (1, "Spells of the Mark"), (1, "Fey Ancestry"), (1, "Trance"), (1, "Keen Senses"), (1, "Languages- Common/Elven"))),
+            ("Eladrin", f"{self.season} Eladrin", ({"custom_stat_1": 2, "custom_stat_2": 1}, {"custom_stat_1": 1, "custom_stat_2": 1, "custom_stat_3": 1}), ((1, "Darkvision- 60"), (1, "Fey Ancestry"), (1, "Fey Step"), (1, "Keen Senses"), (1, "Trance"), (1, "Languages- Common/Other"))),
+            ("Eladrin", f"{self.season} Eladrin", [{"DEX": 2, "CHA": 1}], ((1, "Darkvision- 60"), (1, "Fey Ancestry"), (1, "Trance"), (1, "Keen Senses"), (1, "Fey Step"), (1, "Languages- Common/Elven"))),
+            ("Sea Elf", "Sea Elf", ({"custom_stat_1": 2, "custom_stat_2": 1}, {"custom_stat_1": 1, "custom_stat_2": 1, "custom_stat_3": 1}), ((1, "Darkvision- 60"), (1, "Child of the Sea"), (1, "Fey Ancestry"), (1, "Friend of the Sea"), (1, "Keen Senses"), (1, "Trance"), (1, "Languages- Common/Other"))),
+            ("Sea Elf", "Sea Elf", [{"DEX": 2, "CON": 1}], ((1, "Darkvision- 60"), (1, "Fey Ancestry"), (1, "Trance"), (1, "Keen Senses"), (1, "Sea Elf Training"), (1, "Child of the Sea"), (1, "Friend of the Sea"), (1, "Languages- Common/Elven/Aquan"))),
+            ("Shadar-Kai", "Shadar-Kai", ({"custom_stat_1": 2, "custom_stat_2": 1}, {"custom_stat_1": 1, "custom_stat_2": 1, "custom_stat_3": 1}), ((1, "Darkvision- 60"), (1, "Blessing of the Raven Queen"), (1, "Fey Ancestry"), (1, "Keen Senses"), (1, "Necrotic Resistance"), (1, "Trance"), (1, "Languages- Common/Other"))),
+            ("Shadar-Kai", "Shadar-Kai", [{"DEX": 2, "CON": 1}], ((1, "Darkvision- 60"), (1, "Fey Ancestry"), (1, "Trance") (1, "Keen Senses"), (1, "Necrotic Resistance"), (1, "Blessing of the Raven Queen"), (1, "Languages- Common/Elven")))
         ]
         super().__init__()
 
@@ -350,7 +349,7 @@ class Fairy(Race):
         super().__init__()
 
     def subrace_roll(self):
-        return ("Fairy", "Fairy", ({"custom_stat_1": 2, "custom_stat_2": 1}, {"custom_stat_1": 1, "custom_stat_2": 1, "custom_stat_3": 1}),("Fairy Magic", "Flight", "Languages- Common/Other"))
+        return ("Fairy", "Fairy", ({"custom_stat_1": 2, "custom_stat_2": 1}, {"custom_stat_1": 1, "custom_stat_2": 1, "custom_stat_3": 1}),((1, "Fairy Magic"), (1, "Flight"), (1, "Languages- Common/Other")))
         
     def get_size(self):
         return "Size- Small"
@@ -363,8 +362,8 @@ class Fairy(Race):
 class Firbolg(Race):
     def __init__(self):
         self.firbolg_subrace_list = [
-            ("Firbolg", "Firbolg", ({"custom_stat_1": 2, "custom_stat_2": 1}, {"custom_stat_1": 1, "custom_stat_2": 1, "custom_stat_3": 1}), ("Firbolg Magic", "Hidden Step", "Powerful Build", "Speech of Beast and Leaf", "Languages- Common/Other")),
-            ("Firbolg", "Firbolg", [{"WIS": 2, "STR": 1}], ("Firbolg Magic", "Hidden Step", "Powerful Build", "Speech of Beast and Leaf", "Languages- Common/Elvish/Giant"))
+            ("Firbolg", "Firbolg", ({"custom_stat_1": 2, "custom_stat_2": 1}, {"custom_stat_1": 1, "custom_stat_2": 1, "custom_stat_3": 1}), ((1, "Firbolg Magic"), (1, "Hidden Step"), (1, "Powerful Build"), (1, "Speech of Beast and Leaf"), (1, "Languages- Common/Other"))),
+            ("Firbolg", "Firbolg", [{"WIS": 2, "STR": 1}], ((1, "Firbolg Magic"), (1, "Hidden Step"), (1, "Powerful Build"), (1, "Speech of Beast and Leaf"), (1, "Languages- Common/Elvish/Giant")))
         ]
         super().__init__()
 
@@ -376,14 +375,14 @@ class Firbolg(Race):
 class Genasi(Race):
     def __init__(self):
         self.genasi_subrace_list = [
-            ("Air Genasi", "Air Genasi", ({"custom_stat_1": 2, "custom_stat_2": 1}, {"custom_stat_1": 1, "custom_stat_2": 1, "custom_stat_3": 1}), ("Darkvision- 60", "Unending Breath", "Lightning Resistance", "Mingle with the Wind", "Languages- Common/Other")),
-            ("Air Genasi", "Air Genasi", [{"CON": 2, "DEX": 1}], ("Unending Breath", "Mingle with the Wind", "Languages- Common/Primordial")),
-            ("Earth Genasi", "Earth Genasi", ({"custom_stat_1": 2, "custom_stat_2": 1}, {"custom_stat_1": 1, "custom_stat_2": 1, "custom_stat_3": 1}), ("Darkvision- 60", "Earth Walk", "Merge with Stone", "Languages- Common/Other")),
-            ("Earth Genasi", "Earth Genasi", [{"CON": 2, "STR": 1}], ("Earth Walk", "Merge with Stone", "Languages- Common/Primordial")),
-            ("Fire Genasi", "Fire Genasi", ({"custom_stat_1": 2, "custom_stat_2": 1}, {"custom_stat_1": 1, "custom_stat_2": 1, "custom_stat_3": 1}), ("Darkvision- 60", "Fire Resistance", "Reach to the Blaze", "Languages- Common/Other")),
-            ("Fire Genasi", "Fire Genasi", [{"CON": 2, "INT": 1}], ("Darkvision- 60", "Fire Resistance", "Reach to the Blaze", "Languages- Common/Primordial")),
-            ("Water Genasi", "Water Genasi", ({"custom_stat_1": 2, "custom_stat_2": 1}, {"custom_stat_1": 1, "custom_stat_2": 1, "custom_stat_3": 1}), ("Darkvision- 60", "Acid Reistance", "Amphibious", "Call to the Wave", "Languages- Common/Other")),
-            ("Water Genasi", "Water Genasi", [{"WIS": 1}], ("Acid Reistance", "Amphibious", "Call to the Wave", "Languages- Common/Primordial"))
+            ("Air Genasi", "Air Genasi", ({"custom_stat_1": 2, "custom_stat_2": 1}, {"custom_stat_1": 1, "custom_stat_2": 1, "custom_stat_3": 1}), ((1, "Darkvision- 60"), (1, "Unending Breath"), (1, "Lightning Resistance"), (1, "Mingle with the Wind"), (1, "Languages- Common/Other"))),
+            ("Air Genasi", "Air Genasi", [{"CON": 2, "DEX": 1}], ((1, "Unending Breath"), (1, "Mingle with the Wind"), (1, "Languages- Common/Primordial"))),
+            ("Earth Genasi", "Earth Genasi", ({"custom_stat_1": 2, "custom_stat_2": 1}, {"custom_stat_1": 1, "custom_stat_2": 1, "custom_stat_3": 1}), ((1, "Darkvision- 60"), (1, "Earth Walk"), (1, "Merge with Stone"), (1, "Languages- Common/Other"))),
+            ("Earth Genasi", "Earth Genasi", [{"CON": 2, "STR": 1}], ((1, "Earth Walk"), (1, "Merge with Stone"), (1, "Languages- Common/Primordial"))),
+            ("Fire Genasi", "Fire Genasi", ({"custom_stat_1": 2, "custom_stat_2": 1}, {"custom_stat_1": 1, "custom_stat_2": 1, "custom_stat_3": 1}), ((1, "Darkvision- 60"), (1, "Fire Resistance"), (1, "Reach to the Blaze"), (1, "Languages- Common/Other"))),
+            ("Fire Genasi", "Fire Genasi", [{"CON": 2, "INT": 1}], ((1, "Darkvision- 60"), (1, "Fire Resistance"), (1, "Reach to the Blaze"), (1, "Languages- Common/Primordial"))),
+            ("Water Genasi", "Water Genasi", ({"custom_stat_1": 2, "custom_stat_2": 1}, {"custom_stat_1": 1, "custom_stat_2": 1, "custom_stat_3": 1}), ((1, "Darkvision- 60"), (1, "Acid Reistance"), (1, "Amphibious"), (1, "Call to the Wave"), (1, "Languages- Common/Other"))),
+            ("Water Genasi", "Water Genasi", [{"WIS": 1}], ((1, "Acid Reistance"), (1, "Amphibious"), (1, "Call to the Wave"), (1, "Languages- Common/Primordial")))
             ]
         super().__init__()
 
@@ -409,8 +408,8 @@ class Genasi(Race):
 class Githyanki(Race):
     def __init__(self):
         self.githyanki_subrace_table = [
-            ("Githyanki", "Githyanki", ({"custom_stat_1": 2, "custom_stat_2": 1}, {"custom_stat_1": 1, "custom_stat_2": 1, "custom_stat_3": 1}), ("Astral Knowledge", "Githanki Psionics", "Psychic Resiliance", "Languages- Common/Other")),
-            ("Githyanki", "Githyanki", [{"STR": 2, "INT": 1}], ("Decadent Mastery", "Martial Prodigy", "Githyanki Psionics", "Languages- Common/Gith/Other"))
+            ("Githyanki", "Githyanki", ({"custom_stat_1": 2, "custom_stat_2": 1}, {"custom_stat_1": 1, "custom_stat_2": 1, "custom_stat_3": 1}), ((1, "Astral Knowledge"), (1, "Githanki Psionics"), (1, "Psychic Resiliance"), (1, "Languages- Common/Other"))),
+            ("Githyanki", "Githyanki", [{"STR": 2, "INT": 1}], ((1, "Decadent Mastery"), (1, "Martial Prodigy"), (1, "Githyanki Psionics"), (1, "Languages- Common/Gith/Other")))
         ]
         super().__init__()
 
@@ -427,8 +426,8 @@ class Githyanki(Race):
 class Githzerai(Race):
     def __init__(self):
         self.githzerai_subrace_list = [
-            ("Githzerai", "Githzerai", ({"custom_stat_1": 2, "custom_stat_2": 1}, {"custom_stat_1": 1, "custom_stat_2": 1, "custom_stat_3": 1}), ("Githzerai Psionics", "Mental Discipline", "Pychic Resilience", "Languages- Common/Other")),
-            ("Githzerai", "Githzerai", [{"WIS": 2, "INT": 1}], ("Mental Discipline", "Githzerai Psionics", "Languages- Common/Gith"))
+            ("Githzerai", "Githzerai", ({"custom_stat_1": 2, "custom_stat_2": 1}, {"custom_stat_1": 1, "custom_stat_2": 1, "custom_stat_3": 1}), ((1, "Githzerai Psionics"), (1, "Mental Discipline"), (1, "Pychic Resilience"), (1, "Languages- Common/Other"))),
+            ("Githzerai", "Githzerai", [{"WIS": 2, "INT": 1}], ((1, "Mental Discipline"), (1, "Githzerai Psionics"), (1, "Languages- Common/Gith")))
         ]
         super().__init__()
 
@@ -437,14 +436,14 @@ class Githzerai(Race):
 
 
 
-class Gnome(Race): # COME BACK TO THIS RACE SINCE IT HAS A FEATURE THAT ONLY COMES ONLINE AT LEVEL 3
+class Gnome(Race):
     def __init__(self):
         self.gnome_subrace_list = [
-            ("Gnome", "Forest Gnome", [{"INT": 2, "DEX": 1}], ("Darkvision 60", "Gnome Cunning", "Natural Illuionist", "Speak with Small Beasts", "Languages- Common/Gnomish")),
-            ("Gnome", "Rock Gnome", [{"INT": 2, "CON": 1}], ("Darkvision 60", "Gnome Cunning", "Artificer's Lore", "Tinker", "Languages- Common/Gnomish")),
-            ("Gnome", "Mark of Scribing Gnome", [{"INT": 2, "CHA": 1}], ("Darkvision 60", "Gnome Cunning", "Gifted Scribe", "Scribe's Insight", "Spells of the Mark", "Languages- Common/Gnomish")),
-            ("Deep Gnome", "Deep Gnome", ({"custom_stat_1": 2, "custom_stat_2": 1}, {"custom_stat_1": 1, "custom_stat_2": 1, "custom_stat_3": 1}), ("Darkvision- 120", "Gnomish Magic Resistance", "Svirfneblin Camouflage", "Languages- Common/Other")),
-            ("Deep Gnome", "Deep Gnome", [{"INT": 2, "DEX": 1}], ("Superior Darkvision- 120", "Gnome Cunning", "Stone Camouflage", "Languages- Common/Gnomish"))
+            ("Gnome", "Forest Gnome", [{"INT": 2, "DEX": 1}], ((1, "Darkvision- 60"), (1, "Gnome Cunning"), (1, "Natural Illuionist"), (1, "Speak with Small Beasts"), (1, "Languages- Common/Gnomish"))),
+            ("Gnome", "Rock Gnome", [{"INT": 2, "CON": 1}], ((1, "Darkvision- 60"), (1, "Gnome Cunning"), (1, "Artificer's Lore"), (1, "Tinker"), (1, "Languages- Common/Gnomish"))),
+            ("Gnome", "Mark of Scribing Gnome", [{"INT": 2, "CHA": 1}], ((1, "Darkvision- 60"), (1, "Gnome Cunning"), (1, "Gifted Scribe"), (1, "Scribe's Insight"), (1, "Spells of the Mark"), (1, "Languages- Common/Gnomish"))),
+            ("Deep Gnome", "Deep Gnome", ({"custom_stat_1": 2, "custom_stat_2": 1}, {"custom_stat_1": 1, "custom_stat_2": 1, "custom_stat_3": 1}), ((1, "Darkvision- 120"), (3, "Gift of the Svirfneblin"), (1, "Gnomish Magic Resistance"), (1, "Svirfneblin Camouflage"), (1, "Languages- Common/Other"))),
+            ("Deep Gnome", "Deep Gnome", [{"INT": 2, "DEX": 1}], ((1, "Superior Darkvision- 120"), (1, "Gnome Cunning"), (1, "Stone Camouflage"), (1, "Languages- Common/Gnomish")))
         ]
         super().__init__()
 
@@ -464,9 +463,9 @@ class Gnome(Race): # COME BACK TO THIS RACE SINCE IT HAS A FEATURE THAT ONLY COM
 class Goblin(Race):
     def __init__(self):
         self.goblin_subrace_list = [
-            ("Goblin", "Goblin", ({"custom_stat_1": 2, "custom_stat_2": 1}, {"custom_stat_1": 1, "custom_stat_2": 1, "custom_stat_3": 1}), ("Darkvision- 60", "Fey Ancestry", "Fury of the Small", "Nimble Escape", "Languages- Common/Other")),
-            ("Goblin", "Goblin", [{"DEX": 2, "CON": 1}], ("Darkvision- 60", "Fury of the Small", "Nimble Escape", "Languages- Common/Goblin")),
-            ("Goblin", "Goblin", [{"DEX": 2, "WIS": 1}], ("Darkvision- 60", "Speak with Small Beasts", "Nimble Escape", "Languages- Common/Goblin"))
+            ("Goblin", "Goblin", ({"custom_stat_1": 2, "custom_stat_2": 1}, {"custom_stat_1": 1, "custom_stat_2": 1, "custom_stat_3": 1}), ((1, "Darkvision- 60"), (1, "Fey Ancestry"), (1, "Fury of the Small"), (1, "Nimble Escape"), (1, "Languages- Common/Other"))),
+            ("Goblin", "Goblin", [{"DEX": 2, "CON": 1}], ((1, "Darkvision- 60"), (1, "Fury of the Small"), (1, "Nimble Escape"), (1, "Languages- Common/Goblin"))),
+            ("Goblin", "Goblin", [{"DEX": 2, "WIS": 1}], ((1, "Darkvision- 60"), (1, "Speak with Small Beasts"), (1, "Nimble Escape"), (1, "Languages- Common/Goblin")))
         ]
         super().__init__()
 
@@ -481,8 +480,8 @@ class Goblin(Race):
 class Goliath(Race):
     def __init__(self):
         self.goliath_subrace_list = [
-            ("Goliath", "Goliath", ({"custom_stat_1": 2, "custom_stat_2": 1}, {"custom_stat_1": 1, "custom_stat_2": 1, "custom_stat_3": 1}), ("Little Giant", "Mountain Born", "Stone's Endurance", "Languages- Common/Other")),
-            ("Goliath", "Goliath", [{"STR": 2, "CON": 1}], ("Natural Athlete", "Stone's Endurance", "Powerful Build", "Mountian Born", "Languages- Common/Giant"))
+            ("Goliath", "Goliath", ({"custom_stat_1": 2, "custom_stat_2": 1}, {"custom_stat_1": 1, "custom_stat_2": 1, "custom_stat_3": 1}), ((1, "Little Giant"), (1, "Mountain Born"), (1, "Stone's Endurance"), (1, "Languages- Common/Other"))),
+            ("Goliath", "Goliath", [{"STR": 2, "CON": 1}], ((1, "Natural Athlete"), (1, "Stone's Endurance"), (1, "Powerful Build"), (1, "Mountian Born"), (1, "Languages- Common/Giant")))
         ]
         super().__init__()
 
@@ -496,7 +495,7 @@ class Grung(Race):
             super().__init__()
 
     def subrace_roll(self):
-        return ("Grung", "Grung", [{"DEX": 2, "CON": 1}], ("Arboreal Alertness", "Amphibious", "Poison Immunity", "Poisonous Skin", "Standing Leap", "Water Dependency", "Languages- Grung"))
+        return ("Grung", "Grung", [{"DEX": 2, "CON": 1}], ((1, "Arboreal Alertness"), (1, "Amphibious"), (1, "Poison Immunity"), (1, "Poisonous Skin"), (1, "Standing Leap"), (1, "Water Dependency"), (1, "Languages- Grung")))
     
     def get_size(self):
         return "Size- Small"
@@ -506,13 +505,13 @@ class Grung(Race):
 
 
 
-class HalfElf(Race): # COME BACK TO THIS RACE SINCE IT HAS A FEATURE THAT ONLY COMES ONLINE AT LEVEL 3 AND 5
+class HalfElf(Race):
     def __init__(self):
         self.heritage()
         self.halfelf_subrace_list = [
-            ("Half Elf", "Half Elf", [{"CHA": 2, "custom_stat_1": 1, "custom_stat_2": 1}], ("Darkvision- 60", "Fey Ancestry", f"Half-Elf Versatility: {self.he_heritage}","Languages- Common/Elven/Other")),
-            ("Half Elf", "Mark of Detection Half Elf", [{"WIS": 2, "custom_stat_1": 1}], ("Darkvision- 60", "Fey Ancestry", "Deductive Intuition", "Magical Detection", "Spells of the Mark", "Languages- Common/Elven/Other")), #Magical Detection lvl3 see invis
-            ("Half Elf", "Mark of Storm Half Elf", [{"CHA": 2, "DEX": 1}], ("Darkvision- 60", "Fey Ancestry", "Windwright's Intuition", "Storm's Boon", "Headwinds", "Spells of the Mark", "Languages- Common/Elven/Other")) #Headwinds lvl3 spell
+            ("Half Elf", "Half Elf", [{"CHA": 2, "custom_stat_1": 1, "custom_stat_2": 1}], ((1, "Darkvision- 60"), (1, "Fey Ancestry"), (1, f"Half-Elf Versatility: {self.he_heritage}"), (1, "Languages- Common/Elven/Other"))),
+            ("Half Elf", "Mark of Detection Half Elf", [{"WIS": 2, "custom_stat_1": 1}], ((1, "Darkvision- 60"), (1, "Fey Ancestry"), (1, "Deductive Intuition"), (1, "Magical Detection"), (1, "Spells of the Mark"), (1, "Languages- Common/Elven/Other"))),
+            ("Half Elf", "Mark of Storm Half Elf", [{"CHA": 2, "DEX": 1}], ((1, "Darkvision- 60"), (1, "Fey Ancestry"), (1, "Windwright's Intuition"), (1, "Storm's Boon"), (1, "Headwinds"), (1, "Spells of the Mark"), (1, "Languages- Common/Elven/Other"))) 
         ]
         super().__init__()
 
@@ -548,15 +547,15 @@ class HalfElf(Race): # COME BACK TO THIS RACE SINCE IT HAS A FEATURE THAT ONLY C
 
 
 
-class Halfling(Race): # COME BACK TO THIS RACE SINCE IT HAS A FEATURE THAT ONLY COMES ONLINE AT LEVEL 3 AND 5
+class Halfling(Race):
     def __init__(self):
         self.halfling_subrace_list = [
-            ("Halfling", "Lightfoot Halfling", [{"DEX": 2, "CHA": 1}], ("Lucky", "Brave", "Nimble", "Naturally Stealthy", "Languages- Common/Halfling")),
-            ("Halfling", "Stout Halfling", [{"DEX": 2, "CON": 1}], ("Lucky", "Brave", "Nimble", "Stout Resilience", "Languages- Common/Halfling")),
-            ("Halfling", "Ghostwise Halfling", [{"DEX": 2, "WIS": 1}], ("Lucky", "Brave", "Nimble", "Silent Speech", "Languages- Common/Halfling")),
-            ("Halfling", "Lotusden Halfling", [{"DEX": 2, "WIS": 1}], ("Lucky", "Brave", "Nimble", "Children of the Woods", "Timberwalk", "Languages- Common/Halfling")), #Children of the Woods - spells lvl3 & 5
-            ("Halfling", "Mark of Hospitality Halfling", [{"DEX": 2, "CHA": 1}], ("Lucky", "Brave", "Nimble", "Ever Hospitable", "Innkeeper's Magic", "Spells of the Mark", "Languages- Common/Halfling")),
-            ("Halfling", "Mark of Healing Halfling", [{"DEX": 2, "WIS": 1}], ("Lucky", "Brave", "Nimble", "Medical Intuition", "Healing Touch", "Spells of the Mark", "Languages- Common/Halfling")) #Healing Touch - spells lvl3 & 5
+            ("Halfling", "Lightfoot Halfling", [{"DEX": 2, "CHA": 1}], ((1, "Lucky"), (1, "Brave"), (1, "Nimble"), (1, "Naturally Stealthy"), (1, "Languages- Common/Halfling"))),
+            ("Halfling", "Stout Halfling", [{"DEX": 2, "CON": 1}], ((1, "Lucky"), (1, "Brave"), (1, "Nimble"), (1, "Stout Resilience"), (1, "Languages- Common/Halfling"))),
+            ("Halfling", "Ghostwise Halfling", [{"DEX": 2, "WIS": 1}], ((1, "Lucky"), (1, "Brave"), (1, "Nimble"), (1, "Silent Speech"), (1, "Languages- Common/Halfling"))),
+            ("Halfling", "Lotusden Halfling", [{"DEX": 2, "WIS": 1}], ((1, "Lucky"), (1, "Brave"), (1, "Nimble"), (1, "Children of the Woods"), (1, "Timberwalk"), (1, "Languages- Common/Halfling"))), 
+            ("Halfling", "Mark of Hospitality Halfling", [{"DEX": 2, "CHA": 1}], ((1, "Lucky"), (1, "Brave"), (1, "Nimble"), (1, "Ever Hospitable"), (1, "Innkeeper's Magic"), (1, "Spells of the Mark"), (1, "Languages- Common/Halfling"))),
+            ("Halfling", "Mark of Healing Halfling", [{"DEX": 2, "WIS": 1}], ((1, "Lucky"), (1, "Brave"), (1, "Nimble"), (1, "Medical Intuition"), (1, "Healing Touch"), (1, "Spells of the Mark"), (1, "Languages- Common/Halfling")))
         ]
         super().__init__()
 
@@ -571,11 +570,11 @@ class Halfling(Race): # COME BACK TO THIS RACE SINCE IT HAS A FEATURE THAT ONLY 
 
 
 
-class HalfOrc(Race): # COME BACK TO THIS RACE SINCE IT HAS A FEATURE THAT ONLY COMES ONLINE AT LEVEL 3
+class HalfOrc(Race):
     def __init__(self):
         self.halforc_subrace_list = [
-            ("Half Orc", "Half Orc", [{"STR": 2, "CON": 1}], ("Darkvision- 60", "Menacing", "Relentless Endurance", "Savage Attacks", "Languages- Common/Orc")),
-            ("Half Orc", "Mark of Finding Half Orc", [{"WIS": 2, "CON": 1}], ("Darkvision- 60", "Hunter's Intuition", "Finder's Magice", "Spells of the Mark", "Languages- Common/Goblin")) #Finder's Magic lvl3
+            ("Half Orc", "Half Orc", [{"STR": 2, "CON": 1}], ((1, "Darkvision- 60"), (1, "Menacing"), (1, "Relentless Endurance"), (1, "Savage Attacks"), (1, "Languages- Common/Orc"))),
+            ("Half Orc", "Mark of Finding Half Orc", [{"WIS": 2, "CON": 1}], ((1, "Darkvision- 60"), (1, "Hunter's Intuition"), (1, "Finder's Magice"), (1, "Spells of the Mark"), (1, "Languages- Common/Goblin")))
         ]
         super().__init__()
 
@@ -589,7 +588,7 @@ class Harengon(Race):
         super().__init__()
 
     def subrace_roll(self):
-        return ("Harengon", "Harengon", ({"custom_stat_1": 2, "custom_stat_2": 1}, {"custom_stat_1": 1, "custom_stat_2": 1, "custom_stat_3": 1}), ("Hare-Trigger", "Leporine Senses", "Lucky Footwork", "Rabbit Hop", "Languages- Common/Other"))
+        return ("Harengon", "Harengon", ({"custom_stat_1": 2, "custom_stat_2": 1}, {"custom_stat_1": 1, "custom_stat_2": 1, "custom_stat_3": 1}), ((1, "Hare-Trigger"), (1, "Leporine Senses"), (1, "Lucky Footwork"), (1, "Rabbit Hop"), (1, "Languages- Common/Other")))
     
     def get_size(self):
         if random.choice([0,1]) == 1:
@@ -598,11 +597,11 @@ class Harengon(Race):
 
 
 
-class Hobgoblin(Race): # COME BACK TO THIS RACE SINCE IT HAS A FEATURE THAT ONLY COMES ONLINE AT LEVEL 3
+class Hobgoblin(Race):
     def __init__(self):
         self.hobgoblin_subrace_list = [
-            ("Hobgoblin", "Hobgoblin", ({"custom_stat_1": 2, "custom_stat_2": 1}, {"custom_stat_1": 1, "custom_stat_2": 1, "custom_stat_3": 1}), ("Darkvision- 60", "Fey Ancestry", "Fey Gift", "Fortune from the Many", "Languages- Common/Other")),  #fey gift lvl3
-            ("Hobgoblin", "Hobgoblin", [{"CON": 2, "INT": 1}], ("Darkvision- 60", "Martial Training", "Saving Face", "Languages- Common/Goblin"))
+            ("Hobgoblin", "Hobgoblin", ({"custom_stat_1": 2, "custom_stat_2": 1}, {"custom_stat_1": 1, "custom_stat_2": 1, "custom_stat_3": 1}), ((1, "Darkvision- 60"), (1, "Fey Ancestry"), (1, "Fey Gift"), (1, "Fortune from the Many"), (1, "Languages- Common/Other"))),
+            ("Hobgoblin", "Hobgoblin", [{"CON": 2, "INT": 1}], ((1, "Darkvision- 60"), (1, "Martial Training"), (1, "Saving Face"), (1, "Languages- Common/Goblin")))
         ]
         super().__init__()
 
@@ -614,12 +613,12 @@ class Hobgoblin(Race): # COME BACK TO THIS RACE SINCE IT HAS A FEATURE THAT ONLY
 class Human(Race): # COME BACK TO THIS RACE SINCE IT HAS A FEATURE THAT ONLY COMES ONLINE AT LEVEL 3
     def __init__(self):
         self.human_subrace_list = [
-            ("Human", "Human", [{"STR": 1, "DEX": 1, "CON": 1, "INT": 1, "WIS": 1, "CHA": 1}], ("Languages- Common/Other")),
-            ("Human", "Mark of Finding Human", [{"WIS": 2, "CON": 1}], ("Darkvision- 60", "Hunter's Intuition", "Finder's Magic", "Spells of the Mark", "Languages- Common/Goblin")), #finders magic lvl3
-            ("Human", "Mark of Handling Human", [{"WIS": 2, "custom_stat_1": 1}], ("Wild Intuition", "Primal Connection", "The Bigger They Are", "Spells of the Mark", "Languages- Common/Other")), #the bigger they are lvl3
-            ("Human", "Mark of Making Human", [{"INT": 2, "custom_stat_1": 1}], ("Artisan's Intuition", "Artisan's Gift", "Spellsmith", "Spells of the Mark", "Languages- Common/Other")),
-            ("Human", "Mark of Passage Human", [{"DEX": 2, "custom_stat_1": 1}], ("Intuitive Motion", "Magical Passage", "Spells of the Mark", "Languages- Common/Other")),
-            ("Human", "Mark of Sentinel Human", [{"CON": 2, "WIS": 1}], ("Sentinel's Intuition", "Guardian's Shield", "Vigilant Guardian", "Spells of the Mark", "Languages- Common/Other")),
+            ("Human", "Human", [{"STR": 1, "DEX": 1, "CON": 1, "INT": 1, "WIS": 1, "CHA": 1}], (1, "Languages- Common/Other"))
+            ("Human", "Mark of Finding Human", [{"WIS": 2, "CON": 1}], ((1, "Darkvision- 60"), (1, "Hunter's Intuition"), (1, "Finder's Magic"), (1, "Spells of the Mark"), (1, "Languages- Common/Other"))),
+            ("Human", "Mark of Handling Human", [{"WIS": 2, "custom_stat_1": 1}], ((1, "Wild Intuition"), (1, "Primal Connection"), (1, "The Bigger They Are"), (3, "The Bigger They Are"), (1, "Spells of the Mark"), (1, "Languages- Common/Other"))),
+            ("Human", "Mark of Making Human", [{"INT": 2, "custom_stat_1": 1}], ((1, "Artisan's Intuition"), (1, "Artisan's Gift"), (1, "Spellsmith"), (1, "Spells of the Mark"), (1, "Languages- Common/Other"))),
+            ("Human", "Mark of Passage Human", [{"DEX": 2, "custom_stat_1": 1}], ((1, "Intuitive Motion"), (1, "Magical Passage"), (1, "Spells of the Mark"), (1, "Languages- Common/Other"))),
+            ("Human", "Mark of Sentinel Human", [{"CON": 2, "WIS": 1}], ((1, "Sentinel's Intuition"), (1, "Guardian's Shield"), (1, "Vigilant Guardian"), (1, "Spells of the Mark"), (1, "Languages- Common/Other")))
         ]
         super().__init__()
 
@@ -636,7 +635,7 @@ class Human(Race): # COME BACK TO THIS RACE SINCE IT HAS A FEATURE THAT ONLY COM
 class Kenku(Race):
     def __init__(self):
         self.kenku_subrace_list = [
-            ("Kenku", "Kenku", ({"custom_stat_1": 2, "custom_stat_2": 1}, {"custom_stat_1": 1, "custom_stat_2": 1, "custom_stat_3": 1}), ("Expert Duplication", "Kenku Recall", "Mimicry", "Languages- Common/Other")),  
+            ("Kenku", "Kenku", ({"custom_stat_1": 2, "custom_stat_2": 1}, {"custom_stat_1": 1, "custom_stat_2": 1, "custom_stat_3": 1}), ("Expert Duplication", "Kenku Recall", "Mimicry", (1, "Languages- Common/Other")))  
             ("Kenku", "Kenku", [{"DEX": 2, "WIS": 1}], ("Expert Forgery", "Kenku Training", "Mimicry", "Languages- Common/Auran"))
         ]
         super().__init__()
@@ -657,7 +656,7 @@ class Kobold(Race):
     def __init__(self):
         self.koblegacy()
         self.kobold_subrace_list = [
-            ("Kobold", "Kobold", ({"custom_stat_1": 2, "custom_stat_2": 1}, {"custom_stat_1": 1, "custom_stat_2": 1, "custom_stat_3": 1}), ("Darkvision- 60", "Draconic Cry", f"Kobold Legacy: {self.kobold_legacy}", "Languages- Common/Other")),  
+            ("Kobold", "Kobold", ({"custom_stat_1": 2, "custom_stat_2": 1}, {"custom_stat_1": 1, "custom_stat_2": 1, "custom_stat_3": 1}), ("Darkvision- 60", "Draconic Cry", f"Kobold Legacy: {self.kobold_legacy}", (1, "Languages- Common/Other")))  
             ("Kobold", "Kobold", [{"DEX": 2}], ("Darkvision- 60", "Grovel, Cower, and Beg", "Pack Tactics", "Sunlight Sensitivity", "Languages- Common/Draconic")), 
         ]
         super().__init__()
@@ -681,7 +680,7 @@ class Kobold(Race):
 class Lizardfolk(Race):
     def __init__(self):
         self.lizardfolk_subrace_list = [
-            ("Lizardfolk", "Lizardfolk", ({"custom_stat_1": 2, "custom_stat_2": 1}, {"custom_stat_1": 1, "custom_stat_2": 1, "custom_stat_3": 1}), ("Bite", "Hold Breath", "Hungry Jaws", "Natural Armor", "Nature's Intuition", "Languages- Common/Other")), 
+            ("Lizardfolk", "Lizardfolk", ({"custom_stat_1": 2, "custom_stat_2": 1}, {"custom_stat_1": 1, "custom_stat_2": 1, "custom_stat_3": 1}), ("Bite", "Hold Breath", "Hungry Jaws", "Natural Armor", "Nature's Intuition", (1, "Languages- Common/Other"))) 
             ("Lizardfolk", "Lizardfolk", [{"CON": 2, "WIS": 1}], ("Bite", "Cunning Artisan", "Hold Breath", "Hunter's Lore", "Natural Armor", "Hungry Jaws", "Languages- Common/Draconic"))  
         ]
         super().__init__()
@@ -692,10 +691,12 @@ class Lizardfolk(Race):
     def get_speed(self):
         return "Walk- 30, Swim- 30"
 
+
+
 class Minotaur(Race):
     def __init__(self):
         self.minotaur_subrace_list = [
-            ("Minotaur", "Minotaur", ({"custom_stat_1": 2, "custom_stat_2": 1}, {"custom_stat_1": 1, "custom_stat_2": 1, "custom_stat_3": 1}), ("Horns", "Goring Rush", "Hammering Horns", "Labyrinthine Recall", "Languages- Common/Other")),
+            ("Minotaur", "Minotaur", ({"custom_stat_1": 2, "custom_stat_2": 1}, {"custom_stat_1": 1, "custom_stat_2": 1, "custom_stat_3": 1}), ("Horns", "Goring Rush", "Hammering Horns", "Labyrinthine Recall", (1, "Languages- Common/Other")))
             ("Minotaur", "Minotaur", [{"STR": 2, "CON": 1}], ("Horns", "Goring Rush", "Hammering Horns", "Imposing Presence", "Languages- Common/Minotaur"))
         ]
         super().__init__()
@@ -703,10 +704,12 @@ class Minotaur(Race):
     def subrace_roll(self):
         return random.choice(self.minotaur_subrace_list)
 
+
+
 class Orc(Race):
     def __init__(self):
         self.orc_subrace_list = [
-            ("Orc", "Orc", ({"custom_stat_1": 2, "custom_stat_2": 1}, {"custom_stat_1": 1, "custom_stat_2": 1, "custom_stat_3": 1}), ("Darkvision- 60", "Adrenaline Rush", "Powerful Build", "Relentless Endurance", "Languages- Common/Other")),
+            ("Orc", "Orc", ({"custom_stat_1": 2, "custom_stat_2": 1}, {"custom_stat_1": 1, "custom_stat_2": 1, "custom_stat_3": 1}), ("Darkvision- 60", "Adrenaline Rush", "Powerful Build", "Relentless Endurance", (1, "Languages- Common/Other")))
             ("Orc", "Orc", [{"STR": 2, "CON": 1}], ("Darkvision- 60", "Aggressive", "Primal Intuition", "Powerful Build", "Languages- Common/Orc")),  
             ("Orc", "Orc", [{"STR": 2, "CON": 1}], ("Darkvision- 60", "Menacing", "Relentless Endurance", "Savage Attacks", "Languages- Common/Orc"))
         ]
@@ -737,7 +740,7 @@ class Owlin(Race):
 class Satyr(Race):
     def __init__(self):
         self.satyr_subrace_list = [
-            ("Satyr", "Satyr", ({"custom_stat_1": 2, "custom_stat_2": 1}, {"custom_stat_1": 1, "custom_stat_2": 1, "custom_stat_3": 1}), ("Ram", "Magic Resistance", "Mirthful Leaps", "Reveler", "Languages- Common/Other")), 
+            ("Satyr", "Satyr", ({"custom_stat_1": 2, "custom_stat_2": 1}, {"custom_stat_1": 1, "custom_stat_2": 1, "custom_stat_3": 1}), ("Ram", "Magic Resistance", "Mirthful Leaps", "Reveler", (1, "Languages- Common/Other"))) 
             ("Satyr", "Satyr", [{"CHA": 2, "DEX": 1}], ("Ram", "Magic Resistance", "Mirthful Leaps", "Reveler", "Languages- Common/Sylvan")) 
         ]
         super().__init__()
@@ -754,11 +757,11 @@ class Shifter(Race):
     def __init__(self):
         self.ancestor()
         self.shifter_subrace_list = [
-            ("Shifter", "Shifter", ({"custom_stat_1": 2, "custom_stat_2": 1}, {"custom_stat_1": 1, "custom_stat_2": 1, "custom_stat_3": 1}), ("Darkvision- 60", "Bestial Instincts", f"Shifting- {self.ancestor_lycan[0]}", "Languages- Common/Other")),
+            ("Shifter", "Shifter", ({"custom_stat_1": 2, "custom_stat_2": 1}, {"custom_stat_1": 1, "custom_stat_2": 1, "custom_stat_3": 1}), ("Darkvision- 60", "Bestial Instincts", f"Shifting- {self.ancestor_lycan[0]}", (1, "Languages- Common/Other")))
             ("Shifter", "Shifter", ({"custom_stat_1": 2, "custom_stat_2": 1}, {"custom_stat_1": 1, "custom_stat_2": 1, "custom_stat_3": 1}), ("Darkvision- 60", "Keen Senses", "Shifting","Subrace", "Languages- Common")),
-            ("Shifter", "Beasthide", [{"CON": 2, "STR": 1}], ("Darkvision- 60", "Keen Senses", "Shifting","Subrace", "Natural Athlete", "Shifting Feature", "Languages- Common/Other")),
-            ("Shifter", "Longtooth", [{"STR": 2, "DEX": 1}], ("Darkvision- 60", "Bestial Instincts", "Shifting", "Fierce", "Shifting Feature", "Languages- Common/Other")),
-            ("Shifter", "Swiftstride", [{"DEX": 2, "CHA": 1}], ("Darkvision- 60", "Bestial Instincts", "Shifting", "Graceful", "Shifting Feature", "Languages- Common/Other")),  
+            ("Shifter", "Beasthide", [{"CON": 2, "STR": 1}], ("Darkvision- 60", "Keen Senses", "Shifting","Subrace", "Natural Athlete", "Shifting Feature", (1, "Languages- Common/Other")))
+            ("Shifter", "Longtooth", [{"STR": 2, "DEX": 1}], ("Darkvision- 60", "Bestial Instincts", "Shifting", "Fierce", "Shifting Feature", (1, "Languages- Common/Other")))
+            ("Shifter", "Swiftstride", [{"DEX": 2, "CHA": 1}], ("Darkvision- 60", "Bestial Instincts", "Shifting", "Graceful", "Shifting Feature", (1, "Languages- Common/Other")))  
             ("Shifter", "Wildhunt", [{"WIS": 2}], ("Darkvision- 60", "Bestial Instincts", "Shifting", "Mark the Scent", "Shifting Feature", "Languages- Common/Other"))
         ]
         super().__init__()
@@ -782,7 +785,7 @@ class Shifter(Race):
 class Tabaxi(Race):
     def __init__(self):
         self.tabaxi_subrace_list =[
-            ("Tabaxi", "Tabaxi", ({"custom_stat_1": 2, "custom_stat_2": 1}, {"custom_stat_1": 1, "custom_stat_2": 1, "custom_stat_3": 1}), ("Darkvision- 60", "Cat's Claws", "Cat's Talent", "Feline Agility", "Languages- Common/Other")),
+            ("Tabaxi", "Tabaxi", ({"custom_stat_1": 2, "custom_stat_2": 1}, {"custom_stat_1": 1, "custom_stat_2": 1, "custom_stat_3": 1}), ("Darkvision- 60", "Cat's Claws", "Cat's Talent", "Feline Agility", (1, "Languages- Common/Other")))
             ("Tabaxi", "Tabaxi", [{"DEX": 2, "CHA": 1}], ("Darkvision- 60", "Cat's Claws", "Cat's Talent", "Feline Agility", "Languages- Common/Other"))
         ]
         super().__init__()
@@ -807,15 +810,15 @@ class Tabaxi(Race):
 class Tiefling(Race):
     def __init__(self):
         self.tiefling_subrace_list = [
-            ("Tiefling", "Bloodline of Asmodeus", [{"CHA": 2, "INT": 1}], ("Darkvision- 60", "Hellish Resistance", "Infernal Legacy", "Languages- Common/Infernal")),
-            ("Tiefling", "Bloodline of Baalzebul", [{"CHA": 2, "INT": 1}], ("Darkvision- 60", "Hellish Resistance", "Legacy of Maladomini", "Languages- Common/Infernal")),
-            ("Tiefling", "Bloodline of Dispater", [{"CHA": 2, "DEX": 1}], ("Darkvision- 60", "Hellish Resistance", "Legacy of Dis", "Languages- Common/Infernal")),
-            ("Tiefling", "Bloodline of Fierna", [{"CHA": 2, "WIS": 1}], ("Darkvision- 60", "Hellish Resistance", "Legacy of Phlegethos", "Languages- Common/Infernal")),
-            ("Tiefling", "Bloodline of Glasya", [{"CHA": 2, "DEX": 1}], ("Darkvision- 60", "Hellish Resistance", "Legacy of Malbolge", "Languages- Common/Infernal")),
-            ("Tiefling", "Bloodline of Levistus", [{"CHA": 2, "CON": 1}], ("Darkvision- 60", "Hellish Resistance", "Legacy of Stygia", "Languages- Common/Infernal")),
-            ("Tiefling", "Bloodline of Mammon", [{"CHA": 2, "INT": 1}], ("Darkvision- 60", "Hellish Resistance", "Legacy of Minauros", "Languages- Common/Infernal")),
-            ("Tiefling", "Bloodline of Mephistopheles", [{"CHA": 2, "INT": 1}], ("Darkvision- 60", "Hellish Resistance", "Legacy of Cania", "Languages- Common/Infernal")),
-            ("Tiefling", "Bloodline of Zariel", [{"CHA": 2, "STR": 1}], ("Darkvision- 60", "Hellish Resistance", "Legacy of Avernus", "Languages- Common/Infernal"))
+            ("Tiefling", "Bloodline of Asmodeus Tiefling", [{"CHA": 2, "INT": 1}], ("Darkvision- 60", "Hellish Resistance", "Infernal Legacy", "Languages- Common/Infernal")),
+            ("Tiefling", "Bloodline of Baalzebul Tiefling", [{"CHA": 2, "INT": 1}], ("Darkvision- 60", "Hellish Resistance", "Legacy of Maladomini", "Languages- Common/Infernal")),
+            ("Tiefling", "Bloodline of Dispater Tiefling", [{"CHA": 2, "DEX": 1}], ("Darkvision- 60", "Hellish Resistance", "Legacy of Dis", "Languages- Common/Infernal")),
+            ("Tiefling", "Bloodline of Fierna Tiefling", [{"CHA": 2, "WIS": 1}], ("Darkvision- 60", "Hellish Resistance", "Legacy of Phlegethos", "Languages- Common/Infernal")),
+            ("Tiefling", "Bloodline of Glasya Tiefling", [{"CHA": 2, "DEX": 1}], ("Darkvision- 60", "Hellish Resistance", "Legacy of Malbolge", "Languages- Common/Infernal")),
+            ("Tiefling", "Bloodline of Levistus Tiefling", [{"CHA": 2, "CON": 1}], ("Darkvision- 60", "Hellish Resistance", "Legacy of Stygia", "Languages- Common/Infernal")),
+            ("Tiefling", "Bloodline of Mammon Tiefling", [{"CHA": 2, "INT": 1}], ("Darkvision- 60", "Hellish Resistance", "Legacy of Minauros", "Languages- Common/Infernal")),
+            ("Tiefling", "Bloodline of Mephistopheles Tiefling", [{"CHA": 2, "INT": 1}], ("Darkvision- 60", "Hellish Resistance", "Legacy of Cania", "Languages- Common/Infernal")),
+            ("Tiefling", "Bloodline of Zariel Tiefling", [{"CHA": 2, "STR": 1}], ("Darkvision- 60", "Hellish Resistance", "Legacy of Avernus", "Languages- Common/Infernal"))
         ]
         super().__init__()
 
@@ -827,7 +830,7 @@ class Tiefling(Race):
 class Tortle(Race):
     def __init__(self):
         self.tortle_subrace_list = [
-            ("Tortle", "Tortle", ({"custom_stat_1": 2, "custom_stat_2": 1}, {"custom_stat_1": 1, "custom_stat_2": 1, "custom_stat_3": 1}), ("Claws", "Hold Breath", "Natural Armor", "Nature's Intuition", "Shell Defense", "Languages- Common/Other")),  
+            ("Tortle", "Tortle", ({"custom_stat_1": 2, "custom_stat_2": 1}, {"custom_stat_1": 1, "custom_stat_2": 1, "custom_stat_3": 1}), ("Claws", "Hold Breath", "Natural Armor", "Nature's Intuition", "Shell Defense", (1, "Languages- Common/Other")))  
             ("Tortle", "Tortle", [{"STR": 2, "WIS": 1}], ("Claws", "Hold Breath", "Natural Armor", "Shell Defense","Survival Instinct", "Languages- Common/Aquan"))
         ]
         super().__init__()
@@ -847,7 +850,7 @@ class Tortle(Race):
 class Triton(Race):
     def __init__(self):
         self.triton_subrace_list = [
-            ("Triton", "Triton", ({"custom_stat_1": 2, "custom_stat_2": 1}, {"custom_stat_1": 1, "custom_stat_2": 1, "custom_stat_3": 1}), ("Darkvision- 60", "Amphibious", "Control Air and Water", "Emissary of the Sea", "Guardians of the Depths", "Languages- Common/Other")),  
+            ("Triton", "Triton", ({"custom_stat_1": 2, "custom_stat_2": 1}, {"custom_stat_1": 1, "custom_stat_2": 1, "custom_stat_3": 1}), ("Darkvision- 60", "Amphibious", "Control Air and Water", "Emissary of the Sea", "Guardians of the Depths", (1, "Languages- Common/Other")))  
             ("Triton", "Triton", [{"STR": 1, "CON": 1, "CHA": 1}], ("Darkvision- 60", "Amphibious", "Control Air and Water", "Emissary of the Sea", "Guardians of the Depths", "Languages- Common/Primordial"))
         ]
         super().__init__()
@@ -874,22 +877,6 @@ class YuanTi(Race):
         self.yuanti_subrace_list = [
             ("Yuan-Ti", "Yuan-Ti", ({"custom_stat_1": 2, "custom_stat_2": 1}, {"custom_stat_1": 1, "custom_stat_2": 1, "custom_stat_3": 1}), ("Darkvision- 60", "Magic Resistance", "Poison Resilience", "Serpentine Spellcasting" ,"Languages- Common/Other")),
             ("Yuan-Ti", "Yuan-Ti", [{"CHA": 2, "INT": 1}], ("Darkvision- 60", "Innate Spellcasting", "Magic Resistance", "Poison Immunity","Languages- Common/Abyssal/Draconic"))
-        ]
-        super().__init__()
-
-    def subrace_roll(self):
-        return random.choice(self.yuanti_subrace_list)
-
-    def get_size(self):
-        if self.subrace != self.yuanti_subrace_list[0]:
-            return "Size- Medium"
-        if random.choice([0,1]) == 1:
-            return "Size- Medium"
-        return "Size- Small"
-    def __init__(self):
-        self.yuanti_subrace_list = [
-            ("Yuan-Ti", ({"custom_stat_1": 2, "custom_stat_2": 1}, {"custom_stat_1": 1, "custom_stat_2": 1, "custom_stat_3": 1}), ("Darkvision- 60", "Magic Resistance", "Poison Resilience", "Serpentine Spellcasting" ,"Languages- Common/Other")), #Serpentine Spellcasting lvl3
-            ("Yuan-Ti", [{"CHA": 2, "INT": 1}], ("Darkvision- 60", "Innate Spellcasting", "Magic Resistance", "Poison Immunity","Languages- Common/Abyssal/Draconic")) #Innate Spellcasting lvl3
         ]
         super().__init__()
 

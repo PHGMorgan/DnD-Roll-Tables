@@ -169,10 +169,13 @@ class Character:
 
     def proficiency_compiler(self):
         proficiency_list = []
-        proficiency_list.extend(self.race.get_proficiencies()) # Get list of racial proficiencies and add to list.
-        proficiency_list.extend(self.get_class_proficiencies()) # Get list of base class proficiencies and add to list.
-        #proficiency_list.extend(self. subclass_and_level_proficiencies()) # Get proficiencies from subclass and level and add to list.
-        self.proficiencies = proficiency_list
+        for item in self.race.get_proficiencies(): # Get list of racial proficiencies.
+            if item[0] >= self.__char_level__: # Check the level requirement in index 0 and compare it to character level.
+                proficiency_list.append(item[1]) # Add it to the list if character level is greater than or equial to the level requirement.
+        for item in self.get_class_proficiencies(): # Repeat the process for class proficiencies.
+            if item[0] >= self.__char_level__:
+                proficiency_list.append(item[1])
+        self.proficiencies = proficiency_list # Set self.proficiencies equal to the created list.
 
 
 

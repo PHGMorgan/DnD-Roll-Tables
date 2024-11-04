@@ -8,7 +8,7 @@ char_level_odds = 1.35
 commoner_chance = 1
 
 # Chance for a rolled character to have a shield if eligible. Odds are 1 in 10/number selected. E.g. 100 = 1 in 10, 90 = 1 in 9, 80 = 1 in 8, etc.
-shield_chance = 50
+shield_chance = 25
 
 # Chance for each of the race types to appear. Higher numbers = higher chance for that race type to appear.
 common_races_odds = 7

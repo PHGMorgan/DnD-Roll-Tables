@@ -1,9 +1,6 @@
 import csv
 import os
-from DnD_classes import *
-from parent_character_class import *
 from program_functions import *
-
 
 
 #Check if saved characters file exists. If it doesn't, create it and write the header.
@@ -73,6 +70,8 @@ def main():
                 case "":
                     char_id = class_mapping[char_class](random.randint(100000, 999999))
                     break
+                case "class info":
+                    print("The available classes are: Artificer, Barbarian, Bard, Cleric, Commoner, Druid, Fighter, Monk, Paladin, Ranger, Rogue, Sorcerer, Warlock, Wizard")
                 case (
                     "artificer" | "barbarian" | "bard" | "cleric" | "commoner" | "druid" | "fighter" | 
                     "monk" | "paladin" | "ranger" | "rogue" | "sorcerer" | "warlock" | "wizard"
@@ -120,13 +119,18 @@ def main():
                     "kenku" | "kobold" | "lizardfolk" | "minotaur" | "orc" | "owlin" | "satyr" | 
                     "shifter" | "tabaxi" | "tiefling" | "tortle" | "triton" | "verdan"
                 ):
-                    char_id.race = user_input.title()
+                    help_race_select(char_id, user_input)
                 case "halforc" | "half-orc" | "half orc":
                     char_id.race = HalfOrc
                 case "yuanti" | "yuan-ti" | "yuan ti":
                     char_id.race = YuanTi
                 case "halfelf" | "half-elf" | "half elf":
                     char_id.race = HalfElf
+                case "race info":
+                    print("The available races are: Aarakocra, Aasimar, Bugbear, Centaur, Changeling, Dragonborn, Dwarf, Elf, Fairy, Firbolg,") 
+                    print("Genasi, Githyanki, Githzerai, Gnome, Goblin, Goliath, Grung, HalfElf, Halfling, Half-Orc, Harengon, Hobgoblin, Human, Kenku,")
+                    print("Kobold, Lizardfolk, Minotaur, Orc, Owlin, Satyr, Shifter, Tabaxi, Tiefling, Tortle, Triton, Verdan, Yuan-Ti.")
+                    print("Duergar are dwarves. Eladrin, Sea Elf, and Shadar-Kai are elves. Deep Gnomes are gnomes.")
                 case "stat" | "stats":
                     help_stat(char_id)
                 case "level":
