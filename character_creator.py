@@ -10,7 +10,7 @@ try:
     else:
         with open("saved_characters.csv", mode="w") as csvfile:
             file_writer = csv.writer(csvfile, delimiter = ",", quotechar = '"')
-            file_writer.writerow(["Character ID", "Name", "Gender", "Race", "Subrace", "Class", "Speed", "Size", "Stats", "Level", "HP", "AC", "Weapon", "Armor", "Shield", "Proficiencies", "Racial Features"])
+            file_writer.writerow(["Character ID", "Name", "Alignment", "Gender", "Race", "Subrace", "Class", "Speed", "Size", "Stats", "Level", "HP", "AC", "Weapon", "Armor", "Shield", "Proficiencies", "Racial Features"])
             print("Saved characters directory csv file created!")
 except Exception as e:
     print(e)
@@ -108,6 +108,8 @@ def main():
                     help_loop_three()
                 case "name":
                     help_name(char_id)
+                case "alignment":
+                    help_alignment(char_id)
                 case "gender":
                     help_gender(char_id)
                 case "race":
@@ -131,6 +133,8 @@ def main():
                     print("Genasi, Githyanki, Githzerai, Gnome, Goblin, Goliath, Grung, HalfElf, Halfling, Half-Orc, Harengon, Hobgoblin, Human, Kenku,")
                     print("Kobold, Lizardfolk, Minotaur, Orc, Owlin, Satyr, Shifter, Tabaxi, Tiefling, Tortle, Triton, Verdan, Yuan-Ti.")
                     print("Duergar are dwarves. Eladrin, Sea Elf, and Shadar-Kai are elves. Deep Gnomes are gnomes.")
+                case "subclass":
+                    help_subclass(char_id)
                 case "stat" | "stats":
                     help_stat(char_id)
                 case "level":

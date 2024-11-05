@@ -17,12 +17,15 @@ class Character:
         self.rolls_for_stats, self.armor_list, self.weapon_list, self.__features__ = [], [], [], []
         #Run randomizers for each character variable
         self.name_roll()
+        self.alignment_compiler()
         self.random_gender()
         self.race_roll()
+        self.random_char_level()
         self.stats_roll()
         self.stats_compile()
-        self.random_char_level()
+        self.subclass_roll()
         self.proficiency_compiler()
+        self.features_compiler()
         self.roll_hp()
         self.make_equipment_list()
         self.roll_armor()
@@ -74,6 +77,16 @@ class Character:
         if self.__shield__ == "None":
             return "None"
         return self.__shield__[2]
+    
+    def get_features(self):
+        self.features_compiler()
+        return self.__features__
+    
+    def get_alignment(self):
+        return self.__alignment__
+
+    def get_subclass(self):
+        return self.subclass[0]
 
 
 
@@ -88,6 +101,25 @@ class Character:
             self.__name__ = random.choice(names_list)
         except Exception as e:
             print(e)
+
+
+
+    # Functions for rolling a character's alignment.
+    def lawful_chaotic_roller(self):
+        horizontal_axis_list = ["Lawful", "Neutral", "Chaotic"]
+        return random.choices(horizontal_axis_list, weights=[3,2,1], k=1)[0]
+
+    def good_evil_roller(self):
+        vertical_axis_list = ["Good", "Neutral", "Evil"]
+        return random.choices(vertical_axis_list, weights=[3,6,1])[0]
+        
+    def alignment_compiler(self):
+        horiz = self.lawful_chaotic_roller()
+        vert = self.good_evil_roller()
+        if horiz == vert:
+            self.__alignment__ = "True Neutral"
+        else:
+            self.__alignment__ = f"{horiz} {vert}"
 
 
 
@@ -121,6 +153,14 @@ class Character:
 
     def secondary_score(self):
         return [2, "CON"]
+    
+    def size_check(self):
+        if self.race.get_race_name() == "Verdan" and self.__char_level__ >= 5:
+            return "Size- Medium"
+        else:
+            return self.race.get_size()
+
+
 
     # The following are functions related to rolling a character's stats and adding all stat bonuses together.
     def stats_roll(self):
@@ -148,10 +188,62 @@ class Character:
         race_bonus = self.race.get_race_stats(self.key_stat_index()[1], self.secondary_score()[1])
         for bonus in race_bonus:
             self.__char_stats_dict__[bonus] += race_bonus[bonus]
+        if self.get_asi() > 0:
+            for i in range(self.get_asi()):
+                self.apply_asi()
+        
+    def apply_asi(self):
+        if random.choice([0,1]) == 1:
+            if self.__char_stats_dict__[self.key_stat_index()[1]] < 20:
+                self.__char_stats_dict__[self.key_stat_index()[1]] += 1
+                if self.__char_stats_dict__[self.secondary_score()[1]] < 20:
+                    self.__char_stats_dict__[self.secondary_score()[1]] += 1
+                    return None
+                else:
+                    while True:
+                        random_stat = random.choice(stat_names_list)
+                        if self.__char_stats_dict__[random_stat] < 20:
+                            break
+                    self.__char_stats_dict__[random_stat] += 1
+                    return None
+            else:
+                if self.__char_stats_dict__[self.secondary_score()[1]] < 20:
+                    self.__char_stats_dict__[self.secondary_score()[1]] += 1
+                    while True:
+                        random_stat = random.choice(stat_names_list)
+                        if self.__char_stats_dict__[random_stat] < 20:
+                            break
+                    self.__char_stats_dict__[random_stat] += 1
+                    return None
+                else:
+                    while True:
+                        random_stat_1 = random.choice(stat_names_list)
+                        if self.__char_stats_dict__[random_stat] < 20:
+                            break
+                    self.__char_stats_dict__[random_stat_1] += 1
+                    while True:
+                        random_stat_2 = random.choice(stat_names_list)
+                        if self.__char_stats_dict__[random_stat] < 20 and random_stat_2 != random_stat_1:
+                            break
+                    self.__char_stats_dict__[random_stat_2] += 1
+                    return None
+        else:
+            if self.__char_stats_dict__[self.key_stat_index()[1]] >= 19:
+                if self.__char_stats_dict__[self.secondary_score()[1]] >= 19:
+                    while True:
+                        random_stat = random.choice(stat_names_list)
+                        if self.__char_stats_dict__[random_stat] < 19:
+                            break
+                    self.__char_stats_dict__[random_stat] += 2
+                    return None
+                self.__char_stats_dict__[self.secondary_score()[1]] += 2
+                return None
+            self.__char_stats_dict__[self.key_stat_index()[1]] += 2
+            return None
 
 
 
-    # Function for randomly rolling a character's level. Odds of each level appearing can be altered in the "variables_page" file. Variables used are max_char_level and char_level_odds.
+    # Function for randomly rolling a character's level, features, and proficiencies. Odds of each level appearing can be altered in the "variables_page" file. Variables used are max_char_level and char_level_odds.
     def random_char_level(self):
         level_num = max_char_level
         levels_list = []
@@ -170,12 +262,22 @@ class Character:
     def proficiency_compiler(self):
         proficiency_list = []
         for item in self.race.get_proficiencies(): # Get list of racial proficiencies.
-            if item[0] >= self.__char_level__: # Check the level requirement in index 0 and compare it to character level.
-                proficiency_list.append(item[1]) # Add it to the list if character level is greater than or equial to the level requirement.
+            proficiency_list.append(item) # Add it to the list if character level is greater than or equial to the level requirement.
         for item in self.get_class_proficiencies(): # Repeat the process for class proficiencies.
-            if item[0] >= self.__char_level__:
-                proficiency_list.append(item[1])
+            proficiency_list.append(item)
         self.proficiencies = proficiency_list # Set self.proficiencies equal to the created list.
+
+    def features_compiler(self):
+        features_list = []
+        for item in self.race.get_features():
+            if self.__char_level__ >= item[0]:
+                features_list.append(item[1])
+        print(self.get_class_features())
+        for item in self.get_class_features():
+            print(item)
+            if self.__char_level__ >= item[0]:
+                features_list.append(item[1])
+        self.__features__ = features_list
 
 
 
@@ -250,9 +352,12 @@ class Character:
             else:
                 self.__ac__ = int(ast.literal_eval(self.__armor__[3])[1]) + stat_mod_dict[self.__char_stats_dict__["DEX"]] + 2
 
+
+
     def __str__(self):
         return (
             f"Character name: {self.get_char_name()} \n"
+            f"Character alignment: {self.get_alignment()} \n"
             f"Character gender: {self.get_char_gender()} \n"
             f"Character subrace: {self.race.get_subrace_name()} \n"
             f"Character class: {self.get_char_class()} \n"

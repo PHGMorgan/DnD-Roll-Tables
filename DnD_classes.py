@@ -16,9 +16,44 @@ class Artificer(Character):
     
     def hp_stat_index(self):
         return 8
+
+    def subclass_roll(self):
+        list_of_subclasses = [
+            ("Alchemist", ((3, "Alchemist Spells"), (3, "Experimental Elixir"), (5, "Alchemical Savant"), (9, "Restorative Reagents"), (15, "Chemical Mastery"))),
+            ("Armorer", ((3, "Armorer Spells"), (3, "Arcane Armor"), (3, "Armor Model"), (5, "Extra Attack"), (9, "Armor Modifications"), (15, "Perfected Armor"))),
+            ("Artillerist", ((3, "Artillerist Spells"), (3, "Eldritch Cannon"), (5, "Arcane Firearm"), (9, "Explosive Cannon"), (15, "Foritified Position"))),
+            ("Battle Smith", ((3, "Battle Smith Spells"), (3, "Battle Ready"), (3, "Steel Defender"), (5, "Extra Attack"), (9, "Arcane Jolt"), (15, "Improved Defender")))
+        ]
+        if self.__char_level__ >= 3:
+            self.subclass = random.choice(list_of_subclasses)
+        else:
+            self.subclass = "None"
     
+    def get_asi(self):
+        total_asi = 0
+        if self.__char_level__ >= 19:
+            total_asi += 1
+        if self.__char_level__ >= 16:
+            total_asi += 1
+        if self.__char_level__ >= 12:
+            total_asi += 1
+        if self.__char_level__ >= 8:
+            total_asi += 1
+        if self.__char_level__ >= 4:
+            total_asi += 1
+        return total_asi
+
     def get_class_proficiencies(self):
-        return ["light armor", "medium armor", "shield", "simple weapons"]
+        class_proficiencies = ["light armor", "medium armor", "shield", "simple weapon"]
+        if self.__char_level__ >= 3 and self.subclass[0] == "Battle Smith":
+            class_proficiencies.append("martial weapon")
+        return class_proficiencies
+
+    def get_class_features(self):
+        class_features = [(1, "Magical Tinkering"), (1, "Spellcasting"), (2, "Infuse Item"), (3, "The Right Tool for the Job"), (6, "Tool Expertise"), (7, "Flash of Genius"), (10, "Magic Item Adept"), (11, "Spell-Storing Item"), (14, "Magic Item Savant"), (18, "Magic Item Master"), (20, "Soul of Artifice")]
+        if self.__char_level__ >= 3:
+            class_features.extend(self.subclass[1])
+        return class_features
 
 
 class Barbarian(Character):
@@ -42,6 +77,7 @@ class Barbarian(Character):
         return ["shield", "simple weapon", "martial weapon"]
 
 
+
 class Bard(Character):
     def __init__(self, char_id):
         self.__char_class__= "Bard"
@@ -57,6 +93,7 @@ class Bard(Character):
         return ["light armor", "simple weapon", "hand crossbow", "longsword", "rapier", "shortsword"]
 
 
+
 class Cleric(Character):
     def __init__(self, char_id):
         self.__char_class__= "Cleric"
@@ -70,6 +107,7 @@ class Cleric(Character):
     
     def get_class_proficiencies(self):
         return ["light armor", "medium armor", "shield", "simple weapon"]
+
 
 
 # Commoner is the only different child class and sets the character level to 0, uses its own stat roll function (which limits its range), and roll hp function ().
@@ -106,6 +144,7 @@ class Commoner(Character):
         return random.choice([(0, "STR"), (1, "DEX"), (3, "INT"), (4, "WIS"), (5, "CHA")])
 
 
+
 class Druid(Character):
     def __init__(self, char_id):
         self.__char_class__= "Druid"
@@ -119,6 +158,7 @@ class Druid(Character):
     
     def get_class_proficiencies(self):
         return ["light armor", "medium armor", "shield", "club", "dagger", "dart", "javelin", "mace", "quarterstaff", "scimitar", "sickle", "sling", "spear"]
+
 
 
 class Fighter(Character):
@@ -146,6 +186,7 @@ class Fighter(Character):
 
     def get_class_proficiencies(self):
         return ["light armor", "medium armor", "heavy armor", "shield", "simple weapon", "martial weapon"]
+
 
 
 class Monk(Character):
@@ -182,6 +223,7 @@ class Monk(Character):
         return ["simple weapon", "shortsword"]
 
 
+
 class Paladin(Character):
     def __init__(self, char_id):
         self.__char_class__= "Paladin"
@@ -206,6 +248,8 @@ class Paladin(Character):
     def get_class_proficiencies(self):
         return ["light armor", "medium armor", "heavy armor", "shield", "simple weapon", "martial weapon"]
 
+
+
 class Ranger(Character):
     def __init__(self, char_id):
         self.__char_class__= "Ranger"
@@ -219,6 +263,8 @@ class Ranger(Character):
 
     def get_class_proficiencies(self):
         return ["light armor", "medium armor", "shield", "simple weapon", "martial weapon"]
+
+
 
 class Rogue(Character):
     def __init__(self, char_id):
@@ -240,6 +286,8 @@ class Rogue(Character):
     def get_class_proficiencies(self):
         return ["light armor", "simple weapon", "hand crossbow", "longsword", "rapier", "shortsword"]
 
+
+
 class Sorcerer(Character):
     def __init__(self, char_id):
         self.__char_class__= "Sorcerer"
@@ -255,6 +303,7 @@ class Sorcerer(Character):
         return ["dagger", "dart", "sling", "quarterstaff", "light crossbow"]
 
 
+
 class Warlock(Character):
     def __init__(self, char_id):
         self.__char_class__= "Warlock"
@@ -268,6 +317,7 @@ class Warlock(Character):
     
     def get_class_proficiencies(self):
         return ["light armor", "simple weapon"]
+
 
 
 class Wizard(Character):

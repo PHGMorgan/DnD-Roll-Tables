@@ -55,6 +55,7 @@ def help_loop_three():
     print("Type \"race\" to reroll character's race.")
     print("Type the name of a race to use that specific race.")
     print("Type \"race info\" for a list of all available races!")
+    print("Type \"subclass\" to reroll your subclass!")
     print("Type \"stat\" or \"stats\" to reroll character's stats.")
     print("Type \"level\" to reroll character's level.")
     print("Type \"weapon\" to reroll character's weapon.")
@@ -72,6 +73,10 @@ def help_name(char_id):
     char_id.name_roll()
     print(f"This character's name is now {char_id.get_char_name()}.")
 
+def help_alignment(char_id):
+    char_id.alignment_compiler()
+    print(f"This character's alignment is now {char_id.get_alignment()}")
+
 def help_gender(char_id):
     char_id.change_gender()
     print(f"This character's gender is now {char_id.get_char_gender()}.")
@@ -79,6 +84,7 @@ def help_gender(char_id):
 def help_race(char_id):
     char_id.race_roll()
     char_id.proficiency_compiler()
+    char_id.features_compiler()
     char_id.make_equipment_list()
     char_id.stats_compile()
     char_id.roll_hp()
@@ -87,10 +93,18 @@ def help_race(char_id):
 def help_race_select(char_id, input_string):
     char_id.race = globals()[input_string.title()]()
     char_id.proficiency_compiler()
+    char_id.features_compiler()
     char_id.make_equipment_list()
     char_id.stats_compile()
     char_id.roll_hp()
     print(f"This character's race is now: {char_id.race.get_subrace_name()}.")
+
+def help_subclass(char_id):
+    char_id.subclass_roll()
+    char_id.proficiency_compiler()
+    char_id.features_compiler()
+    char_id.make_equipment_list()
+    print(f"This character's subclass is now: {char_id.get_subclass()}")
 
 def help_stat(char_id):
     char_id.stats_roll()
@@ -99,7 +113,18 @@ def help_stat(char_id):
     print(f"This character's stats are now {char_id.get_char_stats()}.")
 
 def help_level(char_id):
+    pre_level_asi = char_id.get_asi()
     char_id.random_char_level()
+    new_asi = char_id.get_asi()
+    if pre_level_asi != new_asi:
+        char_id.stats_roll()
+        char_id.stats_compile()
+    else:
+        char_id.stats_compile()
+    char_id.subclass_roll()
+    char_id.size_check()
+    char_id.proficiency_compiler()
+    char_id.features_compiler()
     char_id.roll_hp()
     print(f"This character's level is now {char_id.get_char_level()}.")
 
@@ -124,12 +149,14 @@ def help_save(char_id):
             file_writer.writerow(
                 [char_id.get_char_id(),
                 char_id.get_char_name(),
+                char_id.get_alignment(),
                 char_id.get_char_gender(),
                 char_id.race.get_race_name(),
                 char_id.race.get_subrace_name(),
                 char_id.get_char_class(),
+                char_id.get_subclass(),
                 char_id.race.get_speed(),
-                char_id.race.get_size(),
+                char_id.size_check(),
                 ', '.join(f"{key}: {value}" for key, value in char_id.__char_stats_dict__.items()),
                 char_id.get_char_level(),
                 char_id.get_char_hp(),
@@ -138,7 +165,7 @@ def help_save(char_id):
                 char_id.get_char_armor(),
                 char_id.get_char_shield(),
                 ', '.join(f'{item}' for item in set(char_id.proficiencies)),
-                ', '.join(f'{item}' for item in char_id.race.get_features())
+                ', '.join(f'{item}' for item in char_id.get_features())
             ])
         print(char_id)
         print("---Character saved!---")
@@ -151,12 +178,14 @@ def help_character(char_id):
 def help_details(char_id):
     print(
         f"Character name: {char_id.get_char_name()} \n"
+        f"Character alignment: {char_id.get_alignment()} \n"
         f"Character gender: {char_id.get_char_gender()} \n"
         f"Character race: {char_id.race.get_race_name()} \n"
         f"Character subrace: {char_id.race.get_subrace_name()} \n"
         f"Character class: {char_id.get_char_class()} \n"
+        f"Character subclass: {char_id.get_subclass()} \n"
         f"Character speed: {char_id.race.get_speed()} \n"
-        f"Character size: {char_id.race.get_size()} \n"
+        f"Character size: {char_id.size_check()} \n"
         f"Character stats: {', '.join(f'{key}: {value}' for key, value in char_id.__char_stats_dict__.items())} \n"
         f"Character level: {char_id.__char_level__} \n"
         f"Character HP: {char_id.__hp__} \n"
@@ -165,7 +194,7 @@ def help_details(char_id):
         f"Character armor: {char_id.get_char_armor()} \n"
         f"Character shield: {char_id.get_char_shield()} \n"
         f"Character proficiencies: {', '.join(f'{item}' for item in set(char_id.proficiencies))} \n"
-        f"Character racial features: {', '.join(f'{item}' for item in char_id.race.get_features())}"
+        f"Character racial features: {', '.join(f'{item}' for item in char_id.get_features())}"
     )
 
 
@@ -180,12 +209,14 @@ def fast_roll():
             file_writer.writerow(
                 [char_id.get_char_id(),
                 char_id.get_char_name(),
+                char_id.get_alignment(),
                 char_id.get_char_gender(),
                 char_id.race.get_race_name(),
                 char_id.race.get_subrace_name(),
                 char_id.get_char_class(),
+                char_id.get_subclass(),
                 char_id.race.get_speed(),
-                char_id.race.get_size(),
+                char_id.size_check(),
                 ', '.join(f"{key}: {value}" for key, value in char_id.__char_stats_dict__.items()),
                 char_id.get_char_level(),
                 char_id.get_char_hp(),
@@ -194,7 +225,7 @@ def fast_roll():
                 char_id.get_char_armor(),
                 char_id.get_char_shield(),
                 ', '.join(f'{item}' for item in set(char_id.proficiencies)),
-                ', '.join(f'{item}' for item in char_id.race.get_features())
+                ', '.join(f'{item}' for item in char_id.get_features())
             ])
         print(char_id)
         print("---Character saved!---")
