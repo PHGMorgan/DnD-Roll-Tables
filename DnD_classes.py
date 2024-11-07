@@ -56,7 +56,7 @@ class Artificer(Character):
         return class_features
 
 
-class Barbarian(Character):
+class Barbarian(Character): #Rework speed for "Fast Movement"
     def __init__(self, char_id):
         self.__char_class__= "Barbarian"
         super().__init__(char_id)
@@ -67,14 +67,56 @@ class Barbarian(Character):
     def hp_stat_index(self):
         return 12
     
+    def subclass_roll(self):
+        subclass_list = [
+            ("Ancestral Guardian", (3, "Ancestral Protectors"), (6, "Spirit Shield"), (10, "Consult the Spirits"), (14, "Vengeful Ancestors")),
+            ("Battlerager", (3, ""), (6, ""), (10, ""), (14, "")),
+            ("Beast", (3, ""), (6, ""), (10, ""), (14, "")),
+            ("Berserker", (3, ""), (6, ""), (10, ""), (14, "")),
+            ("Giant", (3, ""), (6, ""), (10, ""), (14, "")),
+            ("Storm Herald", (3, ""), (6, ""), (10, ""), (14, "")),
+            ("Totem Warrior", (3, ""), (6, ""), (10, ""), (14, "")),
+            ("Wild Magic", (3, ""), (6, ""), (10, ""), (14, "")),
+            ("Zealot", (3, ""), (6, ""), (10, ""), (14, ""))
+        ]
+        while True:
+            if self.__char_level__ >= 3:  
+                self.subclass = random.choice(subclass_list)
+                if self.subclass[0] == "Battlerager" and self.race.get_race_name() != "Dwarf":
+                    continue
+                else:
+                    break
+            else:
+                self.subclass = "None"
+                break
+
+    def get_asi(self):
+        total_asi = 0
+        if self.__char_level__ >= 19:
+            total_asi += 1
+        if self.__char_level__ >= 16:
+            total_asi += 1
+        if self.__char_level__ >= 12:
+            total_asi += 1
+        if self.__char_level__ >= 8:
+            total_asi += 1
+        if self.__char_level__ >= 4:
+            total_asi += 1
+        return total_asi
+    
     def calculate_ac(self):
         if self.__shield__ == "None":
             self.__ac__ = 10 + stat_mod_dict[self.__char_stats_dict__["DEX"]] + stat_mod_dict[self.__char_stats_dict__["CON"]]
         else:
             self.__ac__ = 12 + stat_mod_dict[self.__char_stats_dict__["DEX"]] + stat_mod_dict[self.__char_stats_dict__["CON"]]
 
+
     def get_class_proficiencies(self):
         return ["shield", "simple weapon", "martial weapon"]
+    
+    def get_class_features(self):
+        class_features = [(1, "Rage"), (1, "Unarmored Defense"), (2, "Danger Sense"), (2, "Reckless Attack"), (3, "Primal KNowledge"), (5, "Extra Attack"), (5, "Fast Movement"), (7, "Feral Instinct"), (7, "Instinctive Pounce"), (9, "Brutal Critical"), (11, "Relentless Rage"), (15, "Persistent Rage"), (18, "Indomitable Might"), (20, "Primal Champion")]
+        return class_features
 
 
 
