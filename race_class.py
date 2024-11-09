@@ -613,7 +613,7 @@ class Hobgoblin(Race):
 class Human(Race): 
     def __init__(self):
         self.human_subrace_list = [
-            ("Human", "Human", [{"STR": 1, "DEX": 1, "CON": 1, "INT": 1, "WIS": 1, "CHA": 1}], (1, "Languages- Common/Other")),
+            ("Human", "Human", [{"STR": 1, "DEX": 1, "CON": 1, "INT": 1, "WIS": 1, "CHA": 1}], [(1, "Languages- Common/Other")]),
             ("Human", "Mark of Finding Human", [{"WIS": 2, "CON": 1}], ((1, "Darkvision- 60"), (1, "Hunter's Intuition"), (1, "Finder's Magic"), (1, "Spells of the Mark"), (1, "Languages- Common/Other"))),
             ("Human", "Mark of Handling Human", [{"WIS": 2, "custom_stat_1": 1}], ((1, "Wild Intuition"), (1, "Primal Connection"), (1, "The Bigger They Are"), (3, "The Bigger They Are"), (1, "Spells of the Mark"), (1, "Languages- Common/Other"))),
             ("Human", "Mark of Making Human", [{"INT": 2, "custom_stat_1": 1}], ((1, "Artisan's Intuition"), (1, "Artisan's Gift"), (1, "Spellsmith"), (1, "Spells of the Mark"), (1, "Languages- Common/Other"))),

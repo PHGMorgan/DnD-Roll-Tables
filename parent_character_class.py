@@ -14,7 +14,7 @@ class Character:
         self.__name__ = None
         self.__gender__ = None
         self.__char_stats_dict__ = {"STR": 0, "DEX": 0, "CON": 0, "INT": 0, "WIS": 0, "CHA": 0}
-        self.rolls_for_stats, self.armor_list, self.weapon_list, self.__features__ = [], [], [], []
+        self.rolls_for_stats, self.armor_list, self.weapon_list, self.__features__, self.names_list = [], [], [], [], []
         #Run randomizers for each character variable
         self.name_roll()
         self.alignment_compiler()
@@ -92,15 +92,17 @@ class Character:
 
     # Create the global names list variable from the data in the names.csv file.
     def name_roll(self):
-        names_list = []
-        try:
-            with open("names.csv", mode = "r", newline = "") as namefile:
-                file_reader = csv.reader(namefile)
-                for row in file_reader:
-                    names_list.append(row[0])
-            self.__name__ = random.choice(names_list)
-        except Exception as e:
-            print(e)
+        if len(self.names_list) > 0: # Check if name list has already been created. If so, roll on the already existing list.
+            self.__name__ = random.choice(self.names_list)
+        else:   # If not, create the list.
+            try: # Start with try in case names.csv in't available.
+                    with open("names.csv", mode = "r", newline = "") as namefile: # Open names file.
+                        file_reader = csv.reader(namefile) # Create the reader to read the file.
+                        for row in file_reader:
+                            self.names_list.append(row[0]) # Check every row of names and append each entry to a list
+                    self.__name__ = random.choice(self.names_list)
+            except Exception as e:
+                print(e)
 
 
 
@@ -185,61 +187,115 @@ class Character:
             "WIS": self.rolls_for_stats[4],
             "CHA": self.rolls_for_stats[5]
         })
+        print(f"Before race bonus: {self.__char_stats_dict__}")
         race_bonus = self.race.get_race_stats(self.key_stat_index()[1], self.secondary_score()[1])
         for bonus in race_bonus:
             self.__char_stats_dict__[bonus] += race_bonus[bonus]
+        print(f"After race bonus: {self.__char_stats_dict__}")
         if self.get_asi() > 0:
             for i in range(self.get_asi()):
                 self.apply_asi()
-        
+                print(f"In each ASI loop: {self.__char_stats_dict__}")
+            print(f"After ASI's: {self.__char_stats_dict__}")
+
     def apply_asi(self):
-        if random.choice([0,1]) == 1:
-            if self.__char_stats_dict__[self.key_stat_index()[1]] < 20:
-                self.__char_stats_dict__[self.key_stat_index()[1]] += 1
-                if self.__char_stats_dict__[self.secondary_score()[1]] < 20:
-                    self.__char_stats_dict__[self.secondary_score()[1]] += 1
-                    return None
-                else:
+        def apply_plus_one(stat):
+            if self.__char_stats_dict__[stat] < 20:
+                self.__char_stats_dict__[stat] += 1
+                return True
+            return False
+        
+        def apply_plus_two(stat):
+            if self.__char_stats_dict__[stat] < 19:
+                self.__char_stats_dict__[stat] += 2
+                return True
+            return False
+        
+        def random_stat():
+            while True:
+                random_stat = random.choice(stat_names_list)
+                if random_stat != self.key_stat_index()[1] and random_stat != self.secondary_score()[1]:
+                    return random_stat
+
+        if random.choice([2, 1]) == 1:
+            if apply_plus_one(self.key_stat_index()[1]):
+                if not apply_plus_one(self.secondary_score()[1]):
                     while True:
-                        random_stat = random.choice(stat_names_list)
-                        if self.__char_stats_dict__[random_stat] < 20:
+                        if apply_plus_one(random_stat()):
                             break
-                    self.__char_stats_dict__[random_stat] += 1
-                    return None
             else:
-                if self.__char_stats_dict__[self.secondary_score()[1]] < 20:
-                    self.__char_stats_dict__[self.secondary_score()[1]] += 1
+                if not apply_plus_one(self.secondary_score()[1]):
                     while True:
-                        random_stat = random.choice(stat_names_list)
-                        if self.__char_stats_dict__[random_stat] < 20:
+                        random_stat_1 = random_stat()
+                        if apply_plus_one(random_stat_1):
                             break
-                    self.__char_stats_dict__[random_stat] += 1
-                    return None
+                    while True:
+                        random_stat_2 = random_stat()
+                        if random_stat_2 != random_stat_1:
+                            if apply_plus_one(random_stat_2):
+                                break
                 else:
                     while True:
-                        random_stat_1 = random.choice(stat_names_list)
-                        if self.__char_stats_dict__[random_stat] < 20:
+                        if apply_plus_one(random_stat()):
                             break
-                    self.__char_stats_dict__[random_stat_1] += 1
-                    while True:
-                        random_stat_2 = random.choice(stat_names_list)
-                        if self.__char_stats_dict__[random_stat] < 20 and random_stat_2 != random_stat_1:
-                            break
-                    self.__char_stats_dict__[random_stat_2] += 1
-                    return None
         else:
-            if self.__char_stats_dict__[self.key_stat_index()[1]] >= 19:
-                if self.__char_stats_dict__[self.secondary_score()[1]] >= 19:
+            if not apply_plus_two(self.key_stat_index()[1]):
+                if not apply_plus_two(self.secondary_score()[1]):
                     while True:
-                        random_stat = random.choice(stat_names_list)
-                        if self.__char_stats_dict__[random_stat] < 19:
+                        if apply_plus_two(random_stat()):
                             break
-                    self.__char_stats_dict__[random_stat] += 2
-                    return None
-                self.__char_stats_dict__[self.secondary_score()[1]] += 2
-                return None
-            self.__char_stats_dict__[self.key_stat_index()[1]] += 2
-            return None
+
+    
+                
+
+
+        # if random.choice([0,1]) == 1:
+        #     if self.__char_stats_dict__[self.key_stat_index()[1]] < 20:
+        #         self.__char_stats_dict__[self.key_stat_index()[1]] += 1
+        #         if self.__char_stats_dict__[self.secondary_score()[1]] < 20:
+        #             self.__char_stats_dict__[self.secondary_score()[1]] += 1
+        #             return
+        #         else:
+        #             while True:
+        #                 random_stat = random.choice(stat_names_list)
+        #                 if self.__char_stats_dict__[random_stat] < 20:
+        #                     break
+        #             self.__char_stats_dict__[random_stat] += 1
+        #             return
+        #     else:
+        #         if self.__char_stats_dict__[self.secondary_score()[1]] < 20:
+        #             self.__char_stats_dict__[self.secondary_score()[1]] += 1
+        #             while True:
+        #                 random_stat = random.choice(stat_names_list)
+        #                 if self.__char_stats_dict__[random_stat] < 20:
+        #                     break
+        #             self.__char_stats_dict__[random_stat] += 1
+        #             return
+        #         else:
+        #             while True:
+        #                 random_stat_1 = random.choice(stat_names_list)
+        #                 if self.__char_stats_dict__[random_stat_1] < 20:
+        #                     break
+        #             self.__char_stats_dict__[random_stat_1] += 1
+        #             while True:
+        #                 random_stat_2 = random.choice(stat_names_list)
+        #                 if self.__char_stats_dict__[random_stat_2] < 20 and random_stat_2 != random_stat_1:
+        #                     break
+        #             self.__char_stats_dict__[random_stat_2] += 1
+        #             return
+        # else:
+        #     if self.__char_stats_dict__[self.key_stat_index()[1]] >= 19:
+        #         if self.__char_stats_dict__[self.secondary_score()[1]] >= 19:
+        #             while True:
+        #                 random_stat = random.choice(stat_names_list)
+        #                 if self.__char_stats_dict__[random_stat] < 19:
+        #                     break
+        #             self.__char_stats_dict__[random_stat] += 2
+        #             return
+        #         self.__char_stats_dict__[self.secondary_score()[1]] += 2
+        #         return
+        #     self.__char_stats_dict__[self.key_stat_index()[1]] += 2
+        #     return
 
 
 
@@ -272,9 +328,7 @@ class Character:
         for item in self.race.get_features():
             if self.__char_level__ >= item[0]:
                 features_list.append(item[1])
-        print(self.get_class_features())
         for item in self.get_class_features():
-            print(item)
             if self.__char_level__ >= item[0]:
                 features_list.append(item[1])
         self.__features__ = features_list
