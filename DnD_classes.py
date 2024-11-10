@@ -400,16 +400,16 @@ class Fighter(Character):
 
     def subclass_roll(self):
         list_of_subclasses = [
-            ("Arcane Archer", ((3, "Arcane Archer Lore"), (3, "Arcane Shot"), (7, "Curving Shot"), (15, "Ever-Ready Shot"))),
-            ("Banneret", ((3, "Rallying Cry"), (7, "Royal Envoy"), (10, "Inspiring Surge"), (15, "Bulwark"))),
-            ("Battle Master", ((3, "Combat Superiority"), (3, "Student of War"), (7, "Know Your Enemy"), (10, "Improved Combat Superiority"), (15, "Relentless"))),
-            ("Cavalier", ((3, "Bonus Proficiency"), (3, "Born to the Saddle"), (3, "Unwavering Mark"), (7, "Warding Maneuver"), (10, "Hold the Line"), (15, "Ferocious Charger"))),
+            ("Arcane Archer", ((3, "Arcane Archer Lore"), (3, "Arcane Shot"), (7,"Magic Arrow"), (7, "Curving Shot"), (15, "Ever-Ready Shot"))),#Arcane Archer Lore- skill prof and cantrips
+            ("Banneret", ((3, "Rallying Cry"), (7, "Royal Envoy"), (10, "Inspiring Surge"), (15, "Bulwark"))),#Royal Envoy- persuasion prof or other skill
+            ("Battle Master", ((3, "Combat Superiority"), (3, "Student of War"), (7, "Know Your Enemy"), (10, "Improved Combat Superiority"), (15, "Relentless"))),#Student of War- tool prof
+            ("Cavalier", ((3, "Bonus Proficiency"), (3, "Born to the Saddle"), (3, "Unwavering Mark"), (7, "Warding Maneuver"), (10, "Hold the Line"), (15, "Ferocious Charger"), (18, "Vigilant Defender"))),#Bonus Proficiency- skill prof or extra language
             ("Champion", ((3, "Improved Critical"), (7, "Remarkable Athlete"), (10, "Additional Fighting Style"), (15, "Superior Critical"), (18, "Survivor"))),
             ("Echo Knight", ((3, "Manifest Echo"), (3, "Unleash Incarnation"), (7, "Echo Avatar"), (10, "Shadow Martyr"), (15, "Reclaim Potential"), (18, "Legion of One"))),
             ("Eldritch Knight", ((3, "Spellcasting"), (3, "Weapon Bond"), (7, "War Magic"), (10, "Eldritch Strike"), (15, "Arcane Charge"), (18, "Improved War Magic"))),
             ("Psi Warrior", ((3, "Psionic Power"), (7, "Telekinetic Adept"), (10, "Guarded Mind"), (15, "Bulwark of Force"), (18, "Telekinetic Master"))),
-            ("Rune Knight", ((3, "Bonus Proficiencies"), (3, "Rune Carver"), (3, "Giant's Might"), (7, "Runic Shield"), (10, "Great Stature"), (15, "Master of Runes"), (18, "Blessing of the All Father"))),
-            ("Samurai", ((3, "Fighting Spirit"), (7, "Elegant Courtier"), (10, "Tireless Spirit"), (15, "Rapid Strike"), (18, "Strength Before Death")))
+            ("Rune Knight", ((3, "Bonus Proficiencies"), (3, "Rune Carver"), (3, "Giant's Might"), (7, "Runic Shield"), (10, "Great Stature"), (15, "Master of Runes"), (18, "Runic Juggernaut"))),#Bonus Proficiencies smith tools + giant language
+            ("Samurai", ((3, "Bonus Proficiencies"), (3, "Fighting Spirit"), (7, "Elegant Courtier"), (10, "Tireless Spirit"), (15, "Rapid Strike"), (18, "Strength Before Death"))) #Bonus Proficiency- skill prof or extra language
         ]
         if self.__char_level__ >= 3:
             self.subclass = random.choice(list_of_subclasses)
@@ -487,12 +487,12 @@ class Monk(Character):
 
     def subclass_roll(self):
         list_of_subclasses = [
-            ("Way of Mercy", ((3, "Implements of Mercy"), (3, "Hand of Healing"), (3, "Hand of Harm"), (6, "Physician's Touch"), (11, "Flurry of Healing and Harm"), (17, "Hand of Ultimate Mercy"))),
-            ("Way of the Ascendant Dragon", ((3, "Draconic Disciple"), (3, "Breath of the Dragon"), (6, "Wings Unfurled"), (11, "Aspect of the Wyrm"), (17, "Ascendant Aspect"))),
+            ("Way of Mercy", ((3, "Implements of Mercy"), (3, "Hand of Healing"), (3, "Hand of Harm"), (6, "Physician's Touch"), (11, "Flurry of Healing and Harm"), (17, "Hand of Ultimate Mercy"))),#Implements of Mercy- skill prof + herb kit
+            ("Way of the Ascendant Dragon", ((3, "Draconic Disciple"), (3, "Breath of the Dragon"), (6, "Wings Unfurled"), (11, "Aspect of the Wyrm"), (17, "Ascendant Aspect"))),#Ascendant Dragon Origin
             ("Way of the Astral Self", ((3, "Arms of the Astral Self"), (6, "Visage of the Astral Self"), (11, "Body of the Astral Self"), (17, "Awakened Astral Self"))),
-            ("Way of the Drunken Master", ((3, "Bonus Proficiencies"), (3, "Drunken Technique"), (6, "Tipsy Sway"), (11, "Drunkard’s Luck"), (17, "Intoxicated Frenzy"))),
-            ("Way of the Four Elements", ((3, "Disciple of the Elements"), (3, "Elemental Disciplines"), (6, "Elemental Attunement"))),  # Note: Features are chosen from Elemental Disciplines
-            ("Way of the Kensei", ((3, "Path of the Kensei"), (6, "One with the Blade"), (11, "Sharpen the Blade"), (17, "Unerring Accuracy"))),
+            ("Way of the Drunken Master", ((3, "Bonus Proficiencies"), (3, "Drunken Technique"), (6, "Tipsy Sway"), (11, "Drunkard's Luck"), (17, "Intoxicated Frenzy"))),#Bonus Proficiencies- performance + brewer supplies
+            ("Way of the Four Elements", ((3, "Disciple of the Elements"), (6, "Elemental Disciplines"), (11, "Elemental Disciplines"), (17, "Elemental Disciplines"))),  # Note: Features are chosen from Elemental Disciplines
+            ("Way of the Kensei", ((3, "Path of the Kensei"), (6, "One with the Blade"), (11, "Sharpen the Blade"), (17, "Unerring Accuracy"))),#Path of the Kensei- kensei weapons- gain proficiency with chosen weapons | way of the brush- prof calluigrapher supp or painter supp
             ("Way of the Long Death", ((3, "Touch of Death"), (6, "Hour of Reaping"), (11, "Mastery of Death"), (17, "Touch of the Long Death"))),
             ("Way of the Open Hand", ((3, "Open Hand Technique"), (6, "Wholeness of Body"), (11, "Tranquility"), (17, "Quivering Palm"))),
             ("Way of Shadow", ((3, "Shadow Arts"), (6, "Shadow Step"), (11, "Cloak of Shadows"), (17, "Opportunist"))),
@@ -646,14 +646,14 @@ class Ranger(Character):
 
     def subclass_roll(self):
         list_of_subclasses = [
-            ("Beast Master", ((3, "Ranger's Companion"), (7, "Exceptional Training"), (11, "Bestial Fury"), (15, "Share Spells"))),
-            ("Fey Wanderer", ((3, "Dreadful Strikes"), (3, "Otherworldly Glamour"), (7, "Beguiling Twist"), (11, "Misty Wanderer"), (15, "Fade Away"))),
-            ("Gloom Stalker", ((3, "Dread Ambusher"), (3, "Umbral Sight"), (7, "Iron Mind"), (11, "Stalker's Flurry"), (15, "Shadowy Dodge"))),
-            ("Horizon Walker", ((3, "Detect Portal"), (3, "Planar Warrior"), (7, "Ethereal Step"), (11, "Distant Strike"), (15, "Spectral Defense"))),
+            ("Beast Master", ((3, "Ranger's Companion"), (3, "Primal Companion (Optional)") (7, "Exceptional Training"), (11, "Bestial Fury"), (15, "Share Spells"))),
+            ("Fey Wanderer", ((3, "Dreadful Strikes"), (3, "Fey Wanderer Magic"), (3, "Otherworldly Glamour"), (7, "Beguiling Twist"), (11, "Fey Reinforcements"), (15, "Misty Wanderer"))),#Otherworldly Glamour- skill prof
+            ("Gloom Stalker", ((3, "Gloom Stalker Magic"), (3, "Dread Ambusher"), (3, "Umbral Sight"), (7, "Iron Mind"), (11, "Stalker's Flurry"), (15, "Shadowy Dodge"))),#Iron Mind- saving throw prof
+            ("Horizon Walker", ((3, "Horizon Walker Magic"), (3, "Detect Portal"), (3, "Planar Warrior"), (7, "Ethereal Step"), (11, "Distant Strike"), (15, "Spectral Defense"))),
             ("Hunter", ((3, "Hunter's Prey"), (7, "Defensive Tactics"), (11, "Multiattack"), (15, "Superior Hunter's Defense"))),
-            ("Monster Slayer", ((3, "Hunter's Sense"), (3, "Slayer's Prey"), (7, "Supernatural Defense"), (11, "Magic-User's Nemesis"), (15, "Slayer's Counter"))),
-            ("Swarmkeeper", ((3, "Gathered Swarm"), (7, "Writhing Tide"), (11, "Mighty Swarm"), (15, "Swarming Dispersal"))),
-            ("Drakewarden", ((3, "Draconic Gift"), (3, "Drake Companion"), (7, "Bond of Fang and Scale"), (11, "Drake's Breath"), (15, "Perfected Bond")))
+            ("Monster Slayer", ((3,"Monster Slayer Magic"), (3, "Hunter's Sense"), (3, "Slayer's Prey"), (7, "Supernatural Defense"), (11, "Magic-User's Nemesis"), (15, "Slayer's Counter"))),
+            ("Swarmkeeper", ((3, "Swarmkeeper Magic"), (3, "Gathered Swarm"), (7, "Writhing Tide"), (11, "Mighty Swarm"), (15, "Swarming Dispersal"))),
+            ("Drakewarden", ((3, "Draconic Gift"), (3, "Drake Companion"), (7, "Bond of Fang and Scale"), (11, "Drake's Breath"), (15, "Perfected Bond")))#Drakewarden Origin, Drakewarden Origin- draconic or other language
         ]
         if self.__char_level__ >= 3:
             self.subclass = random.choice(list_of_subclasses)
@@ -712,14 +712,14 @@ class Rogue(Character):
     def subclass_roll(self):
         list_of_subclasses = [
             ("Arcane Trickster", ((3, "Spellcasting"), (3, "Mage Hand Legerdemain"), (9, "Magical Ambush"), (13, "Versatile Trickster"), (17, "Spell Thief"))),
-            ("Assassin", ((3, "Bonus Proficiencies"), (3, "Assassinate"), (9, "Infiltration Expertise"), (13, "Impostor"), (17, "Death Strike"))),
+            ("Assassin", ((3, "Bonus Proficiencies"), (3, "Assassinate"), (9, "Infiltration Expertise"), (13, "Impostor"), (17, "Death Strike"))),#Bonus Proficiencies- disguise kit & poisoners kit
             ("Inquisitive", ((3, "Ear for Deceit"), (3, "Eye for Detail"), (3, "Insightful Fighting"), (9, "Steady Eye"), (13, "Unerring Eye"), (17, "Eye for Weakness"))),
-            ("Mastermind", ((3, "Master of Intrigue"), (3, "Master of Tactics"), (9, "Insightful Manipulator"), (13, "Misdirection"), (17, "Soul of Deceit"))),
-            ("Phantom", ((3, "Whispers of the Dead"), (3, "Wails from the Grave"), (9, "Tokens of the Departed"), (13, "Ghost Walk"), (17, "Death Knell"))),
-            ("Scout", ((3, "Skirmisher"), (3, "Survivalist"), (9, "Superior Mobility"), (13, "Ambush Master"), (17, "Sudden Strike"))),
+            ("Mastermind", ((3, "Master of Intrigue"), (3, "Master of Tactics"), (9, "Insightful Manipulator"), (13, "Misdirection"), (17, "Soul of Deceit"))),#Master of Intrigue- disguise kit, forgery kit, 1 gaming set + 2 extra languages
+            ("Phantom", ((3, "Whispers of the Dead"), (3, "Wails from the Grave"), (9, "Tokens of the Departed"), (13, "Ghost Walk"), (17, "Death Friend"))),
+            ("Scout", ((3, "Skirmisher"), (3, "Survivalist"), (9, "Superior Mobility"), (13, "Ambush Master"), (17, "Sudden Strike"))),#Survivalist- skill prof, Superior Mobility +10 walk speed (climb & swim to)
             ("Soulknife", ((3, "Psionic Power"), (3, "Psychic Blades"), (9, "Soul Blades"), (13, "Psychic Veil"), (17, "Rend Mind"))),
             ("Swashbuckler", ((3, "Fancy Footwork"), (3, "Rakish Audacity"), (9, "Panache"), (13, "Elegant Maneuver"), (17, "Master Duelist"))),
-            ("Thief", ((3, "Fast Hands"), (3, "Second-Story Work"), (9, "Supreme Sneak"), (13, "Use Magic Device"), (17, "Thief's Reflexes")))
+            ("Thief", ((3, "Fast Hands"), (3, "Second-Story Work"), (9, "Supreme Sneak"), (13, "Use Magic Device"), (17, "Thief's Reflexes"))) #Use Magic Device- ignore class race & level req on magic items
         ]
         if self.__char_level__ >= 3:
             self.subclass = random.choice(list_of_subclasses)
@@ -785,14 +785,15 @@ class Sorcerer(Character):
     
     def subclass_roll(self):
         list_of_subclasses = [
-            ("Aberrant Mind", ((1, "Telepathic Speech"), (1, "Psionic Spells"), (6, "Psionic Sorcery"), (14, "Revelation in Flesh"), (18, "Warping Implosion"))),
+            ("Aberrant Mind", ((1, "Telepathic Speech"), (1, "Psionic Spells"), (6, "Psionic Sorcery"), (14, "Revelation in Flesh"), (18, "Warping Implosion"))),#Aberrant Origins
             ("Clockwork Soul", ((1, "Clockwork Magic"), (1, "Restore Balance"), (6, "Bastion of Law"), (14, "Trance of Order"), (18, "Clockwork Cavalcade"))),
             ("Divine Soul", ((1, "Divine Magic"), (1, "Favored by the Gods"), (6, "Empowered Healing"), (14, "Otherworldly Wings"), (18, "Unearthly Recovery"))),
-            ("Draconic Bloodline", ((1, "Dragon Ancestor"), (1, "Draconic Resilience"), (6, "Elemental Affinity"), (14, "Dragon Wings"), (18, "Draconic Presence"))),
-            ("Shadow Magic", ((1, "Eyes of the Dark"), (1, "Strength of the Grave"), (6, "Hound of Ill Omen"), (14, "Shadow Walk"), (18, "Umbral Form"))),
-            ("Storm Sorcery", ((1, "Wind Speaker"), (1, "Tempestuous Magic"), (6, "Heart of the Storm"), (6, "Storm Guide"), (14, "Storm's Fury"), (18, "Wind Soul"))),
+            ("Draconic Bloodline", ((1, "Dragon Ancestor"), (1, "Draconic Resilience"), (6, "Elemental Affinity"), (14, "Dragon Wings"), (18, "Draconic Presence"))),#Draconic Ancestry- lanaguage draconic + cha check x2 with dragons
+            ("Shadow Magic", ((1, "Eyes of the Dark"), (1, "Strength of the Grave"), (6, "Hound of Ill Omen"), (14, "Shadow Walk"), (18, "Umbral Form"))),#Shadow Sorcerer Quirks
+            ("Storm Sorcery", ((1, "Wind Speaker"), (1, "Tempestuous Magic"), (6, "Heart of the Storm"), (6, "Storm Guide"), (14, "Storm's Fury"), (18, "Wind Soul"))),#Wind Speaker- language primordial
             ("Wild Magic", ((1, "Wild Magic Surge"), (1, "Tides of Chaos"), (6, "Bend Luck"), (14, "Controlled Chaos"), (18, "Spell Bombardment"))),
-            ("Phoenix Sorcery", ((1, "Ignite"), (1, "Mantle of Flame"), (6, "Phoenix Spark"), (14, "Nourishing Fire"), (18, "Form of the Phoenix")))
+            ("Phoenix Sorcery", ((1, "Ignite"), (1, "Mantle of Flame"), (6, "Phoenix Spark"), (14, "Nourishing Fire"), (18, "Form of the Phoenix"))),
+            ("Lunar Sorcery"), (((1, "Moon Fire"), (6, "Lunar Boons"), (6, "Waxing and Waning"), (14, "Lunar Empowerment"), (18, "LunarPhenomenon"))) #Added was missing?
         ]
         self.subclass = random.choice(list_of_subclasses)
 
@@ -843,11 +844,11 @@ class Warlock(Character):
         list_of_subclasses = [
             ("Archfey", ((1, "Fey Presence"), (6, "Misty Escape"), (10, "Beguiling Defenses"), (14, "Dark Delirium"))),
             ("Celestial", ((1, "Bonus Cantrips"), (1, "Healing Light"), (6, "Radiant Soul"), (10, "Celestial Resilience"), (14, "Searing Vengeance"))),
-            ("Fathomless", ((1, "Tentacle of the Deeps"), (1, "Gift of the Sea"), (6, "Oceanic Soul"), (10, "Grasping Tentacles"), (14, "Fathomless Plunge"))),
+            ("Fathomless", ((1, "Tentacle of the Deeps"), (1, "Gift of the Sea"), (6, "Oceanic Soul"), (6,"Guardian Coil" ), (10, "Grasping Tentacles"), (14, "Fathomless Plunge"))),#Gift of the Sea- 40 swim
             ("Fiend", ((1, "Dark One's Blessing"), (6, "Dark One's Own Luck"), (10, "Fiendish Resilience"), (14, "Hurl Through Hell"))),
-            ("Genie", ((1, "Genie's Vessel"), (6, "Elemental Gift"), (10, "Sanctuary Vessel"), (14, "Limited Wish"))),
+            ("Genie", ((1, "Genie's Vessel"), (6, "Elemental Gift"), (10, "Sanctuary Vessel"), (14, "Limited Wish"))),#Genie Kind patron
             ("Great Old One", ((1, "Awakened Mind"), (6, "Entropic Ward"), (10, "Thought Shield"), (14, "Create Thrall"))),
-            ("Hexblade", ((1, "Hexblade's Curse"), (1, "Hex Warrior"), (6, "Accursed Specter"), (10, "Armor of Hexes"), (14, "Master of Hexes"))),
+            ("Hexblade", ((1, "Hexblade's Curse"), (1, "Hex Warrior"), (6, "Accursed Specter"), (10, "Armor of Hexes"), (14, "Master of Hexes"))),#Hex Warrior- prof medium armor, shieldm martial weapon
             ("Undead", ((1, "Form of Dread"), (6, "Grave Touched"), (10, "Necrotic Husk"), (14, "Spirit Projection"))),
             ("Undying", ((1, "Among the Dead"), (6, "Defy Death"), (10, "Undying Nature"), (14, "Indestructible Life")))
         ]
@@ -900,7 +901,7 @@ class Wizard(Character):
     
     def subclass_roll(self):
         list_of_subclasses = [
-            ("Bladesinging", ((2, "Training in War and Song"), (2, "Bladesong"), (6, "Extra Attack"), (10, "Song of Defense"), (14, "Song of Victory"))),
+            ("Bladesinging", ((2, "Training in War and Song"), (2, "Bladesong"), (6, "Extra Attack"), (10, "Song of Defense"), (14, "Song of Victory"))),#Training in War and Song- light armor + 1 one handed melee of choice + performance prof
             ("Chronurgy Magic", ((2, "Chronal Shift"), (2, "Temporal Awareness"), (6, "Momentary Stasis"), (10, "Arcane Abeyance"), (14, "Convergent Future"))),
             ("Graviturgy Magic", ((2, "Adjust Density"), (6, "Gravity Well"), (10, "Violent Attraction"), (14, "Event Horizon"))),
             ("Order of Scribes", ((2, "Wizardly Quill"), (2, "Awakened Spellbook"), (6, "Manifest Mind"), (10, "Master Scrivener"), (14, "One with the Word"))),
