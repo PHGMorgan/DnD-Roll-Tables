@@ -646,7 +646,7 @@ class Ranger(Character):
 
     def subclass_roll(self):
         list_of_subclasses = [
-            ("Beast Master", ((3, "Ranger's Companion"), (3, "Primal Companion (Optional)") (7, "Exceptional Training"), (11, "Bestial Fury"), (15, "Share Spells"))),
+            ("Beast Master", ((3, "Ranger's Companion"), (3, "Primal Companion (Optional)"), (7, "Exceptional Training"), (11, "Bestial Fury"), (15, "Share Spells"))),
             ("Fey Wanderer", ((3, "Dreadful Strikes"), (3, "Fey Wanderer Magic"), (3, "Otherworldly Glamour"), (7, "Beguiling Twist"), (11, "Fey Reinforcements"), (15, "Misty Wanderer"))),#Otherworldly Glamour- skill prof
             ("Gloom Stalker", ((3, "Gloom Stalker Magic"), (3, "Dread Ambusher"), (3, "Umbral Sight"), (7, "Iron Mind"), (11, "Stalker's Flurry"), (15, "Shadowy Dodge"))),#Iron Mind- saving throw prof
             ("Horizon Walker", ((3, "Horizon Walker Magic"), (3, "Detect Portal"), (3, "Planar Warrior"), (7, "Ethereal Step"), (11, "Distant Strike"), (15, "Spectral Defense"))),

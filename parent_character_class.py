@@ -245,58 +245,6 @@ class Character:
                         if apply_plus_two(random_stat()):
                             break
 
-    
-                
-
-
-        # if random.choice([0,1]) == 1:
-        #     if self.__char_stats_dict__[self.key_stat_index()[1]] < 20:
-        #         self.__char_stats_dict__[self.key_stat_index()[1]] += 1
-        #         if self.__char_stats_dict__[self.secondary_score()[1]] < 20:
-        #             self.__char_stats_dict__[self.secondary_score()[1]] += 1
-        #             return
-        #         else:
-        #             while True:
-        #                 random_stat = random.choice(stat_names_list)
-        #                 if self.__char_stats_dict__[random_stat] < 20:
-        #                     break
-        #             self.__char_stats_dict__[random_stat] += 1
-        #             return
-        #     else:
-        #         if self.__char_stats_dict__[self.secondary_score()[1]] < 20:
-        #             self.__char_stats_dict__[self.secondary_score()[1]] += 1
-        #             while True:
-        #                 random_stat = random.choice(stat_names_list)
-        #                 if self.__char_stats_dict__[random_stat] < 20:
-        #                     break
-        #             self.__char_stats_dict__[random_stat] += 1
-        #             return
-        #         else:
-        #             while True:
-        #                 random_stat_1 = random.choice(stat_names_list)
-        #                 if self.__char_stats_dict__[random_stat_1] < 20:
-        #                     break
-        #             self.__char_stats_dict__[random_stat_1] += 1
-        #             while True:
-        #                 random_stat_2 = random.choice(stat_names_list)
-        #                 if self.__char_stats_dict__[random_stat_2] < 20 and random_stat_2 != random_stat_1:
-        #                     break
-        #             self.__char_stats_dict__[random_stat_2] += 1
-        #             return
-        # else:
-        #     if self.__char_stats_dict__[self.key_stat_index()[1]] >= 19:
-        #         if self.__char_stats_dict__[self.secondary_score()[1]] >= 19:
-        #             while True:
-        #                 random_stat = random.choice(stat_names_list)
-        #                 if self.__char_stats_dict__[random_stat] < 19:
-        #                     break
-        #             self.__char_stats_dict__[random_stat] += 2
-        #             return
-        #         self.__char_stats_dict__[self.secondary_score()[1]] += 2
-        #         return
-        #     self.__char_stats_dict__[self.key_stat_index()[1]] += 2
-        #     return
-
 
 
     # Function for randomly rolling a character's level, features, and proficiencies. Odds of each level appearing can be altered in the "variables_page" file. Variables used are max_char_level and char_level_odds.

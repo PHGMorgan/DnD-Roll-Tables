@@ -24,10 +24,16 @@ class Race:
     def get_speed(self):
         return "Walk- 30"
     
+    def get_languages(self):
+        return []
+    
     def get_features(self):
         features_list = []
         features_list.extend(self.subrace[3])
         return features_list
+    
+    def get_proficiencies(self):
+        return []
     
     def get_race_stats(self, primary_stat, secondary_stat):
         race_stats_update = {}
@@ -80,53 +86,70 @@ class Race:
             race_stats.pop("custom_stat_3")
         return race_stats
     
-    def get_proficiencies(self):
-        return []
-    
     def tough_flag(self):
         return (False, 0)
 
 
 
 class Aarakocra(Race):
-    def __init__(self):
-        self.aarakocra_subrace_list = [
+    aarakocra_subrace_list = [
             ("Aarakocra", "Aarakocra", ({"custom_stat_1": 2, "custom_stat_2": 1}, {"custom_stat_1": 1, "custom_stat_2": 1, "custom_stat_3": 1}), ((1, "Flight"), (1, "Talons"), (1, "Wind Caller"), (1, "Languages- Common/Other"))),
             ("Aarakocra", "Aarakocra", [{"DEX": 2, "WIS": 1}], ((1, "Flight"), (1, "Talons"), (1, "Languages- Common/Aarakocra/Auran")))
         ]
+
+    def __init__(self):
         super().__init__()
 
     def subrace_roll(self):
-        return random.choice(self.aarakocra_subrace_list)
+        return random.choice(Aarakocra.aarakocra_subrace_list)
 
     def get_speed(self):
-        if self.subrace == self.aarakocra_subrace_list[0]:
+        if self.subrace == Aarakocra.aarakocra_subrace_list[0]:
             return "Walk- 30, Fly- 30"
         else:
             return "Walk- 25, Fly- 50"
+        
+    def get_languages(self):
+        if self.subrace == Aarakocra.aarakocra_subrace_list [0]:
+            return ["Common", "Other"]
+        else:
+            return ["Common", "Aarakocra", "Auran"]
 
 
 
 class Aasimar(Race):
-    def __init__(self):
-        self.aasimar_subrace_list = [
-            ("Aasimar", "Aasimar", ({"custom_stat_1": 2, "custom_stat_2": 1}, {"custom_stat_1": 1, "custom_stat_2": 1, "custom_stat_3": 1}), ((1, self.celestial_feature()), (1, "Darkvision- 60"), (1, "Celestial Resistance"), (1, "Healing Hands"), (1, "Light Bearer"), (1, "Celestial Revelation"), (1, self.celestial_revelation()), (1, "Languages- Common/Other"))),
+    aasimar_subrace_list = [
+            ("Aasimar", "Aasimar", ({"custom_stat_1": 2, "custom_stat_2": 1}, {"custom_stat_1": 1, "custom_stat_2": 1, "custom_stat_3": 1}), ((1, "celestial feature placeholder"), (1, "Darkvision- 60"), (1, "Celestial Resistance"), (1, "Healing Hands"), (1, "Light Bearer"), (3, "celestial revelation placeholder"), (1, "Languages- Common/Other"))),
             ("Aasimar", "Protector Aasimar", [{"CHA": 2, "WIS": 1}], ((1, "Darkvision- 60"), (1, "Celestial Resistance"), (1, "Healing Hands"), (1, "Light Bearer"), (1, "Radiant Soul"), (1, "Languages- Common/Celestial"))),
             ("Aasimar", "Scourge Aasimar", [{"CHA": 2, "CON": 1}], ((1, "Darkvision- 60"), (1, "Celestial Resistance"), (1, "Healing Hands"), (1, "Light Bearer"), (1, "Radiant Consumption"), (1, "Languages- Common/Celestial"))),
             ("Aasimar", "Fallen Aasimar", [{"CHA": 2, "STR": 1}], ((1, "Darkvision- 60"), (1, "Celestial Resistance"), (1, "Healing Hands"), (1, "Light Bearer"), (1, "Necrotic Shroud"), (1, "Languages- Common/Celestial")))
         ]
+
+    def __init__(self):
         super().__init__()
-         
 
     def subrace_roll(self):
-        return random.choice(self.aasimar_subrace_list)
+        subrace = list(random.choice(Aasimar.aasimar_subrace_list))
+        if subrace == Aasimar.aasimar_subrace_list[0]:
+            cel_feat = self.celestial_feature()
+            cel_rev = self.celestial_revelation()
+            ability = list(subrace[3])
+            ability[0][1] = f"Celestial Feature: {cel_feat}"
+            ability[6][1] = f"Celestial Revelation: {cel_rev}"
+        return tuple(subrace)
 
     def get_size(self):
-        if self.subrace != self.aasimar_subrace_list[0]:
+        if self.subrace != Aasimar.aasimar_subrace_list[0]:
             return "Size- Medium"
         if random.choice([0,1]) == 1:
             return "Size- Medium"
         return "Size- Small"
+    
+    def get_languages(self):
+        if self.subrace in [Aasimar.aasimar_subrace_list[1], Aasimar.aasimar_subrace_list[2], Aasimar.aasimar_subrace_list[3]]:
+            return ["Common", "Celestial"]
+        else:
+            return ["Common", "Other"]
 
     def celestial_feature(self):
         function_list = [
@@ -137,7 +160,7 @@ class Aasimar(Race):
             "A ghostly halo crowning your head",
             "Rainbows gleaming on your skin"
         ]
-        return random.choice(function_list)
+        self.celes_feat = random.choice(function_list)
     
     def celestial_revelation(self):
         function_list = [
@@ -145,7 +168,7 @@ class Aasimar(Race):
             "Radiant Consumption",
             "Radiant Soul"
         ]
-        return random.choice(function_list)
+        self.celes_rev = random.choice(function_list)
 
 
 
