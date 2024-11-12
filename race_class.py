@@ -1,6 +1,18 @@
 import random
-from variables_page import stat_names_list
+from variables_page import *
 
+def replace_placeholder(roll_list, replacement):
+    for index, item in enumerate(roll_list):
+        if isinstance(item, list):
+            for i, nested_item in enumerate(item):
+                if isinstance(nested_item, list):
+                    if nested_item[1] == "Placeholder":
+                        roll_list[index][i][1] = replacement
+                        return roll_list
+        elif item == "Placeholder":
+                roll_list[index] = replacement
+                return roll_list
+    return roll_list
 
 class Race:
     def __init__(self):
@@ -8,14 +20,19 @@ class Race:
        self.subrace = self.subrace_roll()
        self.size = self.get_size()
        self.speed = self.get_speed()
-       self.get_proficiencies()
-       self.get_size()
-       self.get_speed()
 
     def get_race_name(self):
         return self.subrace[0]
 
     def get_subrace_name(self):
+        if self.subrace[0] == self.subrace[1]:
+            self.subrace[1] = "None"
+            return self.subrace[0]
+        elif self.subrace[1] == "None":
+            return self.subrace[0]
+        return self.subrace[1]
+    
+    def get_true_subrace(self):
         return self.subrace[1]
 
     def get_size(self):
@@ -92,25 +109,22 @@ class Race:
 
 
 class Aarakocra(Race):
-    aarakocra_subrace_list = [
-            ("Aarakocra", "Aarakocra", ({"custom_stat_1": 2, "custom_stat_2": 1}, {"custom_stat_1": 1, "custom_stat_2": 1, "custom_stat_3": 1}), ((1, "Flight"), (1, "Talons"), (1, "Wind Caller"), (1, "Languages- Common/Other"))),
-            ("Aarakocra", "Aarakocra", [{"DEX": 2, "WIS": 1}], ((1, "Flight"), (1, "Talons"), (1, "Languages- Common/Aarakocra/Auran")))
-        ]
-
     def __init__(self):
         super().__init__()
 
     def subrace_roll(self):
-        return random.choice(Aarakocra.aarakocra_subrace_list)
+        roll = random.choice(aarakocra_subrace_list)
+        self.subrace_check = roll
+        return roll
 
     def get_speed(self):
-        if self.subrace == Aarakocra.aarakocra_subrace_list[0]:
+        if self.subrace_check == aarakocra_subrace_list[0]:
             return "Walk- 30, Fly- 30"
         else:
             return "Walk- 25, Fly- 50"
         
     def get_languages(self):
-        if self.subrace == Aarakocra.aarakocra_subrace_list [0]:
+        if self.subrace_check == aarakocra_subrace_list[0]:
             return ["Common", "Other"]
         else:
             return ["Common", "Aarakocra", "Auran"]
@@ -118,35 +132,28 @@ class Aarakocra(Race):
 
 
 class Aasimar(Race):
-    aasimar_subrace_list = [
-            ("Aasimar", "Aasimar", ({"custom_stat_1": 2, "custom_stat_2": 1}, {"custom_stat_1": 1, "custom_stat_2": 1, "custom_stat_3": 1}), ((1, "celestial feature placeholder"), (1, "Darkvision- 60"), (1, "Celestial Resistance"), (1, "Healing Hands"), (1, "Light Bearer"), (3, "celestial revelation placeholder"), (1, "Languages- Common/Other"))),
-            ("Aasimar", "Protector Aasimar", [{"CHA": 2, "WIS": 1}], ((1, "Darkvision- 60"), (1, "Celestial Resistance"), (1, "Healing Hands"), (1, "Light Bearer"), (1, "Radiant Soul"), (1, "Languages- Common/Celestial"))),
-            ("Aasimar", "Scourge Aasimar", [{"CHA": 2, "CON": 1}], ((1, "Darkvision- 60"), (1, "Celestial Resistance"), (1, "Healing Hands"), (1, "Light Bearer"), (1, "Radiant Consumption"), (1, "Languages- Common/Celestial"))),
-            ("Aasimar", "Fallen Aasimar", [{"CHA": 2, "STR": 1}], ((1, "Darkvision- 60"), (1, "Celestial Resistance"), (1, "Healing Hands"), (1, "Light Bearer"), (1, "Necrotic Shroud"), (1, "Languages- Common/Celestial")))
-        ]
-
     def __init__(self):
         super().__init__()
 
     def subrace_roll(self):
-        subrace = list(random.choice(Aasimar.aasimar_subrace_list))
-        if subrace == Aasimar.aasimar_subrace_list[0]:
+        roll = random.choice(aasimar_subrace_list)
+        self.subrace_check = roll
+        if roll == aasimar_subrace_list[0]:
             cel_feat = self.celestial_feature()
             cel_rev = self.celestial_revelation()
-            ability = list(subrace[3])
-            ability[0][1] = f"Celestial Feature: {cel_feat}"
-            ability[6][1] = f"Celestial Revelation: {cel_rev}"
-        return tuple(subrace)
+            roll = replace_placeholder(roll, f"Celestial Feature: {cel_feat}")
+            roll = replace_placeholder(roll, f"Celestial Revelation: {cel_rev}")
+        return roll
 
     def get_size(self):
-        if self.subrace != Aasimar.aasimar_subrace_list[0]:
+        if self.subrace_check != aasimar_subrace_list[0]:
             return "Size- Medium"
         if random.choice([0,1]) == 1:
             return "Size- Medium"
         return "Size- Small"
     
     def get_languages(self):
-        if self.subrace in [Aasimar.aasimar_subrace_list[1], Aasimar.aasimar_subrace_list[2], Aasimar.aasimar_subrace_list[3]]:
+        if self.subrace_check in [aasimar_subrace_list[1], aasimar_subrace_list[2], aasimar_subrace_list[3]]:
             return ["Common", "Celestial"]
         else:
             return ["Common", "Other"]
@@ -160,7 +167,7 @@ class Aasimar(Race):
             "A ghostly halo crowning your head",
             "Rainbows gleaming on your skin"
         ]
-        self.celes_feat = random.choice(function_list)
+        return random.choice(function_list)
     
     def celestial_revelation(self):
         function_list = [
@@ -168,77 +175,118 @@ class Aasimar(Race):
             "Radiant Consumption",
             "Radiant Soul"
         ]
-        self.celes_rev = random.choice(function_list)
+        return random.choice(function_list)
 
 
 
 class Bugbear(Race):
     def __init__(self):
-        self.bugbear_subrace_list = [
-            ("Bugbear", "Bugbear", ({"custom_stat_1": 2, "custom_stat_2": 1}, {"custom_stat_1": 1, "custom_stat_2": 1, "custom_stat_3": 1}), ((1, "Darkvision- 60"), (1, "Fey Ancestry"), (1, "Long-Limbed"), (1, "Powerful Build"), (1, "Sneaky"), (1, "Surprise Attack"), (1, "Languages- Common/Other"))),
-            ("Bugbear", "Bugbear", [{"STR": 2, "DEX": 1}], ((1, "Darkvision- 60"), (1, "Long-Limbed"), (1, "Powerful Build"), (1, "Sneaky"), (1, "Surprise Attack"), (1, "Languages- Common/Goblin")))
-        ]
         super().__init__()
 
     def subrace_roll(self):
-        return random.choice(self.bugbear_subrace_list)
+        roll = random.choice(bugbear_subrace_list)
+        self.subrace_check = roll
+        return roll
+    
+    def get_languages(self):
+        if self.subrace_check == bugbear_subrace_list [0]:
+            return ["Common", "Other"]
+        else:
+            return ["Common", "Goblin"]
 
 
 
 class Centaur(Race):
     def __init__(self):
-        self.centaur_subrace_list = [
-            ("Centaur", "Centaur", ({"custom_stat_1": 2, "custom_stat_2": 1}, {"custom_stat_1": 1, "custom_stat_2": 1, "custom_stat_3": 1}), ((1, "Charge"), (1, "Equine Build"), (1, "Hooves"), (1, "Natural Affinity"), (1, "Languages- Common/Other"))),
-            ("Centaur", "Centaur", [{"STR": 2, "WIS": 1}], ((1, "Fey"), (1, "Charge"), (1, "Hooves"), (1, "Equine Build"), (1, "Survivor"), (1, "Languages- Common/Sylvan")))
-        ]
         super().__init__()
 
     def subrace_roll(self):
-        return random.choice(self.centaur_subrace_list)
+        roll = random.choice(centaur_subrace_list)
+        self.subrace_check = roll
+        return roll
 
     def get_speed(self):
         return "Walk- 40"
+    
+    def get_languages(self):
+        if self.subrace_check == centaur_subrace_list [0]:
+            return ["Common", "Other"]
+        else:
+            return ["Common", "Sylvan"]
 
 
 
 class Changeling(Race):
     def __init__(self):
-        self.changeling_subrace_list = [
-            ("Changeling", "Changeling", ({"custom_stat_1": 2, "custom_stat_2": 1}, {"custom_stat_1": 1, "custom_stat_2": 1, "custom_stat_3": 1}), ((1, "Changeling Instincts"), (1, "Shapechanger"), (1, "Languages- Common/Other"))),
-            ("Changeling", "Changeling", [{"CHA": 2, "custom_stat_2": 1}], ((1, "Shapechanger"), (1, "Changeline Instincts"), (1, "Languages- Common/Other/Other")))
-        ]
         super().__init__()
     
     def subrace_roll(self):
-        return random.choice(self.changeling_subrace_list)
+        roll = random.choice(changeling_subrace_list)
+        self.subrace_check = roll
+        return roll
 
     def get_size(self):
-        if self.subrace != self.changeling_subrace_list[0]:
+        if self.subrace_check != changeling_subrace_list[0]:
             return "Size- Medium"
         if random.choice([0,1]) == 1:
             return "Size- Medium"
         return "Size- Small"
+    
+    def get_languages(self):
+        if self.subrace_check == changeling_subrace_list[0]:
+            return ["Common", "Other"]
+        else:
+            return ["Common", "Other", "Other"]
 
 
 
 class Dragonborn(Race):
     def __init__(self):
-        self.dragonborn_color()
-        self.chromatic_ancestry()
-        self.metallic_ancestry()
-        self.gem_ancestry()
-        self.dragonborn_subrace_list = [
-            ("Dragonborn", f"{self.dragon_color[0]} Dragonborn", [{"STR": 2, "CHA": 1}], ((1, f"Draconic Ancestry- {self.dragon_color[0]} Dragon"), (1, f"Breath Weapon- {self.dragon_color[1]} {self.dragon_color[2]}"), (1, f"Damage Resistance- {self.dragon_color[1]}"), (1, "Languages- Common/Draconic"))),
-            ("Dragonborn", f"{self.dragon_color[0]} Draconblood Dragonborn", [{"INT": 2, "CHA": 1}], ((1, "Darkvision- 60"), (1, "Forceful Presence"), (1, f"Draconic Ancestry- {self.dragon_color[0]} Dragon"), (1, f"Breath Weapon- {self.dragon_color[1]} {self.dragon_color[2]}"), (1, "Languages- Common/Draconic"))),
-            ("Dragonborn", f"{self.dragon_color[0]} Ravenite Dragonborn", [{"STR": 2, "CON": 1}], ((1, "Darkvision- 60"), (1, "Vegeful Assault"), (1, f"Draconic Ancestry- {self.dragon_color[0]} Dragon"), (1, f"Breath Weapon- {self.dragon_color[1]} {self.dragon_color[2]}"), (1, "Languages- Common/Draconic"))),
-            ("Dragonborn", "Chromatic Dragonborn", ({"custom_stat_1": 2, "custom_stat_2": 1}, {"custom_stat_1": 1, "custom_stat_2": 1, "custom_stat_3": 1}), ((1, f"Chromatic Ancestry- {self.chromatic_color[0]}"), (1, "Breath Weapon- 5 by 30ft. line (DEX save)"), (1, f"Draconic Resistance- {self.chromatic_color[1]}"), (5, "Chromatic Warding"), (1, "Languages- Common/Other"))),
-            ("Dragonborn", "Metallic Dragonborn", ({"custom_stat_1": 2, "custom_stat_2": 1}, {"custom_stat_1": 1, "custom_stat_2": 1, "custom_stat_3": 1}), ((1, f"Metallic Ancestry- {self.metallic_color[0]}"), (1, "Breath Weapon- 15ft. cone (DEX save)"), (1, f"Draconic Resistance- {self.metallic_color[1]}"), (5, "Metallic Breath Weapon"), (1, "Languages- Common/Other"))),
-            ("Dragonborn", "Gem Dragonborn", ({"custom_stat_1": 2, "custom_stat_2": 1}, {"custom_stat_1": 1, "custom_stat_2": 1, "custom_stat_3": 1}), ((1, f"Gem Ancestry- {self.gem_color[0]}"), (1, "Breath Weapon- 15ft. cone (DEX save)"), (1, "Psionic Mind"), (1, f"Draconic Resistance- {self.gem_color[1]}"), (5, "Gem Flight"), (1, "Languages- Common/Other")))
-        ]
         super().__init__()
 
     def subrace_roll(self):
-        return random.choice(self.dragonborn_subrace_list)
+        roll = random.choice(dragonborn_subrace_list)
+        self.subrace_check = roll
+        if roll == dragonborn_subrace_list[0]:
+            color = self.dragonborn_color()
+            roll = replace_placeholder(roll, f"{color[0]} Dragonborn")
+            roll = replace_placeholder(roll, f"Draconic Ancestry- {color[0]} Dragon")
+            roll = replace_placeholder(roll, f"Breath Weapon- {color[1]} {color[2]}")
+            roll = replace_placeholder(roll, f"Damage Resistance- {color[1]}")
+            return roll
+        elif roll == dragonborn_subrace_list[1]:
+            color = self.dragonborn_color()
+            roll = replace_placeholder(roll, f"{color[0]} Draconblood Dragonborn")
+            roll = replace_placeholder(roll, f"Draconic Ancestry- {color[0]} Dragon")
+            roll = replace_placeholder(roll, f"Breath Weapon- {color[1]} {color[2]}")
+            return roll
+        elif roll == dragonborn_subrace_list[2]:
+            color = self.dragonborn_color()
+            roll = replace_placeholder(roll, f"{color[0]} Ravenite Dragonborn")
+            roll = replace_placeholder(roll, f"Draconic Ancestry- {color[0]} Dragon")
+            roll = replace_placeholder(roll, f"Breath Weapon- {color[1]} {color[2]}")
+            return roll
+        elif roll == dragonborn_subrace_list[3]:
+            color = self.chromatic_ancestry()
+            roll = replace_placeholder(roll, f"Chromatic Ancestry- {color[0]}")
+            roll = replace_placeholder(roll, f"Draconic Resistance- {color[1]}")
+            return roll
+        elif roll == dragonborn_subrace_list[4]:
+            color = self.metallic_ancestry()
+            roll = replace_placeholder(roll, f"Metallic Ancestry- {color[0]}")
+            roll = replace_placeholder(roll, f"Draconic Resistance- {color[1]}")
+            return roll
+        else:
+            color = self.gem_ancestry()
+            roll = replace_placeholder(roll, f"Gem Ancestry- {color[0]}")
+            roll = replace_placeholder(roll, f"Draconic Resistance- {color[1]}")
+            return roll
+
+    def get_languages(self):
+        if self.subrace_check in [dragonborn_subrace_list[0], dragonborn_subrace_list[1], dragonborn_subrace_list[2]]:
+            return ["Common" , "Draconic"]
+        else:
+            return ["Common", "Other"]
 
     def dragonborn_color(self):
         color_list = [
@@ -253,7 +301,7 @@ class Dragonborn(Race):
             ("Silver", "Cold", "15 ft. cone (CON save)"),
             ("White", "Cold", "15 ft. cone (CON save)")
         ]
-        self.dragon_color = random.choice(color_list)
+        return random.choice(color_list)
 
     def chromatic_ancestry(self):
         color_list = [
@@ -263,7 +311,7 @@ class Dragonborn(Race):
             ("Red", "Fire"),
             ("White", "Cold")
         ]
-        self.chromatic_color = random.choice(color_list)
+        return random.choice(color_list)
 
     def metallic_ancestry(self):
         color_list = [
@@ -273,7 +321,7 @@ class Dragonborn(Race):
             ("Gold", "Fire"),
             ("Silver", "Cold")
         ]
-        self.metallic_color = random.choice(color_list)
+        return random.choice(color_list)
 
     def gem_ancestry(self):
         color_list = [
@@ -283,39 +331,37 @@ class Dragonborn(Race):
             ("Sapphire", "Thunder"),
             ("Topaz", "Necrotic")
         ]
-        self.gem_color = random.choice(color_list)
+        return random.choice(color_list)
 
 
 
 class Dwarf(Race):
     def __init__(self):
-        self.dwarf_subrace_list = [
-            ("Dwarf", "Hill Dwarf", [{"CON": 2, "WIS": 1}], ((1, "Darkvision- 60"), (1, "Dwarven Resilience"), (1, "Dwarven Combat Training"), (1, "Tool Proficiency"), (1, "Stonecunning"), (1, "Dwarven Toughnes"), (1, "Languages- Common/Dwarvish"))),
-            ("Dwarf", "Mountain Dwarf", [{"CON": 2, "STR": 1}], ((1, "Darkvision- 60"), (1, "Dwarven Resilience"), (1, "Dwarven Combat Training"), (1, "Tool Proficiency"), (1, "Stonecunning"), (1, "Dwarven Armor Training"), (1, "Languages- Common/Dwarvish"))),
-            ("Dwarf", "Mark of Warding Dwarf", [{"CON": 2, "INT": 1}], ((1, "Darkvision- 60"), (1, "Dwarven Resilience"), (1, "Dwarven Combat Training"), (1, "Tool Proficiency"), (1, "Stonecunning"), (1, "Warder's Intuition"), (1, "Wards and Seals"), (1, "Spells of the Mark"), (1, "Languages- Common/Dwarvish"))),
-            ("Duergar", "Duergar", ({"custom_stat_1": 2, "custom_stat_2": 1}, {"custom_stat_1": 1, "custom_stat_2": 1, "custom_stat_3": 1}), ((1, "Darkvision- 120"), (3, "Duergar Magic"), (1, "Dwarven Resilience"), (1, "Psionic Fortitude"), (1, "Languages- Common/Dwarvish"))),
-            ("Duergar", "Duergar", [{"CON": 2, "STR": 1}], ((1, "Superior Darkvision- 120"), (1, "Duergar Resilience"), (1, "Dwarven Combat Training"), (1, "Tool Proficiency"), (1, "Stonecunning"), (3, "Duergar Magic"), (1, "Sulight Sensitivity"), (1, "Languages- Common/Dwarvish")))
-        ]
         super().__init__()
 
     def subrace_roll(self):
-        return random.choices(self.dwarf_subrace_list, weights=[2,2,2,1,1],k=1)[0]
+        roll = random.choices(dwarf_subrace_list, weights=[2,2,2,1,1],k=1)[0]
+        self.subrace_check = roll
+        return roll
+    
+    def get_languages(self):
+        return ["Common", "Dwarvish"]
 
     def get_speed(self):
-        if self.subrace == self.dwarf_subrace_list[3]:
+        if self.subrace_check == dwarf_subrace_list[3]:
             return "Walk- 30"
         return "Walk- 25"
     
     def tough_flag(self):
-        if self.subrace == self.dwarf_subrace_list[0]:
+        if self.subrace_check == dwarf_subrace_list[0]:
             return (True, 1)
         else:
             return (False, 0)
         
     def get_proficiencies(self):
-        if self.subrace == self.dwarf_subrace_list[1]:
+        if self.subrace == dwarf_subrace_list[1]:
             return ["light armor", "medium armor"]
-        elif self.subrace == self.dwarf_subrace_list[4]:
+        elif self.subrace == dwarf_subrace_list[4]:
             return ["battleaxe", "handaxe", "light hammer", "warhammer"]
         else:
             return []
@@ -324,46 +370,48 @@ class Dwarf(Race):
 
 class Elf(Race):
     def __init__(self):
-        self.eladrin_season()
-        self.elf_subrace_list = [
-            ("Elf", "Dark Elf", [{"DEX": 2, "CHA": 1}], ((1, "Superior Darkvision- 120"), (1, "Sunlight Sensitivity"), (1, "Drow Magic"), (1, "Drow Weapon Training"), (1, "Fey Ancestry"), (1, "Trance"), (1, "Keen Senses"), (1, "Languages- Common/Elven"))),
-            ("Elf", "High Elf", [{"DEX": 2, "INT": 1}], ((1, "Darkvision- 60"), (1, "Cantrip"), (1, "Elf Weapon Training"), (1, "Extra Language"), (1, "Fey Ancestry"), (1, "Trance"), (1, "Keen Senses"), (1, "Languages- Common/Elven/Other"))),
-            ("Elf", "Wood Elf", [{"DEX": 2, "WIS": 1}], ((1, "Darkvision- 60"), (1, "Elf Weapon Training"), (1, "Fleet of Foot"), (1, "Mask of the Wild"), (1, "Fey Ancestry"), (1, "Trance"), (1, "Keen Senses"), (1, "Languages- Common/Elven"))),
-            ("Elf", "Pallid Elf", [{"DEX": 2, "WIS": 1}], ((1, "Darkvision- 60"), (1, "Incisive Sense"), (1, "Blessing of the Moonweaver"), (1, "Fey Ancestry"), (1, "Trance"), (1, "Keen Senses"), (1, "Languages- Common/Elven"))),
-            ("Elf", "Mark of Shadow Elf", [{"DEX": 2, "CHA": 1}], ((1, "Darkvision- 60"), (1, "Cunning Intuition"), (1, "Shape Shadows"), (1, "Spells of the Mark"), (1, "Fey Ancestry"), (1, "Trance"), (1, "Keen Senses"), (1, "Languages- Common/Elven"))),
-            ("Eladrin", f"{self.season} Eladrin", ({"custom_stat_1": 2, "custom_stat_2": 1}, {"custom_stat_1": 1, "custom_stat_2": 1, "custom_stat_3": 1}), ((1, "Darkvision- 60"), (1, "Fey Ancestry"), (1, "Fey Step"), (1, "Keen Senses"), (1, "Trance"), (1, "Languages- Common/Other"))),
-            ("Eladrin", f"{self.season} Eladrin", [{"DEX": 2, "CHA": 1}], ((1, "Darkvision- 60"), (1, "Fey Ancestry"), (1, "Trance"), (1, "Keen Senses"), (1, "Fey Step"), (1, "Languages- Common/Elven"))),
-            ("Sea Elf", "Sea Elf", ({"custom_stat_1": 2, "custom_stat_2": 1}, {"custom_stat_1": 1, "custom_stat_2": 1, "custom_stat_3": 1}), ((1, "Darkvision- 60"), (1, "Child of the Sea"), (1, "Fey Ancestry"), (1, "Friend of the Sea"), (1, "Keen Senses"), (1, "Trance"), (1, "Languages- Common/Other"))),
-            ("Sea Elf", "Sea Elf", [{"DEX": 2, "CON": 1}], ((1, "Darkvision- 60"), (1, "Fey Ancestry"), (1, "Trance"), (1, "Keen Senses"), (1, "Sea Elf Training"), (1, "Child of the Sea"), (1, "Friend of the Sea"), (1, "Languages- Common/Elven/Aquan"))),
-            ("Shadar-Kai", "Shadar-Kai", ({"custom_stat_1": 2, "custom_stat_2": 1}, {"custom_stat_1": 1, "custom_stat_2": 1, "custom_stat_3": 1}), ((1, "Darkvision- 60"), (1, "Blessing of the Raven Queen"), (1, "Fey Ancestry"), (1, "Keen Senses"), (1, "Necrotic Resistance"), (1, "Trance"), (1, "Languages- Common/Other"))),
-            ("Shadar-Kai", "Shadar-Kai", [{"DEX": 2, "CON": 1}], ((1, "Darkvision- 60"), (1, "Fey Ancestry"), (1, "Trance"), (1, "Keen Senses"), (1, "Necrotic Resistance"), (1, "Blessing of the Raven Queen"), (1, "Languages- Common/Elven")))
-        ]
         super().__init__()
 
     def subrace_roll(self):
-        return random.choices(self.elf_subrace_list, weights=[3,3,3,3,2,1,1,1,1,1,1], k=1)[0]
+        roll =  random.choices(elf_subrace_list, weights=[3,3,3,3,2,1,1,1,1,1,1], k=1)[0]
+        self.subrace_check = roll
+        if roll in [elf_subrace_list[5], elf_subrace_list[6]]:
+            season = self.eladrin_season()
+            roll = replace_placeholder(roll, f"{season} Eladrin")
+            return roll
+        return roll
+    
+    def get_languages(self):
+        if self.subrace_check == elf_subrace_list[1]:
+            return ["Common", "Elven", "Other"]
+        elif self.subrace_check in [elf_subrace_list[5], elf_subrace_list[7], elf_subrace_list[9]]:
+            return ["Common", "Other"]
+        elif self.subrace_check == elf_subrace_list[8]:
+            return ["Common", "Elven", "Aquan"]
+        else:
+            return ["Common", "Elven"]
         
     def get_proficiencies(self):
-        if self.subrace == self.elf_subrace_list[0]:
+        if self.subrace == elf_subrace_list[0]:
             return ["rapier", "shorsword", "hand crossbow"]
-        elif self.subrace in [self.elf_subrace_list[1], self.elf_subrace_list[2]]:
+        elif self.subrace in [elf_subrace_list[1], elf_subrace_list[2]]:
             return ["longsword", "shortsword", "shortbow", "longbow"]
-        elif self.subrace == self.elf_subrace_list[8]:
+        elif self.subrace == elf_subrace_list[8]:
             return ["spear", "trident", "light crossbow", "net"]
         else:
             return []
 
     def get_speed(self):
-        if self.subrace == self.elf_subrace_list[2]:
+        if self.subrace == elf_subrace_list[2]:
             return "Walk- 35"
-        elif self.subrace == self.elf_subrace_list[7]:
+        elif self.subrace == elf_subrace_list[7]:
             return "Walk- 30, Swim- 30"
         else:
             return "Walk- 30"
         
     def eladrin_season(self):
         season_list = ["Autum", "Winter", "Spring", "Summer"]
-        self.season = random.choice(season_list)
+        return random.choice(season_list)
 
 
 
@@ -372,7 +420,12 @@ class Fairy(Race):
         super().__init__()
 
     def subrace_roll(self):
-        return ("Fairy", "Fairy", ({"custom_stat_1": 2, "custom_stat_2": 1}, {"custom_stat_1": 1, "custom_stat_2": 1, "custom_stat_3": 1}),((1, "Fairy Magic"), (1, "Flight"), (1, "Languages- Common/Other")))
+        roll = ["Fairy", "Fairy", [{"custom_stat_1": 2, "custom_stat_2": 1}, {"custom_stat_1": 1, "custom_stat_2": 1, "custom_stat_3": 1}],[[1, "Fairy Magic"], [1, "Flight"], ]]
+        self.subrace_check = roll
+        return roll
+    
+    def get_languages(self):
+        return ["Common", "Other"]
         
     def get_size(self):
         return "Size- Small"
@@ -384,45 +437,45 @@ class Fairy(Race):
 
 class Firbolg(Race):
     def __init__(self):
-        self.firbolg_subrace_list = [
-            ("Firbolg", "Firbolg", ({"custom_stat_1": 2, "custom_stat_2": 1}, {"custom_stat_1": 1, "custom_stat_2": 1, "custom_stat_3": 1}), ((1, "Firbolg Magic"), (1, "Hidden Step"), (1, "Powerful Build"), (1, "Speech of Beast and Leaf"), (1, "Languages- Common/Other"))),
-            ("Firbolg", "Firbolg", [{"WIS": 2, "STR": 1}], ((1, "Firbolg Magic"), (1, "Hidden Step"), (1, "Powerful Build"), (1, "Speech of Beast and Leaf"), (1, "Languages- Common/Elvish/Giant")))
-        ]
         super().__init__()
 
     def subrace_roll(self):
-        return random.choice(self.firbolg_subrace_list)
+        roll = random.choice(firbolg_subrace_list)
+        self.subrace_check = roll
+        return roll
+    
+    def get_languages(self):
+        if self.subrace_check == firbolg_subrace_list[0]:
+            return["Common", "Other"]
+        return["Common", "Elvish", "Giant"]
 
 
 
 class Genasi(Race):
     def __init__(self):
-        self.genasi_subrace_list = [
-            ("Air Genasi", "Air Genasi", ({"custom_stat_1": 2, "custom_stat_2": 1}, {"custom_stat_1": 1, "custom_stat_2": 1, "custom_stat_3": 1}), ((1, "Darkvision- 60"), (1, "Unending Breath"), (1, "Lightning Resistance"), (1, "Mingle with the Wind"), (1, "Languages- Common/Other"))),
-            ("Air Genasi", "Air Genasi", [{"CON": 2, "DEX": 1}], ((1, "Unending Breath"), (1, "Mingle with the Wind"), (1, "Languages- Common/Primordial"))),
-            ("Earth Genasi", "Earth Genasi", ({"custom_stat_1": 2, "custom_stat_2": 1}, {"custom_stat_1": 1, "custom_stat_2": 1, "custom_stat_3": 1}), ((1, "Darkvision- 60"), (1, "Earth Walk"), (1, "Merge with Stone"), (1, "Languages- Common/Other"))),
-            ("Earth Genasi", "Earth Genasi", [{"CON": 2, "STR": 1}], ((1, "Earth Walk"), (1, "Merge with Stone"), (1, "Languages- Common/Primordial"))),
-            ("Fire Genasi", "Fire Genasi", ({"custom_stat_1": 2, "custom_stat_2": 1}, {"custom_stat_1": 1, "custom_stat_2": 1, "custom_stat_3": 1}), ((1, "Darkvision- 60"), (1, "Fire Resistance"), (1, "Reach to the Blaze"), (1, "Languages- Common/Other"))),
-            ("Fire Genasi", "Fire Genasi", [{"CON": 2, "INT": 1}], ((1, "Darkvision- 60"), (1, "Fire Resistance"), (1, "Reach to the Blaze"), (1, "Languages- Common/Primordial"))),
-            ("Water Genasi", "Water Genasi", ({"custom_stat_1": 2, "custom_stat_2": 1}, {"custom_stat_1": 1, "custom_stat_2": 1, "custom_stat_3": 1}), ((1, "Darkvision- 60"), (1, "Acid Reistance"), (1, "Amphibious"), (1, "Call to the Wave"), (1, "Languages- Common/Other"))),
-            ("Water Genasi", "Water Genasi", [{"WIS": 1}], ((1, "Acid Reistance"), (1, "Amphibious"), (1, "Call to the Wave"), (1, "Languages- Common/Primordial")))
-            ]
         super().__init__()
 
     def subrace_roll(self):
-        return random.choice(self.genasi_subrace_list)
+        roll = random.choice(genasi_subrace_list)
+        self.subrace_check = roll
+        return roll
+    
+    def get_languages(self):
+        if self.subrace_check in [genasi_subrace_list[0], genasi_subrace_list[2], genasi_subrace_list[4], genasi_subrace_list[6]]:
+            return ["Common", "Other"]
+        return ["Common", "Primordial"]
     
     def get_size(self):
-        if self.subrace not in [self.genasi_subrace_list[0], self.genasi_subrace_list[2], self.genasi_subrace_list[4], self.genasi_subrace_list[6]]:
+        if self.subrace not in [genasi_subrace_list[0], genasi_subrace_list[2], genasi_subrace_list[4], genasi_subrace_list[6]]:
             return "Size- Medium"
         if random.choice([0,1]) == 1:
             return "Size- Medium"
         return "Size- Small"
     
     def get_speed(self):
-        if self.subrace == self.genasi_subrace_list[0]:
+        if self.subrace == genasi_subrace_list[0]:
             return "Walk- 35"
-        if self.subrace in [self.genasi_subrace_list[6], self.genasi_subrace_list[7]]:
+        if self.subrace in [genasi_subrace_list[6], genasi_subrace_list[7]]:
             return "Walk- 30, Swim- 30"
         return "Walk- 30"
 
@@ -430,17 +483,20 @@ class Genasi(Race):
 
 class Githyanki(Race):
     def __init__(self):
-        self.githyanki_subrace_table = [
-            ("Githyanki", "Githyanki", ({"custom_stat_1": 2, "custom_stat_2": 1}, {"custom_stat_1": 1, "custom_stat_2": 1, "custom_stat_3": 1}), ((1, "Astral Knowledge"), (1, "Githanki Psionics"), (1, "Psychic Resiliance"), (1, "Languages- Common/Other"))),
-            ("Githyanki", "Githyanki", [{"STR": 2, "INT": 1}], ((1, "Decadent Mastery"), (1, "Martial Prodigy"), (1, "Githyanki Psionics"), (1, "Languages- Common/Gith/Other")))
-        ]
         super().__init__()
 
     def subrace_roll(self):
-        return random.choice(self.githyanki_subrace_table)
+        roll = random.choice(githyanki_subrace_list)
+        self.subrace_check = roll
+        return roll
+    
+    def get_languages(self):
+        if self.subrace_check == githyanki_subrace_list[0]:
+            return ["Common", "Other"]
+        return ["Common", "Gith", "Other"]
     
     def get_proficiencies(self):
-        if self.subrace != self.githyanki_subrace_table[1]:
+        if self.subrace != githyanki_subrace_list[1]:
             return []
         return ["light armor", "medium armor", "shortsword", "longsword", "greatsword"]
 
@@ -448,36 +504,39 @@ class Githyanki(Race):
 
 class Githzerai(Race):
     def __init__(self):
-        self.githzerai_subrace_list = [
-            ("Githzerai", "Githzerai", ({"custom_stat_1": 2, "custom_stat_2": 1}, {"custom_stat_1": 1, "custom_stat_2": 1, "custom_stat_3": 1}), ((1, "Githzerai Psionics"), (1, "Mental Discipline"), (1, "Pychic Resilience"), (1, "Languages- Common/Other"))),
-            ("Githzerai", "Githzerai", [{"WIS": 2, "INT": 1}], ((1, "Mental Discipline"), (1, "Githzerai Psionics"), (1, "Languages- Common/Gith")))
-        ]
         super().__init__()
 
     def subrace_roll(self):
-        return random.choice(self.githzerai_subrace_list)
+        roll = random.choice(githzerai_subrace_list)
+        self.subrace_check = roll
+        return roll
+    
+    def get_languages(self):
+        if self.subrace_check == githzerai_subrace_list[0]:
+            return ["Common", "Other"]
+        return ["Common", "Gith"]
 
 
 
 class Gnome(Race):
     def __init__(self):
-        self.gnome_subrace_list = [
-            ("Gnome", "Forest Gnome", [{"INT": 2, "DEX": 1}], ((1, "Darkvision- 60"), (1, "Gnome Cunning"), (1, "Natural Illuionist"), (1, "Speak with Small Beasts"), (1, "Languages- Common/Gnomish"))),
-            ("Gnome", "Rock Gnome", [{"INT": 2, "CON": 1}], ((1, "Darkvision- 60"), (1, "Gnome Cunning"), (1, "Artificer's Lore"), (1, "Tinker"), (1, "Languages- Common/Gnomish"))),
-            ("Gnome", "Mark of Scribing Gnome", [{"INT": 2, "CHA": 1}], ((1, "Darkvision- 60"), (1, "Gnome Cunning"), (1, "Gifted Scribe"), (1, "Scribe's Insight"), (1, "Spells of the Mark"), (1, "Languages- Common/Gnomish"))),
-            ("Deep Gnome", "Deep Gnome", ({"custom_stat_1": 2, "custom_stat_2": 1}, {"custom_stat_1": 1, "custom_stat_2": 1, "custom_stat_3": 1}), ((1, "Darkvision- 120"), (3, "Gift of the Svirfneblin"), (1, "Gnomish Magic Resistance"), (1, "Svirfneblin Camouflage"), (1, "Languages- Common/Other"))),
-            ("Deep Gnome", "Deep Gnome", [{"INT": 2, "DEX": 1}], ((1, "Superior Darkvision- 120"), (1, "Gnome Cunning"), (1, "Stone Camouflage"), (1, "Languages- Common/Gnomish")))
-        ]
         super().__init__()
 
     def subrace_roll(self):
-        return random.choices(self.gnome_subrace_list, weights=[2,2,2,1,1], k=1)[0]
+        roll = random.choices(gnome_subrace_list, weights=[2,2,2,1,1], k=1)[0]
+        self.subrace_check = roll
+        return roll
+    
+    def get_languages(self):
+        if self.subrace_check == gnome_subrace_list[3]:
+            return ["Common", "Other"]
+        return ["Common", "Gnomish"]
     
     def get_size(self):
         return "Size- Small"
     
     def get_speed(self):
-        if self.subrace != self.gnome_subrace_list[3]:
+        if self.subrace != gnome_subrace_list[3]:
             return "Walk- 25"
         return "Walk- 30"
 
@@ -485,16 +544,18 @@ class Gnome(Race):
 
 class Goblin(Race):
     def __init__(self):
-        self.goblin_subrace_list = [
-            ("Goblin", "Goblin", ({"custom_stat_1": 2, "custom_stat_2": 1}, {"custom_stat_1": 1, "custom_stat_2": 1, "custom_stat_3": 1}), ((1, "Darkvision- 60"), (1, "Fey Ancestry"), (1, "Fury of the Small"), (1, "Nimble Escape"), (1, "Languages- Common/Other"))),
-            ("Goblin", "Goblin", [{"DEX": 2, "CON": 1}], ((1, "Darkvision- 60"), (1, "Fury of the Small"), (1, "Nimble Escape"), (1, "Languages- Common/Goblin"))),
-            ("Goblin", "Goblin", [{"DEX": 2, "WIS": 1}], ((1, "Darkvision- 60"), (1, "Speak with Small Beasts"), (1, "Nimble Escape"), (1, "Languages- Common/Goblin")))
-        ]
         super().__init__()
 
     def subrace_roll(self):
-        return random.choice(self.goblin_subrace_list)
+        roll = random.choice(goblin_subrace_list)
+        self.subrace_check = roll
+        return roll
     
+    def get_languages(self):
+        if self.subrace_check == goblin_subrace_list[0]:
+            return ["Common", "Other"]
+        return ["Common", "Goblin"]
+            
     def get_size(self):
         return "Size- Small"
 
@@ -502,14 +563,17 @@ class Goblin(Race):
 
 class Goliath(Race):
     def __init__(self):
-        self.goliath_subrace_list = [
-            ("Goliath", "Goliath", ({"custom_stat_1": 2, "custom_stat_2": 1}, {"custom_stat_1": 1, "custom_stat_2": 1, "custom_stat_3": 1}), ((1, "Little Giant"), (1, "Mountain Born"), (1, "Stone's Endurance"), (1, "Languages- Common/Other"))),
-            ("Goliath", "Goliath", [{"STR": 2, "CON": 1}], ((1, "Natural Athlete"), (1, "Stone's Endurance"), (1, "Powerful Build"), (1, "Mountian Born"), (1, "Languages- Common/Giant")))
-        ]
         super().__init__()
 
     def subrace_roll(self):
-        return random.choice(self.goliath_subrace_list)
+        roll = random.choice(goliath_subrace_list)
+        self.subrace_check = roll
+        return roll
+    
+    def get_languages(self):
+        if self.subrace_check == goliath_subrace_list[0]:
+            return ["Common", "Other"]
+        return ["Common" , "Giant"]
 
 
 
@@ -518,7 +582,12 @@ class Grung(Race):
             super().__init__()
 
     def subrace_roll(self):
-        return ("Grung", "Grung", [{"DEX": 2, "CON": 1}], ((1, "Arboreal Alertness"), (1, "Amphibious"), (1, "Poison Immunity"), (1, "Poisonous Skin"), (1, "Standing Leap"), (1, "Water Dependency"), (1, "Languages- Grung")))
+        roll = ["Grung", "Grung", [{"DEX": 2, "CON": 1}], [[1, "Arboreal Alertness"], [1, "Amphibious"], [1, "Poison Immunity"], [1, "Poisonous Skin"], [1, "Standing Leap"], [1, "Water Dependency"]]]
+        self.subrace_check = roll
+        return roll
+    
+    def get_languages(self):
+        return ["Grung"]
     
     def get_size(self):
         return "Size- Small"
@@ -530,16 +599,19 @@ class Grung(Race):
 
 class HalfElf(Race):
     def __init__(self):
-        self.heritage()
-        self.halfelf_subrace_list = [
-            ("Half Elf", "Half Elf", [{"CHA": 2, "custom_stat_1": 1, "custom_stat_2": 1}], ((1, "Darkvision- 60"), (1, "Fey Ancestry"), (1, f"Half-Elf Versatility: {self.he_heritage}"), (1, "Languages- Common/Elven/Other"))),
-            ("Half Elf", "Mark of Detection Half Elf", [{"WIS": 2, "custom_stat_1": 1}], ((1, "Darkvision- 60"), (1, "Fey Ancestry"), (1, "Deductive Intuition"), (1, "Magical Detection"), (1, "Spells of the Mark"), (1, "Languages- Common/Elven/Other"))),
-            ("Half Elf", "Mark of Storm Half Elf", [{"CHA": 2, "DEX": 1}], ((1, "Darkvision- 60"), (1, "Fey Ancestry"), (1, "Windwright's Intuition"), (1, "Storm's Boon"), (1, "Headwinds"), (1, "Spells of the Mark"), (1, "Languages- Common/Elven/Other"))) 
-        ]
         super().__init__()
 
     def subrace_roll(self):
-        return random.choice(self.halfelf_subrace_list)
+        roll = random.choice(halfelf_subrace_list)
+        self.subrace_check = roll
+        if roll == halfelf_subrace_list[0]:
+            self.he_heritage = self.heritage()
+            roll = replace_placeholder(roll, f"Half-Elf Versatility: {self.he_heritage}")
+            return roll
+        return roll
+    
+    def get_languages(self):
+        return ["Common", "Elven", "Other"]
 
     def heritage(self):
         heritage_list = [
@@ -548,42 +620,39 @@ class HalfElf(Race):
             "Cantrip (High Elf Heritage)",
             "Fleet of Foot (Wood Elf Heritage)",
             "Mask of the Wild (Wood Elf Heritage)",
-            "Drow Magic (Dark Elf Heritage)", #Drow Magic - spells lvl3 & 5
+            "Drow Magic (Dark Elf Heritage)",
             "Swim Speed (Aquatic Elf Heritage)"
         ]
-        self.he_heritage = random.choice(heritage_list)
+        return random.choice(heritage_list)
 
     def get_proficiencies(self):
-        if self.subrace == self.halfelf_subrace_list[0]:
+        if self.subrace_check == halfelf_subrace_list[0]:
             if self.he_heritage == "Elf Weapon Training (High or Wood Elf Heritage)":
                 return ["Longsword", "Shortsword","Shortbow", "Longbow"]
         return []
             
     def get_speed(self):
-        if self.he_heritage == self.halfelf_subrace_list[0]:
+        if self.subrace_check == halfelf_subrace_list[0]:
             if self.he_heritage == "Fleet of Foot (Wood Elf Heritage)":
                 return "Walk- 35"
             elif self.he_heritage == "Swim Speed (Aquatic Elf Heritage)":
                 return "Walk-30, Swim- 30"
-            else:
-                return "Walk- 30"
+        else:
+            return "Walk- 30"
 
 
 
 class Halfling(Race):
     def __init__(self):
-        self.halfling_subrace_list = [
-            ("Halfling", "Lightfoot Halfling", [{"DEX": 2, "CHA": 1}], ((1, "Lucky"), (1, "Brave"), (1, "Nimble"), (1, "Naturally Stealthy"), (1, "Languages- Common/Halfling"))),
-            ("Halfling", "Stout Halfling", [{"DEX": 2, "CON": 1}], ((1, "Lucky"), (1, "Brave"), (1, "Nimble"), (1, "Stout Resilience"), (1, "Languages- Common/Halfling"))),
-            ("Halfling", "Ghostwise Halfling", [{"DEX": 2, "WIS": 1}], ((1, "Lucky"), (1, "Brave"), (1, "Nimble"), (1, "Silent Speech"), (1, "Languages- Common/Halfling"))),
-            ("Halfling", "Lotusden Halfling", [{"DEX": 2, "WIS": 1}], ((1, "Lucky"), (1, "Brave"), (1, "Nimble"), (1, "Children of the Woods"), (1, "Timberwalk"), (1, "Languages- Common/Halfling"))), 
-            ("Halfling", "Mark of Hospitality Halfling", [{"DEX": 2, "CHA": 1}], ((1, "Lucky"), (1, "Brave"), (1, "Nimble"), (1, "Ever Hospitable"), (1, "Innkeeper's Magic"), (1, "Spells of the Mark"), (1, "Languages- Common/Halfling"))),
-            ("Halfling", "Mark of Healing Halfling", [{"DEX": 2, "WIS": 1}], ((1, "Lucky"), (1, "Brave"), (1, "Nimble"), (1, "Medical Intuition"), (1, "Healing Touch"), (1, "Spells of the Mark"), (1, "Languages- Common/Halfling")))
-        ]
         super().__init__()
 
     def subrace_roll(self):
-        return random.choice(self.halfling_subrace_list)
+        roll = random.choice(halfling_subrace_list)
+        self.subrace_check = roll
+        return roll
+    
+    def get_languages(self):
+        return ["Common", "Halfling"]
     
     def get_size(self):
         return "Size- Small"
@@ -595,14 +664,17 @@ class Halfling(Race):
 
 class HalfOrc(Race):
     def __init__(self):
-        self.halforc_subrace_list = [
-            ("Half Orc", "Half Orc", [{"STR": 2, "CON": 1}], ((1, "Darkvision- 60"), (1, "Menacing"), (1, "Relentless Endurance"), (1, "Savage Attacks"), (1, "Languages- Common/Orc"))),
-            ("Half Orc", "Mark of Finding Half Orc", [{"WIS": 2, "CON": 1}], ((1, "Darkvision- 60"), (1, "Hunter's Intuition"), (1, "Finder's Magice"), (1, "Spells of the Mark"), (1, "Languages- Common/Goblin")))
-        ]
         super().__init__()
 
     def subrace_roll(self):
-        return random.choice(self.halforc_subrace_list)
+        roll = random.choice(halforc_subrace_list)
+        self.subrace_check = roll
+        return roll
+    
+    def get_languages(self):
+        if self.subrace_check == halforc_subrace_list[0]:
+            return ["Common", "Orc"]
+        return ["Common" , "Goblin"]
 
 
 
@@ -611,7 +683,12 @@ class Harengon(Race):
         super().__init__()
 
     def subrace_roll(self):
-        return ("Harengon", "Harengon", ({"custom_stat_1": 2, "custom_stat_2": 1}, {"custom_stat_1": 1, "custom_stat_2": 1, "custom_stat_3": 1}), ((1, "Hare-Trigger"), (1, "Leporine Senses"), (1, "Lucky Footwork"), (1, "Rabbit Hop"), (1, "Languages- Common/Other")))
+        roll = ["Harengon", "Harengon", [{"custom_stat_1": 2, "custom_stat_2": 1}, {"custom_stat_1": 1, "custom_stat_2": 1, "custom_stat_3": 1}], [[1, "Hare-Trigger"], [1, "Leporine Senses"], [1, "Lucky Footwork"], [1, "Rabbit Hop"]]]
+        self.subrace_check = roll
+        return roll
+    
+    def get_languages(self):
+        return ["Common" , "Other"]
     
     def get_size(self):
         if random.choice([0,1]) == 1:
@@ -622,34 +699,34 @@ class Harengon(Race):
 
 class Hobgoblin(Race):
     def __init__(self):
-        self.hobgoblin_subrace_list = [
-            ("Hobgoblin", "Hobgoblin", ({"custom_stat_1": 2, "custom_stat_2": 1}, {"custom_stat_1": 1, "custom_stat_2": 1, "custom_stat_3": 1}), ((1, "Darkvision- 60"), (1, "Fey Ancestry"), (1, "Fey Gift"), (1, "Fortune from the Many"), (1, "Languages- Common/Other"))),
-            ("Hobgoblin", "Hobgoblin", [{"CON": 2, "INT": 1}], ((1, "Darkvision- 60"), (1, "Martial Training"), (1, "Saving Face"), (1, "Languages- Common/Goblin")))
-        ]
         super().__init__()
 
     def subrace_roll(self):
-        return random.choice(self.hobgoblin_subrace_list)
+        roll = random.choice(hobgoblin_subrace_list)
+        self.subrace_check = roll
+        return roll
+    
+    def get_languages(self):
+        if self.subrace_check == hobgoblin_subrace_list[0]:
+            return ["Common", "Other"]
+        return ["Common" , "Goblin"]
 
 
 
 class Human(Race): 
     def __init__(self):
-        self.human_subrace_list = [
-            ("Human", "Human", [{"STR": 1, "DEX": 1, "CON": 1, "INT": 1, "WIS": 1, "CHA": 1}], [(1, "Languages- Common/Other")]),
-            ("Human", "Mark of Finding Human", [{"WIS": 2, "CON": 1}], ((1, "Darkvision- 60"), (1, "Hunter's Intuition"), (1, "Finder's Magic"), (1, "Spells of the Mark"), (1, "Languages- Common/Other"))),
-            ("Human", "Mark of Handling Human", [{"WIS": 2, "custom_stat_1": 1}], ((1, "Wild Intuition"), (1, "Primal Connection"), (1, "The Bigger They Are"), (3, "The Bigger They Are"), (1, "Spells of the Mark"), (1, "Languages- Common/Other"))),
-            ("Human", "Mark of Making Human", [{"INT": 2, "custom_stat_1": 1}], ((1, "Artisan's Intuition"), (1, "Artisan's Gift"), (1, "Spellsmith"), (1, "Spells of the Mark"), (1, "Languages- Common/Other"))),
-            ("Human", "Mark of Passage Human", [{"DEX": 2, "custom_stat_1": 1}], ((1, "Intuitive Motion"), (1, "Magical Passage"), (1, "Spells of the Mark"), (1, "Languages- Common/Other"))),
-            ("Human", "Mark of Sentinel Human", [{"CON": 2, "WIS": 1}], ((1, "Sentinel's Intuition"), (1, "Guardian's Shield"), (1, "Vigilant Guardian"), (1, "Spells of the Mark"), (1, "Languages- Common/Other")))
-        ]
         super().__init__()
 
     def subrace_roll(self):
-        return random.choice(self.human_subrace_list)
+        roll = random.choice(human_subrace_list)
+        self.subrace_check = roll
+        return roll
+    
+    def get_languages(self):
+        return ["Common", "Other"]
 
     def get_speed(self):
-        if self.subrace == self.human_subrace_list[4]:
+        if self.subrace == human_subrace_list[4]:
             return "Walk- 35"
         return "Walk- 30"
 
@@ -657,17 +734,20 @@ class Human(Race):
 
 class Kenku(Race):
     def __init__(self):
-        self.kenku_subrace_list = [
-            ("Kenku", "Kenku", ({"custom_stat_1": 2, "custom_stat_2": 1}, {"custom_stat_1": 1, "custom_stat_2": 1, "custom_stat_3": 1}), ((1, "Expert Duplication"), (1, "Kenku Recall"), (1, "Mimicry"), (1, "Languages- Common/Other"))),
-            ("Kenku", "Kenku", [{"DEX": 2, "WIS": 1}], ((1, "Expert Forgery"), (1, "Kenku Training"), (1, "Mimicry"), (1, "Languages- Common/Auran")))
-        ]
         super().__init__()
 
     def subrace_roll(self):
-        return random.choice(self.kenku_subrace_list)
+        roll = random.choice(kenku_subrace_list)
+        self.subrace_check = roll
+        return roll
+    
+    def get_languages(self):
+        if self.subrace_check == kenku_subrace_list[0]:
+            return ["Common", "Other"]
+        return ["Common" , "Auran"]
     
     def get_size(self):
-        if self.subrace != self.kenku_subrace_list[0]:
+        if self.subrace != kenku_subrace_list[0]:
             return "Size- Medium"
         if random.choice([0,1]) == 1:
             return "Size- Medium"
@@ -677,15 +757,21 @@ class Kenku(Race):
 
 class Kobold(Race):
     def __init__(self):
-        self.koblegacy()
-        self.kobold_subrace_list = [
-            ("Kobold", "Kobold", ({"custom_stat_1": 2, "custom_stat_2": 1}, {"custom_stat_1": 1, "custom_stat_2": 1, "custom_stat_3": 1}), ((1, "Darkvision- 60"), (1, "Draconic Cry"), (1, f"Kobold Legacy: {self.kobold_legacy}"), (1, "Languages- Common/Other"))),
-            ("Kobold", "Kobold", [{"DEX": 2}], ((1, "Darkvision- 60"), (1, "Grovel, Cower, and Beg"), (1, "Pack Tactics"), (1, "Sunlight Sensitivity"), (1, "Languages- Common/Draconic")))
-        ]
         super().__init__()
 
     def subrace_roll(self):
-        return random.choice(self.kobold_subrace_list)
+        roll = random.choice(kobold_subrace_list)
+        self.subrace_check = roll
+        if roll == kobold_subrace_list[0]:
+            legacy = self.koblegacy()
+            roll = replace_placeholder(roll,f"Kobold Legacy: {legacy}")
+            return roll
+        return roll
+    
+    def get_languages(self):
+        if self.subrace_check == kobold_subrace_list[0]:
+            return ["Common", "Other"]
+        return ["Common" , "Draconic"]
 
     def get_size(self):
         return "Size- Small"
@@ -696,20 +782,23 @@ class Kobold(Race):
             "Defiance",
             "Dracoic Sorcery"
         ]
-        self.kobold_legacy = random.choice(legacy_list)
+        return random.choice(legacy_list)
 
 
 
 class Lizardfolk(Race):
     def __init__(self):
-        self.lizardfolk_subrace_list = [
-            ("Lizardfolk", "Lizardfolk", ({"custom_stat_1": 2, "custom_stat_2": 1}, {"custom_stat_1": 1, "custom_stat_2": 1, "custom_stat_3": 1}), ((1, "Bite"), (1, "Hold Breath"), (1, "Hungry Jaws"), (1, "Natural Armor"), (1, "Nature's Intuition"), (1, "Languages- Common/Other"))),
-            ("Lizardfolk", "Lizardfolk", [{"CON": 2, "WIS": 1}], ((1, "Bite"), (1, "Cunning Artisan"), (1, "Hold Breath"), (1, "Hunter's Lore"), (1, "Natural Armor"), (1, "Hungry Jaws"), (1, "Languages- Common/Draconic")))  
-        ]
         super().__init__()
 
     def subrace_roll(self):
-        return random.choice(self.lizardfolk_subrace_list)
+        roll = random.choice(lizardfolk_subrace_list)
+        self.subrace_check = roll
+        return roll
+    
+    def get_languages(self):
+        if self.subrace_check == lizardfolk_subrace_list[0]:
+            return ["Common", "Other"]
+        return ["Common" , "Draconic"]
     
     def get_speed(self):
         return "Walk- 30, Swim- 30"
@@ -718,28 +807,33 @@ class Lizardfolk(Race):
 
 class Minotaur(Race):
     def __init__(self):
-        self.minotaur_subrace_list = [
-            ("Minotaur", "Minotaur", ({"custom_stat_1": 2, "custom_stat_2": 1}, {"custom_stat_1": 1, "custom_stat_2": 1, "custom_stat_3": 1}), ((1, "Horns"), (1, "Goring Rush"), (1, "Hammering Horns"), (1, "Labyrinthine Recall"), (1, "Languages- Common/Other"))),
-            ("Minotaur", "Minotaur", [{"STR": 2, "CON": 1}], ((1, "Horns"), (1, "Goring Rush"), (1, "Hammering Horns"), (1, "Imposing Presence"), (1, "Languages- Common/Minotaur")))
-        ]
         super().__init__()
 
     def subrace_roll(self):
-        return random.choice(self.minotaur_subrace_list)
+        roll = random.choice(minotaur_subrace_list)
+        self.subrace_check = roll
+        return roll
+    
+    def get_languages(self):
+        if self.subrace_check == minotaur_subrace_list[0]:
+            return ["Common", "Other"]
+        return ["Common" , "Minotaur"]
 
 
 
 class Orc(Race):
     def __init__(self):
-        self.orc_subrace_list = [
-            ("Orc", "Orc", ({"custom_stat_1": 2, "custom_stat_2": 1}, {"custom_stat_1": 1, "custom_stat_2": 1, "custom_stat_3": 1}), ((1, "Darkvision- 60"), (1, "Adrenaline Rush"), (1, "Powerful Build"), (1, "Relentless Endurance"), (1, "Languages- Common/Other"))),
-            ("Orc", "Orc", [{"STR": 2, "CON": 1}], ((1, "Darkvision- 60"), (1, "Aggressive"), (1, "Primal Intuition"), (1, "Powerful Build"), (1, "Languages- Common/Orc"))),  
-            ("Orc", "Orc", [{"STR": 2, "CON": 1}], ((1, "Darkvision- 60"), (1, "Menacing"), (1, "Relentless Endurance"), (1, "Savage Attacks"), (1, "Languages- Common/Orc")))
-        ]
         super().__init__()
 
     def subrace_roll(self):
-        return random.choice(self.orc_subrace_list)
+        roll = random.choice(orc_subrace_list)
+        self.subrace_check = roll
+        return roll
+    
+    def get_languages(self):
+        if self.subrace_check == orc_subrace_list[0]:
+            return ["Common", "Other"]
+        return ["Common" , "Orc"]
 
 
 
@@ -748,7 +842,12 @@ class Owlin(Race):
         super().__init__()
 
     def subrace_roll(self):
-        return ("Owlin", "Owlin", ({"custom_stat_1": 2, "custom_stat_2": 1}, {"custom_stat_1": 1, "custom_stat_2": 1, "custom_stat_3": 1}), ((1, "Darkvision- 120"), (1, "Flight"), (1, "Silent Feathers"), (1, "Languages- Common/Other")))
+        roll = ["Owlin", "Owlin", [{"custom_stat_1": 2, "custom_stat_2": 1}, {"custom_stat_1": 1, "custom_stat_2": 1, "custom_stat_3": 1}], [[1, "Darkvision- 120"], [1, "Flight"], [1, "Silent Feathers"]]]
+        self.subrace_check = roll
+        return roll
+    
+    def get_languages(self):
+        return ["Common", "Other"]
     
     def get_size(self):
         if random.choice([0,1]) == 1:
@@ -762,14 +861,17 @@ class Owlin(Race):
 
 class Satyr(Race):
     def __init__(self):
-        self.satyr_subrace_list = [
-            ("Satyr", "Satyr", ({"custom_stat_1": 2, "custom_stat_2": 1}, {"custom_stat_1": 1, "custom_stat_2": 1, "custom_stat_3": 1}), ((1, "Ram"), (1, "Magic Resistance"), (1, "Mirthful Leaps"), (1, "Reveler"), (1, "Languages- Common/Other"))),
-            ("Satyr", "Satyr", [{"CHA": 2, "DEX": 1}], ((1, "Ram"), (1, "Magic Resistance"), (1, "Mirthful Leaps"), (1, "Reveler"), (1, "Languages- Common/Sylvan")))
-        ]
         super().__init__()
 
     def subrace_roll(self):
-        return random.choice(self.satyr_subrace_list)
+        roll = random.choice(satyr_subrace_list)
+        self.subrace_check = roll
+        return roll
+    
+    def get_languages(self):
+        if self.subrace_check == satyr_subrace_list[0]:
+            return ["Common", "Other"]
+        return ["Common" , "Sylvan"]
     
     def get_speed(self):
         return "Walk- 35"
@@ -778,18 +880,19 @@ class Satyr(Race):
 
 class Shifter(Race):
     def __init__(self):
-        self.ancestor()
-        self.shifter_subrace_list = [
-            ("Shifter", "Shifter", ({"custom_stat_1": 2, "custom_stat_2": 1}, {"custom_stat_1": 1, "custom_stat_2": 1, "custom_stat_3": 1}), ((1, "Darkvision- 60"), (1, "Bestial Instincts"), (1, f"Shifting- {self.ancestor_lycan[0]}"), (1, "Languages- Common/Other"))),
-            ("Shifter", "Beasthide", [{"CON": 2, "STR": 1}], ((1, "Darkvision- 60"), (1, "Keen Senses"), (1, "Shifting"), (1, "Natural Athlete"), (1, "Shifting Feature"), (1, "Languages- Common/Other"))),
-            ("Shifter", "Longtooth", [{"STR": 2, "DEX": 1}], ((1, "Darkvision- 60"), (1, "Bestial Instincts"), (1, "Shifting"), (1, "Fierce"), (1, "Shifting Feature"), (1, "Languages- Common/Other"))),
-            ("Shifter", "Swiftstride", [{"DEX": 2, "CHA": 1}], ((1, "Darkvision- 60"), (1, "Bestial Instincts"), (1, "Shifting"), (1, "Graceful"), (1, "Shifting Feature"), (1, "Languages- Common/Other"))),
-            ("Shifter", "Wildhunt", [{"WIS": 2}], ((1, "Darkvision- 60"), (1, "Bestial Instincts"), (1, "Shifting"), (1, "Mark the Scent"), (1, "Shifting Feature"), (1, "Languages- Common/Other")))
-        ]
         super().__init__()
 
     def subrace_roll(self):
-        return random.choice(self.shifter_subrace_list)
+        roll = random.choice(shifter_subrace_list)
+        self.subrace_check = roll
+        if roll == shifter_subrace_list[0]:
+            ancestor = self.ancestor()
+            roll = replace_placeholder(roll, f"Shifting- {ancestor[0]}")
+            return roll
+        return roll
+    
+    def get_languages(self):
+        return ["Common", "Other"]
     
     def ancestor(self):
         lycanthrope_list = [
@@ -800,28 +903,29 @@ class Shifter(Race):
             ("Werewolf (Wolflike)", "Longtooth"),
             ("Werewolf (Doglike)", "Wildhunt")
         ]
-        self.ancestor_lycan = random.choice(lycanthrope_list)
+        return random.choice(lycanthrope_list)
 
 
 
 class Tabaxi(Race):
     def __init__(self):
-        self.tabaxi_subrace_list =[
-            ("Tabaxi", "Tabaxi", ({"custom_stat_1": 2, "custom_stat_2": 1}, {"custom_stat_1": 1, "custom_stat_2": 1, "custom_stat_3": 1}), ((1, "Darkvision- 60"), (1, "Cat's Claws"), (1, "Cat's Talent"), (1, "Feline Agility"), (1, "Languages- Common/Other"))),
-            ("Tabaxi", "Tabaxi", [{"DEX": 2, "CHA": 1}], ((1, "Darkvision- 60"), (1, "Cat's Claws"), (1, "Cat's Talent"), (1, "Feline Agility"), (1, "Languages- Common/Other")))
-        ]
         super().__init__()
 
     def subrace_roll(self):
-        return random.choice(self.tabaxi_subrace_list)
+        roll = random.choice(tabaxi_subrace_list)
+        self.subrace_check = roll
+        return roll
+    
+    def get_languages(self):
+        return ["Common", "Other"]
     
     def get_speed(self):
-        if self.subrace == self.tabaxi_subrace_list[0]:
+        if self.subrace == tabaxi_subrace_list[0]:
             return "Walk- 30, Climb- 30"
         return "Walk- 30"
 
     def get_size(self):
-            if self.subrace != self.tabaxi_subrace_list[0]:
+            if self.subrace != tabaxi_subrace_list[0]:
                 return "Size- Medium"
             if random.choice([0,1]) == 1:
                 return "Size- Medium"
@@ -831,37 +935,34 @@ class Tabaxi(Race):
 
 class Tiefling(Race):
     def __init__(self):
-        self.tiefling_subrace_list = [
-            ("Tiefling", "Bloodline of Asmodeus Tiefling", [{"CHA": 2, "INT": 1}], ((1, "Darkvision- 60"), (1, "Hellish Resistance"), (1, "Infernal Legacy"), (1, "Languages- Common/Infernal"))),
-            ("Tiefling", "Bloodline of Baalzebul Tiefling", [{"CHA": 2, "INT": 1}], ((1, "Darkvision- 60"), (1, "Hellish Resistance"), (1, "Legacy of Maladomini"), (1, "Languages- Common/Infernal"))),
-            ("Tiefling", "Bloodline of Dispater Tiefling", [{"CHA": 2, "DEX": 1}], ((1, "Darkvision- 60"), (1, "Hellish Resistance"), (1, "Legacy of Dis"), (1, "Languages- Common/Infernal"))),
-            ("Tiefling", "Bloodline of Fierna Tiefling", [{"CHA": 2, "WIS": 1}], ((1, "Darkvision- 60"), (1, "Hellish Resistance"), (1, "Legacy of Phlegethos"), (1, "Languages- Common/Infernal"))),
-            ("Tiefling", "Bloodline of Glasya Tiefling", [{"CHA": 2, "DEX": 1}], ((1, "Darkvision- 60"), (1, "Hellish Resistance"), (1, "Legacy of Malbolge"), (1, "Languages- Common/Infernal"))),
-            ("Tiefling", "Bloodline of Levistus Tiefling", [{"CHA": 2, "CON": 1}], ((1, "Darkvision- 60"), (1, "Hellish Resistance"), (1, "Legacy of Stygia"), (1, "Languages- Common/Infernal"))),
-            ("Tiefling", "Bloodline of Mammon Tiefling", [{"CHA": 2, "INT": 1}], ((1, "Darkvision- 60"), (1, "Hellish Resistance"), (1, "Legacy of Minauros"), (1, "Languages- Common/Infernal"))),
-            ("Tiefling", "Bloodline of Mephistopheles Tiefling", [{"CHA": 2, "INT": 1}], ((1, "Darkvision- 60"), (1, "Hellish Resistance"), (1, "Legacy of Cania"), (1, "Languages- Common/Infernal"))),
-            ("Tiefling", "Bloodline of Zariel Tiefling", [{"CHA": 2, "STR": 1}], ((1, "Darkvision- 60"), (1, "Hellish Resistance"), (1, "Legacy of Avernus"), (1, "Languages- Common/Infernal")))
-        ]
         super().__init__()
 
     def subrace_roll(self):
-        return random.choice(self.tiefling_subrace_list)
+        roll = random.choice(tiefling_subrace_list)
+        self.subrace_check = roll
+        return roll
+    
+    def get_languages(self):
+        return ["Common" , "Infernal"]
 
 
 
 class Tortle(Race):
     def __init__(self):
-        self.tortle_subrace_list = [
-            ("Tortle", "Tortle", ({"custom_stat_1": 2, "custom_stat_2": 1}, {"custom_stat_1": 1, "custom_stat_2": 1, "custom_stat_3": 1}), ((1, "Claws"), (1, "Hold Breath"), (1, "Natural Armor"), (1, "Nature's Intuition"), (1, "Shell Defense"), (1, "Languages- Common/Other"))),
-            ("Tortle", "Tortle", [{"STR": 2, "WIS": 1}], ((1, "Claws"), (1, "Hold Breath"), (1, "Natural Armor"), (1, "Shell Defense"), (1, "Survival Instinct"), (1, "Languages- Common/Aquan")))
-        ]
         super().__init__()
 
     def subrace_roll(self):
-        return random.choice(self.tortle_subrace_list)
+        roll = random.choice(tortle_subrace_list)
+        self.subrace_check = roll
+        return roll
+    
+    def get_languages(self):
+        if self.subrace_check == tortle_subrace_list[0]:
+            return ["Common", "Other"]
+        return ["Common" , "Aquan"]
     
     def get_size(self):
-        if self.subrace != self.tortle_subrace_list[0]:
+        if self.subrace != tortle_subrace_list[0]:
             return "Size- Medium"
         if random.choice([0,1]) == 1:
             return "Size- Medium"
@@ -871,14 +972,17 @@ class Tortle(Race):
 
 class Triton(Race):
     def __init__(self):
-        self.triton_subrace_list = [
-            ("Triton", "Triton", ({"custom_stat_1": 2, "custom_stat_2": 1}, {"custom_stat_1": 1, "custom_stat_2": 1, "custom_stat_3": 1}), ((1, "Darkvision- 60"), (1, "Amphibious"), (1, "Control Air and Water"), (1, "Emissary of the Sea"), (1, "Guardians of the Depths"), (1, "Languages- Common/Other"))),
-            ("Triton", "Triton", [{"STR": 1, "CON": 1, "CHA": 1}], ((1, "Darkvision- 60"), (1, "Amphibious"), (1, "Control Air and Water"), (1, "Emissary of the Sea"), (1, "Guardians of the Depths"), (1, "Languages- Common/Primordial")))
-        ]
         super().__init__()
 
     def subrace_roll(self):
-        return random.choice(self.triton_subrace_list)
+        roll = random.choice(triton_subrace_list)
+        self.subrace_check = roll
+        return roll
+    
+    def get_languages(self):
+        if self.subrace_check == triton_subrace_list[0]:
+            return ["Common", "Other"]
+        return ["Common" , "Primordial"]
     
     def get_speed(self):
         return "Walk- 30, Swim:- 30"
@@ -890,7 +994,12 @@ class Verdan(Race):
         super().__init__()
 
     def subrace_roll(self):
-        return ("Verdan", "Verdan", [{"CHA": 2, "CON": 1}], ((1, "Black Blood Healing"), (1, "Limited Telepathy"), (1, "Persuasive"), (1, "Telepathic Insight"), (1, "Languages- Common/Goblin/Other")))
+        roll =["Verdan", "Verdan", [{"CHA": 2, "CON": 1}], [[1, "Black Blood Healing"], [1, "Limited Telepathy"], [1, "Persuasive"], [1, "Telepathic Insight"]]]
+        self.subrace_check = roll
+        return roll
+    
+    def get_languages(self):
+        return ["Common", "Goblin", "Other"]
     
     def get_size(self):
         return "Size- Small"
@@ -899,17 +1008,20 @@ class Verdan(Race):
 
 class YuanTi(Race):
     def __init__(self):
-        self.yuanti_subrace_list = [
-            ("Yuan-Ti", "Yuan-Ti", ({"custom_stat_1": 2, "custom_stat_2": 1}, {"custom_stat_1": 1, "custom_stat_2": 1, "custom_stat_3": 1}), ((1, "Darkvision- 60"), (1, "Magic Resistance"), (1, "Poison Resilience"), (1, "Serpentine Spellcasting") , (1, "Languages- Common/Other"))),
-            ("Yuan-Ti", "Yuan-Ti", [{"CHA": 2, "INT": 1}], ((1, "Darkvision- 60"), (1, "Innate Spellcasting"), (1, "Magic Resistance"), (1, "Poison Immunity"), (1, "Languages- Common/Abyssal/Draconic")))
-        ]
         super().__init__()
 
     def subrace_roll(self):
-        return random.choice(self.yuanti_subrace_list)
+        roll = random.choice(yuanti_subrace_list)
+        self.subrace_check = roll
+        return roll
+    
+    def get_languages(self):
+        if self.subrace_check == yuanti_subrace_list[0]:
+            return ["Common", "Other"]
+        return ["Common" , "Abyssal", "Draconic"]
 
     def get_size(self):
-        if self.subrace != self.yuanti_subrace_list[0]:
+        if self.subrace != yuanti_subrace_list[0]:
             return "Size- Medium"
         if random.choice([0,1]) == 1:
             return "Size- Medium"

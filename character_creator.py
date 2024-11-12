@@ -10,7 +10,7 @@ try:
     else:
         with open("saved_characters.csv", mode="w") as csvfile:
             file_writer = csv.writer(csvfile, delimiter = ",", quotechar = '"')
-            file_writer.writerow(["Character ID", "Name", "Alignment", "Gender", "Race", "Subrace", "Class", "Speed", "Size", "Stats", "Level", "HP", "AC", "Weapon", "Armor", "Shield", "Proficiencies", "Racial Features"])
+            file_writer.writerow(["Character ID", "Name", "Alignment", "Gender", "Race", "Subrace", "Class", "Subclass", "Languages", "Speed", "Size", "Stats", "Level", "HP", "AC", "Weapon", "Armor", "Shield", "Proficiencies", "Character Features"])
             print("Saved characters directory csv file created!")
 except Exception as e:
     print(e)
@@ -34,7 +34,17 @@ def main():
                 case "fast":
                     fast_roll()
                 case "bulk":
-                    bulk_fast_roll()
+                    while True:
+                        function_input = input("Please enter the number of characters you would like to roll: ")
+                        if function_input == "exit":
+                            return help_exit()
+                        try:
+                            value = int(function_input)
+                            break
+                        except:
+                            print("That is not a valid number. Please enter a valid number to bulk roll.")
+                    bulk_fast_roll(value)
+                    break
                 case "help":
                     help_loop_one()
                 case "":
@@ -60,8 +70,16 @@ def main():
                     loop_reset = True
                     break
                 case "bulk":
-                    bulk_fast_roll()
-                    loop_reset = True
+                    while True:
+                        function_input = input("Please enter the number of characters you would like to roll: ")
+                        if function_input == "exit":
+                            return help_exit()
+                        try:
+                            value = int(function_input)
+                            break
+                        except:
+                            print("That is not a valid number. Please enter a valid number to bulk roll.")
+                    bulk_fast_roll(value)
                     break
                 case "help":
                     help_loop_two()
@@ -102,12 +120,24 @@ def main():
                     fast_roll()
                     break
                 case "bulk":
-                    bulk_fast_roll()
+                    while True:
+                        function_input = input("Please enter the number of characters you would like to roll: ")
+                        if function_input == "exit":
+                            return help_exit()
+                        try:
+                            value = int(function_input)
+                            break
+                        except:
+                            print("That is not a valid number. Please enter a valid number to bulk roll.")
+                    bulk_fast_roll(value)
                     break
                 case "help":
                     help_loop_three()
                 case "name":
                     help_name(char_id)
+                case "enter name":
+                    new_name = input("Please enter your character's name: ")
+                    help_enter_name(char_id, new_name)
                 case "alignment":
                     help_alignment(char_id)
                 case "gender":
@@ -123,11 +153,11 @@ def main():
                 ):
                     help_race_select(char_id, user_input)
                 case "halforc" | "half-orc" | "half orc":
-                    char_id.race = HalfOrc
+                    char_id.race = HalfOrc()
                 case "yuanti" | "yuan-ti" | "yuan ti":
-                    char_id.race = YuanTi
+                    char_id.race = YuanTi()
                 case "halfelf" | "half-elf" | "half elf":
-                    char_id.race = HalfElf
+                    char_id.race = HalfElf()
                 case "race info":
                     print("The available races are: Aarakocra, Aasimar, Bugbear, Centaur, Changeling, Dragonborn, Dwarf, Elf, Fairy, Firbolg,") 
                     print("Genasi, Githyanki, Githzerai, Gnome, Goblin, Goliath, Grung, HalfElf, Halfling, Half-Orc, Harengon, Hobgoblin, Human, Kenku,")
@@ -139,6 +169,19 @@ def main():
                     help_stat(char_id)
                 case "level":
                     help_level(char_id)
+                case "select level":
+                    while True:
+                        function_input = input("Please enter your character level: ")
+                        if function_input == "exit":
+                            help_exit()
+                        try:
+                            value = int(function_input)
+                            if value > 20 or value < 1:
+                                raise Exception(print("Not a valid level. Please enter a level number between 1 and 20."))
+                            help_select_level(char_id, value)
+                            break
+                        except:
+                            print("That is not a valid number. Please enter a valid number to bulk roll.")
                 case "weapon":
                     help_weapon(char_id)
                 case "armor":

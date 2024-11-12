@@ -34,13 +34,13 @@ def class_roll():
 def help_loop_one():
     print("Type \"exit\" or \"quit\" to end the program.")
     print("Type \"fast\" to roll and save a character without prompts.")
-    print("Type \"bulk\" to roll and save many characters without prompts.")
+    print("Type \"bulk\" to select a number of characters to roll and save without prompts.")
     print("Press Enter to begin rolling a character!")
 
 def help_loop_two():
     print("Type \"exit\" or \"quit\" to end the program.")
     print("Type \"fast\" to roll and save a character without prompts.")
-    print("Type \"bulk\" to roll and save many characters without prompts.")
+    print("Type \"bulk\" to select a number of characters to roll and save without prompts.")
     print("Type \"r\" to reroll your character's class!")
     print("Type \"class info\" for a list of all available classes!")
     print("Type the name of the class you want to use that character class.")
@@ -49,8 +49,9 @@ def help_loop_two():
 def help_loop_three():
     print("Type \"exit\" or \"quit\" to end the program.")
     print("Type \"fast\" to roll and save a character without prompts.")
-    print("Type \"bulk\" to roll and save many characters without prompts.")
+    print("Type \"bulk\" to select a number of characters to roll and save without prompts.")
     print("Type \"name\" to reroll character's name.")
+    print("Type \"enter name\" to manually enter a name for the character.")
     print("Type \"gender\" to switch character's gender.")
     print("Type \"race\" to reroll character's race.")
     print("Type the name of a race to use that specific race.")
@@ -58,10 +59,11 @@ def help_loop_three():
     print("Type \"subclass\" to reroll your subclass!")
     print("Type \"stat\" or \"stats\" to reroll character's stats.")
     print("Type \"level\" to reroll character's level.")
+    print("Type \"select level\" to manually select character's level.")
     print("Type \"weapon\" to reroll character's weapon.")
     print("Type \"armor\" to reroll character's armor.")
     print("Type \"shield\" to reroll if a character has a shield.")
-    print("Type \"character\" or \"info\" to see all the information on the character.")
+    print("Type \"character\" or \"info\" to see shortened character information.")
     print("Type \"details\" or \"full\" to see all character information.")
     print("Type \"save\" to save the character")    
 
@@ -71,6 +73,10 @@ def help_exit():
 
 def help_name(char_id):
     char_id.name_roll()
+    print(f"This character's name is now {char_id.get_char_name()}.")
+
+def help_enter_name(char_id, name):
+    char_id.__name__ = name
     print(f"This character's name is now {char_id.get_char_name()}.")
 
 def help_alignment(char_id):
@@ -128,6 +134,22 @@ def help_level(char_id):
     char_id.roll_hp()
     print(f"This character's level is now {char_id.get_char_level()}.")
 
+def help_select_level(char_id, value):
+    pre_level_asi = char_id.get_asi()
+    char_id.__char_level__ = value
+    new_asi = char_id.get_asi()
+    if pre_level_asi != new_asi:
+        char_id.stats_roll()
+        char_id.stats_compile()
+    else:
+        char_id.stats_compile()
+    char_id.subclass_roll()
+    char_id.size_check()
+    char_id.proficiency_compiler()
+    char_id.features_compiler()
+    char_id.roll_hp()
+    print(f"This character's level is now {char_id.get_char_level()}.")
+
 def help_weapon(char_id):
     char_id.roll_weapon()
     print(f"This character is now wielding a {char_id.get_char_weapon()}.")
@@ -143,6 +165,7 @@ def help_shield(char_id):
     print(f"This character character's shield is now {char_id.get_char_shield()}.")
 
 def help_save(char_id):
+    char_id.race.get_subrace_name()
     try:
         with open("saved_characters.csv", mode = "a", newline = "") as csvfile:
             file_writer = csv.writer(csvfile, delimiter = ",", quotechar = '"')
@@ -152,7 +175,7 @@ def help_save(char_id):
                 char_id.get_alignment(),
                 char_id.get_char_gender(),
                 char_id.race.get_race_name(),
-                char_id.race.get_subrace_name(),
+                char_id.race.get_true_subrace(),
                 char_id.get_char_class(),
                 char_id.get_subclass(),
                 char_id.race.get_speed(),
@@ -176,14 +199,16 @@ def help_character(char_id):
     print(char_id)
 
 def help_details(char_id):
+    char_id.race.get_subrace_name()
     print(
         f"Character name: {char_id.get_char_name()} \n"
         f"Character alignment: {char_id.get_alignment()} \n"
         f"Character gender: {char_id.get_char_gender()} \n"
         f"Character race: {char_id.race.get_race_name()} \n"
-        f"Character subrace: {char_id.race.get_subrace_name()} \n"
+        f"Character subrace: {char_id.race.get_true_subrace()} \n"
         f"Character class: {char_id.get_char_class()} \n"
         f"Character subclass: {char_id.get_subclass()} \n"
+        f"Character languages: {', '.join(char_id.race.get_languages())} \n"
         f"Character speed: {char_id.race.get_speed()} \n"
         f"Character size: {char_id.size_check()} \n"
         f"Character stats: {', '.join(f'{key}: {value}' for key, value in char_id.__char_stats_dict__.items())} \n"
@@ -194,7 +219,7 @@ def help_details(char_id):
         f"Character armor: {char_id.get_char_armor()} \n"
         f"Character shield: {char_id.get_char_shield()} \n"
         f"Character proficiencies: {', '.join(f'{item}' for item in set(char_id.proficiencies))} \n"
-        f"Character racial features: {', '.join(f'{item}' for item in char_id.get_features())}"
+        f"Character features: {', '.join(f'{item}' for item in char_id.get_features())}"
     )
 
 
@@ -215,6 +240,7 @@ def fast_roll():
                 char_id.race.get_subrace_name(),
                 char_id.get_char_class(),
                 char_id.get_subclass(),
+                ", ".join(char_id.race.get_languages()),
                 char_id.race.get_speed(),
                 char_id.size_check(),
                 ', '.join(f"{key}: {value}" for key, value in char_id.__char_stats_dict__.items()),
@@ -234,12 +260,6 @@ def fast_roll():
     
 
 # Bull fast roll function that rolls and saves an amount of characters decided by the user without any prompts
-def bulk_fast_roll():
-        while True:
-            try:
-                function_input = int(input("Please enter the number of characters you would like to roll: "))
-                break
-            except:
-                print("User input is not a number. Please try again. ")
-        for i in range(function_input):
+def bulk_fast_roll(value):
+        for i in range(value):
             fast_roll()

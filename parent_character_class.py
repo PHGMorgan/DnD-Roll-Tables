@@ -6,19 +6,42 @@ from race_class import *
 from variables_page import max_char_level, char_level_odds, stat_mod_dict, shield_chance, race_weights
 
 
+# To-do list:
+# - IMPORTANT: Rework proficiencies, and make proficiencies a new character trait/feature.
+# - ---DONE--- Move name list to outside Character class so it can be made once and then saved for duration of program running to save on system resources.
+# - Move armor, weapon, and shield lists outside of Character class to save on system resources when bulk rolling.
+# - Comment all code and try to make it more efficient in lacking or old areas.
+# - ---DONE--- Make Languages a separate pull and new character feature outside of the "character features" list.
+# - ---DONE---Include a way to select character level the same way you can select class and race.
+# - ---DONE---Include a way to type your own name for a character.
+# - Maybe try to find a way to make a "settings" of sorts to allow users to change odds parameters after program has started.
+name_list = []
+
+def create_name_list():
+    global name_list
+    if len(name_list) == 0:
+        try: 
+            with open("names.csv", mode="r") as csvfile:
+                file_reader = csv.reader(csvfile)
+                for row in file_reader:
+                    name_list.append(row[0])
+            return name_list
+        except Exception as e:
+            print(e)
+    else:
+        return name_list
+            
 
 class Character:
     def __init__(self, char_id):
         #Set up all variable names
         self.__char_id__ = char_id
-        self.__name__ = None
-        self.__gender__ = None
+        self.__name__ = self.name_roll()
+        self.__gender__ = self.random_gender()
+        self.__alignment__ = self.alignment_compiler()
         self.__char_stats_dict__ = {"STR": 0, "DEX": 0, "CON": 0, "INT": 0, "WIS": 0, "CHA": 0}
-        self.rolls_for_stats, self.armor_list, self.weapon_list, self.__features__, self.names_list = [], [], [], [], []
+        self.rolls_for_stats, self.armor_list, self.weapon_list, self.__features__ = [], [], [], []
         #Run randomizers for each character variable
-        self.name_roll()
-        self.alignment_compiler()
-        self.random_gender()
         self.race_roll()
         self.random_char_level()
         self.stats_roll()
@@ -92,17 +115,8 @@ class Character:
 
     # Create the global names list variable from the data in the names.csv file.
     def name_roll(self):
-        if len(self.names_list) > 0: # Check if name list has already been created. If so, roll on the already existing list.
-            self.__name__ = random.choice(self.names_list)
-        else:   # If not, create the list.
-            try: # Start with try in case names.csv in't available.
-                    with open("names.csv", mode = "r", newline = "") as namefile: # Open names file.
-                        file_reader = csv.reader(namefile) # Create the reader to read the file.
-                        for row in file_reader:
-                            self.names_list.append(row[0]) # Check every row of names and append each entry to a list
-                    self.__name__ = random.choice(self.names_list)
-            except Exception as e:
-                print(e)
+        roll_list = create_name_list()
+        return random.choice(roll_list)
 
 
 
@@ -119,9 +133,9 @@ class Character:
         horiz = self.lawful_chaotic_roller()
         vert = self.good_evil_roller()
         if horiz == vert:
-            self.__alignment__ = "True Neutral"
+            return "True Neutral"
         else:
-            self.__alignment__ = f"{horiz} {vert}"
+            return f"{horiz} {vert}"
 
 
 
@@ -129,9 +143,9 @@ class Character:
     def random_gender(self):
         char_sex = random.randint(1, 2)
         if char_sex == 1:
-            self.__gender__ = "Male"
+            return "Male"
         else:
-            self.__gender__ = "Female"
+            return "Female"
 
     def change_gender(self):
         if self.__gender__ == "Male":
@@ -187,16 +201,12 @@ class Character:
             "WIS": self.rolls_for_stats[4],
             "CHA": self.rolls_for_stats[5]
         })
-        print(f"Before race bonus: {self.__char_stats_dict__}")
         race_bonus = self.race.get_race_stats(self.key_stat_index()[1], self.secondary_score()[1])
         for bonus in race_bonus:
             self.__char_stats_dict__[bonus] += race_bonus[bonus]
-        print(f"After race bonus: {self.__char_stats_dict__}")
         if self.get_asi() > 0:
             for i in range(self.get_asi()):
                 self.apply_asi()
-                print(f"In each ASI loop: {self.__char_stats_dict__}")
-            print(f"After ASI's: {self.__char_stats_dict__}")
 
     def apply_asi(self):
         def apply_plus_one(stat):
@@ -273,13 +283,16 @@ class Character:
 
     def features_compiler(self):
         features_list = []
-        for item in self.race.get_features():
-            if self.__char_level__ >= item[0]:
-                features_list.append(item[1])
-        for item in self.get_class_features():
-            if self.__char_level__ >= item[0]:
-                features_list.append(item[1])
-        self.__features__ = features_list
+        if len(self.race.get_features()) != 0:
+            for item in self.race.get_features():
+                print(f"---{item}---")
+                if self.__char_level__ >= item[0]:
+                    features_list.append(item[1])
+            for item in self.get_class_features():
+                if self.__char_level__ >= item[0]:
+                    features_list.append(item[1])
+            self.__features__ = features_list
+        self.__features__ = []
 
 
 
