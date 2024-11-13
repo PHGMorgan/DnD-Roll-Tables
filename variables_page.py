@@ -757,7 +757,7 @@ human_subrace_list = [
     ["Human", "Human",
      [{"STR": 1, "DEX": 1, "CON": 1, "INT": 1, "WIS": 1, "CHA": 1}],
      [
-         []
+         [21, "None"]
      ]
     ],
     ["Human", "Mark of Finding Human",

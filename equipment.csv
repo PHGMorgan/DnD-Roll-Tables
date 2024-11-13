@@ -1,16 +1,16 @@
-Type,Eligibility,ItemName,EffectNumbers, Effects
-Armor,"['light armor', 'padded armor']",Padded Armor,"['100', '11']", Stealth Disadvantage
+Type,Eligibility,ItemName,EffectNumbers,Effects
+Armor,"['light armor', 'padded armor']",Padded Armor,"['100', '11']",Stealth Disadvantage
 Armor,"['light armor', 'leather armor']",Leather Armor,"['100', '11']"
 Armor,"['light armor', 'studded leather armor']",Studded Leather Armor,"['100', '12']"
 Armor,"['medium armor', 'hide armor']",Hide Armor,"['2', '12']"
 Armor,"['medium armor', 'chain shirt armor']",Chain Shirt Armor,"['2', '13']"
-Armor,"['medium armor', 'scale mail armor']",Scale Mail Armor,"['2', '14']", Stealth Disadvantage
+Armor,"['medium armor', 'scale mail armor']",Scale Mail Armor,"['2', '14']",Stealth Disadvantage
 Armor,"['medium armor', 'breastplate armor']",Breastplate Armor,"['2', '14']"
-Armor,"['medium armor', 'half plate armor']",Half Plate Armor,"['2', '15']", Stealth Disadvantage
-Armor,"['heavy armor', 'ring mail armor']",Ring Mail Armor,"['0', '14']", Stealth Disadvantage
-Armor,"['heavy armor', 'chain mail armor']",Chain Mail Armor,"['0', '16']", Stealth Disadvantage
-Armor,"['heavy armor', 'splint armor']",Splint Armor,"['0', '17']", Stealth Disadvantage
-Armor,"['heavy armor', 'plate armor']",Plate Armor,"['0', '18']", Stealth Disadvantage
+Armor,"['medium armor', 'half plate armor']",Half Plate Armor,"['2', '15']",Stealth Disadvantage
+Armor,"['heavy armor', 'ring mail armor']",Ring Mail Armor,"['0', '14']",Stealth Disadvantage
+Armor,"['heavy armor', 'chain mail armor']",Chain Mail Armor,"['0', '16']",Stealth Disadvantage
+Armor,"['heavy armor', 'splint armor']",Splint Armor,"['0', '17']",Stealth Disadvantage
+Armor,"['heavy armor', 'plate armor']",Plate Armor,"['0', '18']",Stealth Disadvantage
 Shield,"['shield', 'shield']",Shield,"['0', '2']"
 Weapon,"['simple Weapon', 'club']",Club,"['1', '4']","['Light']"
 Weapon,"['simple Weapon', 'dagger']",Dagger,"['1', '4']","['Finesse', 'Light', 'Thrown (range 20/60)']"

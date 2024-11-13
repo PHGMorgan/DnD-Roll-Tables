@@ -109,6 +109,7 @@ def help_subclass(char_id):
     char_id.subclass_roll()
     char_id.proficiency_compiler()
     char_id.features_compiler()
+    char_id.languages_compiler()
     char_id.make_equipment_list()
     print(f"This character's subclass is now: {char_id.get_subclass()}")
 
@@ -131,6 +132,7 @@ def help_level(char_id):
     char_id.size_check()
     char_id.proficiency_compiler()
     char_id.features_compiler()
+    char_id.languages_compiler()
     char_id.roll_hp()
     print(f"This character's level is now {char_id.get_char_level()}.")
 
@@ -147,11 +149,17 @@ def help_select_level(char_id, value):
     char_id.size_check()
     char_id.proficiency_compiler()
     char_id.features_compiler()
+    char_id.languages_compiler()
     char_id.roll_hp()
     print(f"This character's level is now {char_id.get_char_level()}.")
 
 def help_weapon(char_id):
     char_id.roll_weapon()
+    if char_id.get_char_weapon().lower() in ["greatclub", "light crossbow", "shortbow", "glaive", "greataxe", "greatsword", "halberd", "lance", "maul", "pike", "heavy crossbow", "longbow"]:
+        char_id.remove_shield()
+        char_id.calculate_ac()
+        print(f"This character is now wielding a {char_id.get_char_weapon()}. New weapon is two-handed.")
+        return
     print(f"This character is now wielding a {char_id.get_char_weapon()}.")
 
 def help_armor(char_id):
@@ -178,6 +186,7 @@ def help_save(char_id):
                 char_id.race.get_true_subrace(),
                 char_id.get_char_class(),
                 char_id.get_subclass(),
+                ', '.join(char_id.get_languages()),
                 char_id.race.get_speed(),
                 char_id.size_check(),
                 ', '.join(f"{key}: {value}" for key, value in char_id.__char_stats_dict__.items()),
@@ -208,7 +217,7 @@ def help_details(char_id):
         f"Character subrace: {char_id.race.get_true_subrace()} \n"
         f"Character class: {char_id.get_char_class()} \n"
         f"Character subclass: {char_id.get_subclass()} \n"
-        f"Character languages: {', '.join(char_id.race.get_languages())} \n"
+        f"Character languages: {', '.join(char_id.get_languages())} \n"
         f"Character speed: {char_id.race.get_speed()} \n"
         f"Character size: {char_id.size_check()} \n"
         f"Character stats: {', '.join(f'{key}: {value}' for key, value in char_id.__char_stats_dict__.items())} \n"
@@ -240,7 +249,7 @@ def fast_roll():
                 char_id.race.get_subrace_name(),
                 char_id.get_char_class(),
                 char_id.get_subclass(),
-                ", ".join(char_id.race.get_languages()),
+                ", ".join(char_id.get_languages()),
                 char_id.race.get_speed(),
                 char_id.size_check(),
                 ', '.join(f"{key}: {value}" for key, value in char_id.__char_stats_dict__.items()),

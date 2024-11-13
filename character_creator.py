@@ -181,7 +181,7 @@ def main():
                             help_select_level(char_id, value)
                             break
                         except:
-                            print("That is not a valid number. Please enter a valid number to bulk roll.")
+                            print("That is not a valid number. Please enter a valid number to change level.")
                 case "weapon":
                     help_weapon(char_id)
                 case "armor":

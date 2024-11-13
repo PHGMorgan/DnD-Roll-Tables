@@ -9,13 +9,18 @@ from variables_page import max_char_level, char_level_odds, stat_mod_dict, shiel
 # To-do list:
 # - IMPORTANT: Rework proficiencies, and make proficiencies a new character trait/feature.
 # - ---DONE--- Move name list to outside Character class so it can be made once and then saved for duration of program running to save on system resources.
-# - Move armor, weapon, and shield lists outside of Character class to save on system resources when bulk rolling.
+# - ---DONE--- Move armor, weapon, and shield lists outside of Character class to save on system resources when bulk rolling.
 # - Comment all code and try to make it more efficient in lacking or old areas.
 # - ---DONE--- Make Languages a separate pull and new character feature outside of the "character features" list.
 # - ---DONE---Include a way to select character level the same way you can select class and race.
 # - ---DONE---Include a way to type your own name for a character.
 # - Maybe try to find a way to make a "settings" of sorts to allow users to change odds parameters after program has started.
+# - ---DONE--- Make some weapons two-handed.
+# - Maybe add skill proficiencies/points for the classes.
+# - Should I include backgrounds!?
+
 name_list = []
+equipment_list = []
 
 def create_name_list():
     global name_list
@@ -30,18 +35,35 @@ def create_name_list():
             print(e)
     else:
         return name_list
+    
+def pull_from_equipment():
+    global equipment_list
+    if len(equipment_list) == 0:
+        try:
+            with open("equipment.csv", mode="r") as csvfile:
+                file_reader = csv.reader(csvfile)
+                next(file_reader)
+                for row in file_reader:
+                    equipment_list.append(row)
+            return equipment_list
+        except Exception as e:
+            print(e)
+    else:
+        return equipment_list
+
             
 
 class Character:
     def __init__(self, char_id):
-        #Set up all variable names
+        # Set up all variable names
         self.__char_id__ = char_id
         self.__name__ = self.name_roll()
         self.__gender__ = self.random_gender()
         self.__alignment__ = self.alignment_compiler()
         self.__char_stats_dict__ = {"STR": 0, "DEX": 0, "CON": 0, "INT": 0, "WIS": 0, "CHA": 0}
-        self.rolls_for_stats, self.armor_list, self.weapon_list, self.__features__ = [], [], [], []
-        #Run randomizers for each character variable
+        self.rolls_for_stats, self.armor_list, self.weapon_list, self.__features__, self.__languages__ = [], [], [], [], []
+        self.__armor__, self.__weapon__, self.__shield__  = "None", "None", "None"
+        # Run randomizers for each character variable
         self.race_roll()
         self.random_char_level()
         self.stats_roll()
@@ -49,6 +71,7 @@ class Character:
         self.subclass_roll()
         self.proficiency_compiler()
         self.features_compiler()
+        self.languages_compiler()
         self.roll_hp()
         self.make_equipment_list()
         self.roll_armor()
@@ -109,8 +132,15 @@ class Character:
         return self.__alignment__
 
     def get_subclass(self):
+        if self.subclass == "None":
+            return self.subclass
         return self.subclass[0]
 
+    def get_languages(self):
+        return self.__languages__
+
+    def remove_shield(self):
+        self.__shield__ = "None"
 
 
     # Create the global names list variable from the data in the names.csv file.
@@ -257,7 +287,7 @@ class Character:
 
 
 
-    # Function for randomly rolling a character's level, features, and proficiencies. Odds of each level appearing can be altered in the "variables_page" file. Variables used are max_char_level and char_level_odds.
+    # Function for randomly rolling a character's level and some character features. Odds of each level appearing can be altered in the "variables_page" file. Variables used are max_char_level and char_level_odds.
     def random_char_level(self):
         level_num = max_char_level
         levels_list = []
@@ -283,17 +313,25 @@ class Character:
 
     def features_compiler(self):
         features_list = []
-        if len(self.race.get_features()) != 0:
-            for item in self.race.get_features():
-                print(f"---{item}---")
-                if self.__char_level__ >= item[0]:
-                    features_list.append(item[1])
-            for item in self.get_class_features():
-                if self.__char_level__ >= item[0]:
-                    features_list.append(item[1])
+        for item in self.race.get_features():
+            if self.__char_level__ >= item[0]:
+                features_list.append(item[1])
+        for item in self.get_class_features():
+            if self.__char_level__ >= item[0]:
+                features_list.append(item[1])
+        if len(features_list) > 0:
             self.__features__ = features_list
-        self.__features__ = []
+        else:
+            self.__features__ = ["None"]
 
+    def get_class_language(self):
+        return []
+
+    def languages_compiler(self):
+        languages = []
+        languages.extend(self.race.get_languages())
+        languages.extend(self.get_class_language())
+        self.__languages__ = set(languages)
 
 
     # The following section is for functions used to calculate a character's HP.
@@ -330,25 +368,22 @@ class Character:
 
     def roll_shield(self):
         if random.randint(1, shield_chance) <= 10:
-            self.__shield__ = self.shield_availability
+            print(self.get_char_weapon().lower() in ["greatclub", "light crossbow", "shortbow", "glaive", "greataxe", "greatsword", "halberd", "lance", "maul", "pike", "heavy crossbow", "longbow"])
+            if self.get_char_weapon().lower() in ["greatclub", "light crossbow", "shortbow", "glaive", "greataxe", "greatsword", "halberd", "lance", "maul", "pike", "heavy crossbow", "longbow"]:
+                self.__shield__ = "None"
+            else:
+                self.__shield__ = self.shield_availability
 
     def make_equipment_list(self):
-        self.__shield__ = "None"
-        self.__armor__ = "None"
-        self.__weapon__ = "None"
         self.shield_availability = "None"
-        try:
-            with open("equipment.csv", mode = "r", newline = "") as csvfile:
-                file_reader = csv.reader(csvfile)
-                for row in file_reader:
-                    if row[0] == "Armor" and  any(item in row[1] for item in self.proficiencies):
-                        self.armor_list.append(row)
-                    if row[0] == "Weapon" and any(item in row[1] for item in self.proficiencies):
-                        self.weapon_list.append(row)
-                    if row[0] == "Shield" and any(item in row[1] for item in self.proficiencies):
-                        self.shield_availability = row
-        except Exception as e:
-            print(e)
+        character_list = pull_from_equipment()
+        for row in character_list:
+            if row[0] == "Armor" and  any(item in row[1] for item in self.proficiencies):
+                self.armor_list.append(row)
+            if row[0] == "Weapon" and any(item in row[1] for item in self.proficiencies):
+                self.weapon_list.append(row)
+            if row[0] == "Shield" and any(item in row[1] for item in self.proficiencies):
+                self.shield_availability = row
     
     def calculate_ac(self):
         if self.__armor__ == "None":

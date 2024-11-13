@@ -66,6 +66,7 @@ class Artificer(Character):
         return class_features
 
 
+
 class Barbarian(Character): # Rework speed for "Fast Movement"
     def __init__(self, char_id):
         self.__char_class__= "Barbarian"
@@ -313,7 +314,7 @@ class Commoner(Character):
         self.__ac__ = 10 + stat_mod_dict[self.__char_stats_dict__["DEX"]]
 
     def get_class_proficiencies(self):
-        return []
+        return ["None"]
     
     def secondary_score(self):
         return random.choice([(0, "STR"), (1, "DEX"), (3, "INT"), (4, "WIS"), (5, "CHA")])
@@ -323,7 +324,7 @@ class Commoner(Character):
 
 
 
-class Druid(Character): # One subclass change
+class Druid(Character):
     def __init__(self, char_id):
         self.__char_class__= "Druid"
         super().__init__(char_id)
@@ -339,7 +340,7 @@ class Druid(Character): # One subclass change
             ("Circle of Dreams", ((2, "Balm of the Summer Court"), (6, "Hearth of Moonlight and Shadow"), (10, "Hidden Paths"), (14, "Walker in Dreams"))),
             ("Circle of the Land", ((2, "Bonus Cantrip"), (2, "Natural Recovery"), (6, "Land's Stride"), (10, "Nature's Ward"), (14, "Nature's Sanctuary"))),
             ("Circle of the Moon", ((2, "Combat Wild Shape"), (2, "Circle Forms"), (6, "Primal Strike"), (10, "Elemental Wild Shape"), (14, "Thousand Forms"))),
-            ("Circle of the Shepherd", ((2, "Speech of the Woods"), (2, "Spirit Totem"), (6, "Mighty Summoner"), (10, "Guardian Spirit"), (14, "Faithful Summons"))), # Maybe rework languages
+            ("Circle of the Shepherd", ((2, "Speech of the Woods"), (2, "Spirit Totem"), (6, "Mighty Summoner"), (10, "Guardian Spirit"), (14, "Faithful Summons"))),
             ("Circle of Spores", ((2, "Halo of Spores"), (2, "Symbiotic Entity"), (6, "Fungal Infestation"), (10, "Spreading Spores"), (14, "Fungal Body"))),
             ("Circle of Stars", ((2, "Star Map"), (2, "Starry Form"), (6, "Cosmic Omen"), (10, "Twinkling Constellation"), (14, "Full of Stars"))),
             ("Circle of Wildfire", ((2, "Summon Wildfire Spirit"), (6, "Enhanced Bond"), (10, "Cauterizing Flames"), (14, "Blazing Revival")))
@@ -381,6 +382,11 @@ class Druid(Character): # One subclass change
             class_features.extend(self.subclass[1])
         return class_features
 
+    def get_class_language(self):
+        if self.subclass[0] == "Circle of the Shepherd":
+            return ["Sylvan"]
+        return []
+
 
 
 class Fighter(Character):
@@ -400,16 +406,16 @@ class Fighter(Character):
 
     def subclass_roll(self):
         list_of_subclasses = [
-            ("Arcane Archer", ((3, "Arcane Archer Lore"), (3, "Arcane Shot"), (7,"Magic Arrow"), (7, "Curving Shot"), (15, "Ever-Ready Shot"))),#Arcane Archer Lore- skill prof and cantrips
-            ("Banneret", ((3, "Rallying Cry"), (7, "Royal Envoy"), (10, "Inspiring Surge"), (15, "Bulwark"))),#Royal Envoy- persuasion prof or other skill
-            ("Battle Master", ((3, "Combat Superiority"), (3, "Student of War"), (7, "Know Your Enemy"), (10, "Improved Combat Superiority"), (15, "Relentless"))),#Student of War- tool prof
-            ("Cavalier", ((3, "Bonus Proficiency"), (3, "Born to the Saddle"), (3, "Unwavering Mark"), (7, "Warding Maneuver"), (10, "Hold the Line"), (15, "Ferocious Charger"), (18, "Vigilant Defender"))),#Bonus Proficiency- skill prof or extra language
+            ("Arcane Archer", ((3, "Arcane Archer Lore"), (3, "Arcane Shot"), (7,"Magic Arrow"), (7, "Curving Shot"), (15, "Ever-Ready Shot"))),# Arcane Archer Lore- skill prof
+            ("Banneret", ((3, "Rallying Cry"), (7, "Royal Envoy"), (10, "Inspiring Surge"), (15, "Bulwark"))),# Royal Envoy- persuasion prof or other skill
+            ("Battle Master", ((3, "Combat Superiority"), (3, "Student of War"), (7, "Know Your Enemy"), (10, "Improved Combat Superiority"), (15, "Relentless"))),# Student of War- tool prof
+            ("Cavalier", ((3, "Bonus Proficiency"), (3, "Born to the Saddle"), (3, "Unwavering Mark"), (7, "Warding Maneuver"), (10, "Hold the Line"), (15, "Ferocious Charger"), (18, "Vigilant Defender"))),# Bonus Proficiency- skill prof or extra language
             ("Champion", ((3, "Improved Critical"), (7, "Remarkable Athlete"), (10, "Additional Fighting Style"), (15, "Superior Critical"), (18, "Survivor"))),
             ("Echo Knight", ((3, "Manifest Echo"), (3, "Unleash Incarnation"), (7, "Echo Avatar"), (10, "Shadow Martyr"), (15, "Reclaim Potential"), (18, "Legion of One"))),
             ("Eldritch Knight", ((3, "Spellcasting"), (3, "Weapon Bond"), (7, "War Magic"), (10, "Eldritch Strike"), (15, "Arcane Charge"), (18, "Improved War Magic"))),
             ("Psi Warrior", ((3, "Psionic Power"), (7, "Telekinetic Adept"), (10, "Guarded Mind"), (15, "Bulwark of Force"), (18, "Telekinetic Master"))),
-            ("Rune Knight", ((3, "Bonus Proficiencies"), (3, "Rune Carver"), (3, "Giant's Might"), (7, "Runic Shield"), (10, "Great Stature"), (15, "Master of Runes"), (18, "Runic Juggernaut"))),#Bonus Proficiencies smith tools + giant language
-            ("Samurai", ((3, "Bonus Proficiencies"), (3, "Fighting Spirit"), (7, "Elegant Courtier"), (10, "Tireless Spirit"), (15, "Rapid Strike"), (18, "Strength Before Death"))) #Bonus Proficiency- skill prof or extra language
+            ("Rune Knight", ((3, "Bonus Proficiencies"), (3, "Rune Carver"), (3, "Giant's Might"), (7, "Runic Shield"), (10, "Great Stature"), (15, "Master of Runes"), (18, "Runic Juggernaut"))),# Bonus Proficiencies smith tools
+            ("Samurai", ((3, "Bonus Proficiencies"), (3, "Fighting Spirit"), (7, "Elegant Courtier"), (10, "Tireless Spirit"), (15, "Rapid Strike"), (18, "Strength Before Death"))) # Bonus Proficiency- skill prof or extra language
         ]
         if self.__char_level__ >= 3:
             self.subclass = random.choice(list_of_subclasses)
@@ -462,6 +468,11 @@ class Fighter(Character):
             class_features.extend(self.subclass[1])
         return class_features
 
+    def get_class_language(self):
+        if self.subclass[0] == "Rune Knight":
+            return ["Giant"]
+        return []
+
 
 
 class Monk(Character):
@@ -487,12 +498,12 @@ class Monk(Character):
 
     def subclass_roll(self):
         list_of_subclasses = [
-            ("Way of Mercy", ((3, "Implements of Mercy"), (3, "Hand of Healing"), (3, "Hand of Harm"), (6, "Physician's Touch"), (11, "Flurry of Healing and Harm"), (17, "Hand of Ultimate Mercy"))),#Implements of Mercy- skill prof + herb kit
-            ("Way of the Ascendant Dragon", ((3, "Draconic Disciple"), (3, "Breath of the Dragon"), (6, "Wings Unfurled"), (11, "Aspect of the Wyrm"), (17, "Ascendant Aspect"))),#Ascendant Dragon Origin
+            ("Way of Mercy", ((3, "Implements of Mercy"), (3, "Hand of Healing"), (3, "Hand of Harm"), (6, "Physician's Touch"), (11, "Flurry of Healing and Harm"), (17, "Hand of Ultimate Mercy"))), # Implements of Mercy- skill prof + herb kit
+            ("Way of the Ascendant Dragon", ((3, "Draconic Disciple"), (3, "Breath of the Dragon"), (6, "Wings Unfurled"), (11, "Aspect of the Wyrm"), (17, "Ascendant Aspect"))),
             ("Way of the Astral Self", ((3, "Arms of the Astral Self"), (6, "Visage of the Astral Self"), (11, "Body of the Astral Self"), (17, "Awakened Astral Self"))),
-            ("Way of the Drunken Master", ((3, "Bonus Proficiencies"), (3, "Drunken Technique"), (6, "Tipsy Sway"), (11, "Drunkard's Luck"), (17, "Intoxicated Frenzy"))),#Bonus Proficiencies- performance + brewer supplies
-            ("Way of the Four Elements", ((3, "Disciple of the Elements"), (6, "Elemental Disciplines"), (11, "Elemental Disciplines"), (17, "Elemental Disciplines"))),  # Note: Features are chosen from Elemental Disciplines
-            ("Way of the Kensei", ((3, "Path of the Kensei"), (6, "One with the Blade"), (11, "Sharpen the Blade"), (17, "Unerring Accuracy"))),#Path of the Kensei- kensei weapons- gain proficiency with chosen weapons | way of the brush- prof calluigrapher supp or painter supp
+            ("Way of the Drunken Master", ((3, "Bonus Proficiencies"), (3, "Drunken Technique"), (6, "Tipsy Sway"), (11, "Drunkard's Luck"), (17, "Intoxicated Frenzy"))), # Bonus Proficiencies- performance + brewer supplies
+            ("Way of the Four Elements", ((3, "Disciple of the Elements"), (6, "Elemental Disciplines"), (11, "Elemental Disciplines"), (17, "Elemental Disciplines"))),
+            ("Way of the Kensei", ((3, "Path of the Kensei"), (6, "One with the Blade"), (11, "Sharpen the Blade"), (17, "Unerring Accuracy"))), # Path of the Kensei- kensei weapons- gain proficiency with chosen weapons | way of the brush- prof calligrapher supp or painter supp
             ("Way of the Long Death", ((3, "Touch of Death"), (6, "Hour of Reaping"), (11, "Mastery of Death"), (17, "Touch of the Long Death"))),
             ("Way of the Open Hand", ((3, "Open Hand Technique"), (6, "Wholeness of Body"), (11, "Tranquility"), (17, "Quivering Palm"))),
             ("Way of Shadow", ((3, "Shadow Arts"), (6, "Shadow Step"), (11, "Cloak of Shadows"), (17, "Opportunist"))),
@@ -524,8 +535,6 @@ class Monk(Character):
                 break
 
     def calculate_ac(self):
-        print(self.__char_stats_dict__)
-        print(self.__char_level__)
         self.__ac__ = 10 + stat_mod_dict[self.__char_stats_dict__["DEX"]] + stat_mod_dict[self.__char_stats_dict__["WIS"]]
 
     def get_class_proficiencies(self):
@@ -551,8 +560,17 @@ class Monk(Character):
             (18, "Empty Body"),
             (20, "Perfect Self")
         ]
-        if self.__char_level__ >= 3:
-            class_features.extend(self.subclass[1])
+        if self.__char_level__ >= 3 and self.subclass[0] == "Way of the Four Elements":
+            if self.__char_level__ >= 17:
+                return class_features.extend([3, "Disciple of the Elements"], [17, "Elemental Disciplines (Four)"])
+            elif self.__char_level__ >= 11:
+                return class_features.extend([3, "Disciple of the Elements"], [11, "Elemental Disciplines (Three)"])
+            elif self.__char_level__ >= 6:
+                return class_features.extend([3, "Disciple of the Elements"], [6, "Elemental Disciplines (Two)"])
+            elif self.__char_level__ >= 3:
+                return class_features.extend([3, "Disciple of the Elements"], [3, "Elemental Disciplines (One)"])
+        elif self.__char_level__ >= 3:
+            return class_features.extend(self.subclass[1])
         return class_features
 
 
@@ -653,7 +671,7 @@ class Ranger(Character):
             ("Hunter", ((3, "Hunter's Prey"), (7, "Defensive Tactics"), (11, "Multiattack"), (15, "Superior Hunter's Defense"))),
             ("Monster Slayer", ((3,"Monster Slayer Magic"), (3, "Hunter's Sense"), (3, "Slayer's Prey"), (7, "Supernatural Defense"), (11, "Magic-User's Nemesis"), (15, "Slayer's Counter"))),
             ("Swarmkeeper", ((3, "Swarmkeeper Magic"), (3, "Gathered Swarm"), (7, "Writhing Tide"), (11, "Mighty Swarm"), (15, "Swarming Dispersal"))),
-            ("Drakewarden", ((3, "Draconic Gift"), (3, "Drake Companion"), (7, "Bond of Fang and Scale"), (11, "Drake's Breath"), (15, "Perfected Bond")))#Drakewarden Origin, Drakewarden Origin- draconic or other language
+            ("Drakewarden", ((3, "Draconic Gift"), (3, "Drake Companion"), (7, "Bond of Fang and Scale"), (11, "Drake's Breath"), (15, "Perfected Bond")))
         ]
         if self.__char_level__ >= 3:
             self.subclass = random.choice(list_of_subclasses)
@@ -695,6 +713,11 @@ class Ranger(Character):
         if self.__char_level__ >= 3:
             class_features.extend(self.subclass[1])
         return class_features
+
+    def get_class_language(self):
+        if self.subclass[0] == "Drakewarden":
+            return ["Draconic"]
+        return []
 
 
 
@@ -785,15 +808,15 @@ class Sorcerer(Character):
     
     def subclass_roll(self):
         list_of_subclasses = [
-            ("Aberrant Mind", ((1, "Telepathic Speech"), (1, "Psionic Spells"), (6, "Psionic Sorcery"), (14, "Revelation in Flesh"), (18, "Warping Implosion"))),#Aberrant Origins
+            ("Aberrant Mind", ((1, "Telepathic Speech"), (1, "Psionic Spells"), (6, "Psionic Sorcery"), (14, "Revelation in Flesh"), (18, "Warping Implosion"))),
             ("Clockwork Soul", ((1, "Clockwork Magic"), (1, "Restore Balance"), (6, "Bastion of Law"), (14, "Trance of Order"), (18, "Clockwork Cavalcade"))),
             ("Divine Soul", ((1, "Divine Magic"), (1, "Favored by the Gods"), (6, "Empowered Healing"), (14, "Otherworldly Wings"), (18, "Unearthly Recovery"))),
-            ("Draconic Bloodline", ((1, "Dragon Ancestor"), (1, "Draconic Resilience"), (6, "Elemental Affinity"), (14, "Dragon Wings"), (18, "Draconic Presence"))),#Draconic Ancestry- lanaguage draconic + cha check x2 with dragons
-            ("Shadow Magic", ((1, "Eyes of the Dark"), (1, "Strength of the Grave"), (6, "Hound of Ill Omen"), (14, "Shadow Walk"), (18, "Umbral Form"))),#Shadow Sorcerer Quirks
-            ("Storm Sorcery", ((1, "Wind Speaker"), (1, "Tempestuous Magic"), (6, "Heart of the Storm"), (6, "Storm Guide"), (14, "Storm's Fury"), (18, "Wind Soul"))),#Wind Speaker- language primordial
+            ("Draconic Bloodline", ((1, "Dragon Ancestor"), (1, "Draconic Resilience"), (6, "Elemental Affinity"), (14, "Dragon Wings"), (18, "Draconic Presence"))),
+            ("Shadow Magic", ((1, "Eyes of the Dark"), (1, "Strength of the Grave"), (6, "Hound of Ill Omen"), (14, "Shadow Walk"), (18, "Umbral Form"))),
+            ("Storm Sorcery", ((1, "Wind Speaker"), (1, "Tempestuous Magic"), (6, "Heart of the Storm"), (6, "Storm Guide"), (14, "Storm's Fury"), (18, "Wind Soul"))),
             ("Wild Magic", ((1, "Wild Magic Surge"), (1, "Tides of Chaos"), (6, "Bend Luck"), (14, "Controlled Chaos"), (18, "Spell Bombardment"))),
             ("Phoenix Sorcery", ((1, "Ignite"), (1, "Mantle of Flame"), (6, "Phoenix Spark"), (14, "Nourishing Fire"), (18, "Form of the Phoenix"))),
-            ("Lunar Sorcery"), (((1, "Moon Fire"), (6, "Lunar Boons"), (6, "Waxing and Waning"), (14, "Lunar Empowerment"), (18, "LunarPhenomenon"))) #Added was missing?
+            ("Lunar Sorcery", ((1, "Moon Fire"), (6, "Lunar Boons"), (6, "Waxing and Waning"), (14, "Lunar Empowerment"), (18, "Lunar Phenomenon")))
         ]
         self.subclass = random.choice(list_of_subclasses)
 
@@ -827,6 +850,12 @@ class Sorcerer(Character):
         class_features.extend(self.subclass[1])
         return class_features
 
+    def get_class_language(self):
+        if self.subclass[0] == "Draconic Bloodline":
+            return ["Draconic"]
+        if self.subclass[0] == "Storm Sorcery":
+            return ["Primordial"]
+        return []
 
 
 class Warlock(Character):
@@ -901,7 +930,7 @@ class Wizard(Character):
     
     def subclass_roll(self):
         list_of_subclasses = [
-            ("Bladesinging", ((2, "Training in War and Song"), (2, "Bladesong"), (6, "Extra Attack"), (10, "Song of Defense"), (14, "Song of Victory"))),#Training in War and Song- light armor + 1 one handed melee of choice + performance prof
+            ("Bladesinging", ((2, "Training in War and Song"), (2, "Bladesong"), (6, "Extra Attack"), (10, "Song of Defense"), (14, "Song of Victory"))), # Training in War and Song- light armor + 1 one handed melee of choice + performance prof
             ("Chronurgy Magic", ((2, "Chronal Shift"), (2, "Temporal Awareness"), (6, "Momentary Stasis"), (10, "Arcane Abeyance"), (14, "Convergent Future"))),
             ("Graviturgy Magic", ((2, "Adjust Density"), (6, "Gravity Well"), (10, "Violent Attraction"), (14, "Event Horizon"))),
             ("Order of Scribes", ((2, "Wizardly Quill"), (2, "Awakened Spellbook"), (6, "Manifest Mind"), (10, "Master Scrivener"), (14, "One with the Word"))),
