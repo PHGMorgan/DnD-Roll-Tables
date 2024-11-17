@@ -1,10 +1,9 @@
 import csv
+import os
 import random
 from DnD_classes import *
-from parent_character_class import *
+from parent_character_class import Character
 from variables_page import class_odds_list
-
-
 
 # These two functions are for loop 2 of the main function and make it so a class object is only created after character class has been decided.
 class_mapping = {
@@ -27,6 +26,21 @@ class_mapping = {
 def class_roll():
     global class_mapping
     return random.choices(list(class_mapping.keys()), weights = class_odds_list, k=1)[0]
+
+
+
+#CSV Functions
+def check_or_create_csv():
+    try:
+        if os.path.exists("saved_characters.csv"):
+            print("Saved characters directory csv file exists!")
+        else:
+            with open("saved_characters.csv", mode="w") as csvfile:
+                file_writer = csv.writer(csvfile, delimiter = ",", quotechar = '"')
+                file_writer.writerow(["Character ID", "Name", "Alignment", "Gender", "Race", "Subrace", "Class", "Subclass", "Languages", "Speed", "Size", "Saving Throws", "Stats", "Level", "HP", "AC", "Weapon", "Armor", "Shield", "Proficiencies", "Character Features"])
+                print("Saved characters directory csv file created!")
+    except Exception as e:
+        print(e)
 
 
 
@@ -180,24 +194,25 @@ def help_save(char_id):
             file_writer.writerow(
                 [char_id.get_char_id(),
                 char_id.get_char_name(),
-                char_id.get_alignment(),
+                char_id.get_char_alignment(),
                 char_id.get_char_gender(),
-                char_id.race.get_race_name(),
-                char_id.race.get_true_subrace(),
+                char_id.get_char_race(),
+                char_id.get_char_subrace(),
                 char_id.get_char_class(),
-                char_id.get_subclass(),
-                ', '.join(char_id.get_languages()),
-                char_id.race.get_speed(),
-                char_id.size_check(),
-                ', '.join(f"{key}: {value}" for key, value in char_id.__char_stats_dict__.items()),
+                char_id.get_char_subclass()[0],
+                ', '.join(char_id.get_char_languages()),
+                char_id.get_char_speed(),
+                char_id.get_char_size(),
+                ', '.join(f"{key}: {value}" for key, value in char_id.get_char_stats().items()),
+                ', '.join(f"{key}: {'+' if value > 0 else ''}{value}" for key, value in char_id.get_char_saving_throws().items()),
                 char_id.get_char_level(),
                 char_id.get_char_hp(),
                 char_id.get_char_ac(),
                 char_id.get_char_weapon(),
                 char_id.get_char_armor(),
                 char_id.get_char_shield(),
-                ', '.join(f'{item}' for item in set(char_id.proficiencies)),
-                ', '.join(f'{item}' for item in char_id.get_features())
+                ', '.join(f'{item}' for item in set(char_id.get_char_proficiencies())),
+                ', '.join(f'{item}' for item in char_id.get_char_features())
             ])
         print(char_id)
         print("---Character saved!---")
@@ -211,24 +226,25 @@ def help_details(char_id):
     char_id.race.get_subrace_name()
     print(
         f"Character name: {char_id.get_char_name()} \n"
-        f"Character alignment: {char_id.get_alignment()} \n"
+        f"Character alignment: {char_id.get_char_alignment()} \n"
         f"Character gender: {char_id.get_char_gender()} \n"
-        f"Character race: {char_id.race.get_race_name()} \n"
-        f"Character subrace: {char_id.race.get_true_subrace()} \n"
+        f"Character race: {char_id.get_char_race()} \n"
+        f"Character subrace: {char_id.get_char_subrace()} \n"
         f"Character class: {char_id.get_char_class()} \n"
-        f"Character subclass: {char_id.get_subclass()} \n"
-        f"Character languages: {', '.join(char_id.get_languages())} \n"
-        f"Character speed: {char_id.race.get_speed()} \n"
-        f"Character size: {char_id.size_check()} \n"
-        f"Character stats: {', '.join(f'{key}: {value}' for key, value in char_id.__char_stats_dict__.items())} \n"
-        f"Character level: {char_id.__char_level__} \n"
-        f"Character HP: {char_id.__hp__} \n"
-        f"Character AC: {char_id.__ac__} \n"
+        f"Character subclass: {char_id.get_char_subclass()[0]} \n"
+        f"Character languages: {', '.join(char_id.get_char_languages())} \n"
+        f"Character speed: {char_id.get_char_speed()} \n"
+        f"Character size: {char_id.get_char_size()} \n"
+        f"Character stats: {', '.join(f'{key}: {value}' for key, value in char_id.get_char_stats().items())} \n"
+        f"Character saving throws: " + ', '.join(f'{key}: {"+" if value > 0 else ""}{value}' for key, value in char_id.get_char_saving_throws().items()) + "\n"
+        f"Character level: {char_id.get_char_level()} \n"
+        f"Character HP: {char_id.get_char_hp()} \n"
+        f"Character AC: {char_id.get_char_ac()} \n"
         f"Character weapon: {char_id.get_char_weapon()} \n"
         f"Character armor: {char_id.get_char_armor()} \n"
         f"Character shield: {char_id.get_char_shield()} \n"
-        f"Character proficiencies: {', '.join(f'{item}' for item in set(char_id.proficiencies))} \n"
-        f"Character features: {', '.join(f'{item}' for item in char_id.get_features())}"
+        f"Character proficiencies: {', '.join(f'{item}' for item in set(char_id.get_char_proficiencies()))} \n"
+        f"Character features: {', '.join(f'{item}' for item in char_id.get_char_features())}"
     )
 
 
@@ -243,24 +259,25 @@ def fast_roll():
             file_writer.writerow(
                 [char_id.get_char_id(),
                 char_id.get_char_name(),
-                char_id.get_alignment(),
+                char_id.get_char_alignment(),
                 char_id.get_char_gender(),
-                char_id.race.get_race_name(),
-                char_id.race.get_subrace_name(),
+                char_id.get_char_race(),
+                char_id.get_char_subrace(),
                 char_id.get_char_class(),
-                char_id.get_subclass(),
-                ", ".join(char_id.get_languages()),
-                char_id.race.get_speed(),
-                char_id.size_check(),
-                ', '.join(f"{key}: {value}" for key, value in char_id.__char_stats_dict__.items()),
+                char_id.get_char_subclass()[0],
+                ", ".join(char_id.get_char_languages()),
+                char_id.get_char_speed(),
+                char_id.get_char_size(),
+                ', '.join(f'{key}: {"+" if value > 0 else ""}{value}' for key, value in char_id.get_char_saving_throws().items()),
+                char_id.get_char_saving_throws(),
                 char_id.get_char_level(),
                 char_id.get_char_hp(),
                 char_id.get_char_ac(),
                 char_id.get_char_weapon(),
                 char_id.get_char_armor(),
                 char_id.get_char_shield(),
-                ', '.join(f'{item}' for item in set(char_id.proficiencies)),
-                ', '.join(f'{item}' for item in char_id.get_features())
+                ', '.join(f'{item}' for item in set(char_id.get_char_proficiencies())),
+                ', '.join(f'{item}' for item in char_id.get_char_features())
             ])
         print(char_id)
         print("---Character saved!---")

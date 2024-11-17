@@ -25,9 +25,9 @@ class Artificer(Character):
             ("Battle Smith", ((3, "Battle Smith Spells"), (3, "Battle Ready"), (3, "Steel Defender"), (5, "Extra Attack"), (9, "Arcane Jolt"), (15, "Improved Defender")))
         ]
         if self.__char_level__ >= 3:
-            self.subclass = random.choice(list_of_subclasses)
+            return random.choice(list_of_subclasses)
         else:
-            self.subclass = "None"
+            return "None"
     
     def get_asi(self):
         total_asi = 0
@@ -45,7 +45,7 @@ class Artificer(Character):
 
     def get_class_proficiencies(self):
         class_proficiencies = ["light armor", "medium armor", "shield", "simple weapon"]
-        if self.__char_level__ >= 3 and self.subclass[0] == "Battle Smith":
+        if self.__char_level__ >= 3 and self.__subclass__[0] == "Battle Smith":
             class_proficiencies.append("martial weapon")
         return class_proficiencies
 
@@ -62,8 +62,11 @@ class Artificer(Character):
             (18, "Magic Item Master"),
             (20, "Soul of Artifice")]
         if self.__char_level__ >= 3:
-            class_features.extend(self.subclass[1])
+            class_features.extend(self.__subclass__[1])
         return class_features
+    
+    def class_saving_throws(self):
+        return ["CON", "INT"]
 
 
 
@@ -92,14 +95,13 @@ class Barbarian(Character): # Rework speed for "Fast Movement"
         ]
         while True:
             if self.__char_level__ >= 3:  
-                self.subclass = random.choice(subclass_list)
-                if self.subclass[0] == "Battlerager" and self.race.get_race_name() != "Dwarf":
+                selection = random.choice(subclass_list)
+                if selection == "Battlerager" and self.race.get_race_name() != "Dwarf":
                     continue
                 else:
-                    break
+                    return selection
             else:
-                self.subclass = "None"
-                break
+                return "None"
 
     def get_asi(self):
         total_asi = 0
@@ -120,7 +122,6 @@ class Barbarian(Character): # Rework speed for "Fast Movement"
             self.__ac__ = 10 + stat_mod_dict[self.__char_stats_dict__["DEX"]] + stat_mod_dict[self.__char_stats_dict__["CON"]]
         else:
             self.__ac__ = 12 + stat_mod_dict[self.__char_stats_dict__["DEX"]] + stat_mod_dict[self.__char_stats_dict__["CON"]]
-
 
     def get_class_proficiencies(self):
         return ["shield", "simple weapon", "martial weapon"]
@@ -148,8 +149,11 @@ class Barbarian(Character): # Rework speed for "Fast Movement"
             (20, "Primal Champion")
         ]
         if self.__char_level__ >= 3:
-            class_features.extend(self.subclass[1])
+            class_features.extend(self.__subclass__[1])
         return class_features
+
+    def class_saving_throws(self):
+        return ["STR", "CON"]
 
 
 
@@ -176,9 +180,9 @@ class Bard(Character): # Have a maybe on 3 colleges.
             ("College of Whispers", ((3, "Psychic Blades"), (3, "Words of Terror"), (6, "Mantle of Whispers"), (14, "Shadow Lore"))) 
         ]
         if self.__char_level__ >= 3:
-            self.subclass = random.choice(list_of_subclasses)
+            return random.choice(list_of_subclasses)
         else:
-            self.subclass = "None"
+            return "None"
 
     def get_asi(self):
         total_asi = 0
@@ -212,8 +216,11 @@ class Bard(Character): # Have a maybe on 3 colleges.
             (20, "Superior Inspiration")
         ]
         if self.__char_level__ >= 3:
-            class_features.extend(self.subclass[1])
+            class_features.extend(self.__subclass__[1])
         return class_features
+    
+    def class_saving_throws(self):
+        return ["DEX", "CHA"]
 
 
 
@@ -245,7 +252,7 @@ class Cleric(Character): # Multiple subclasses need a second look
             ("Twilight Domain", ((1, "Bonus Proficiency"), (1, "Eyes of Night"), (1, "Vigilant Blessing"), (2, "Channel Divinity: Twilight Sanctuary"), (6, "Steps of Night"), (8, "Divine Strike"), (17, "Twilight Shroud"))), # Proficiency with martial weapons and heavy armor
             ("War Domain", ((1, "Bonus Proficiencies"), (1, "War Priest"), (2, "Channel Divinity: Guided Strike"), (6, "Channel Divinity: War God's Blessing"), (8, "Divine Strike"), (17, "Avatar of Battle"))), # Proficiency with martial weapons and heavy armor
         ]
-        self.subclass = random.choice(list_of_subclasses)
+        return random.choice(list_of_subclasses)
 
     def get_asi(self):
         total_asi = 0
@@ -275,8 +282,11 @@ class Cleric(Character): # Multiple subclasses need a second look
             (18, "Channel Divinity (3 uses)"),
             (20, "Improved Divine Intervention")
         ]
-        class_features.extend(self.subclass[1])
+        class_features.extend(self.__subclass__[1])
         return class_features
+    
+    def class_saving_throws(self):
+        return ["WIS", "CHA"]
 
 
 
@@ -290,13 +300,13 @@ class Commoner(Character):
         return [2, "CON"]
 
     def subclass_roll(self):
-        self.subclass = "None"
+        return "None"
     
     def get_asi(self):
         return 0
     
     def random_char_level(self):
-        self.__char_level__ = 0
+        return 0
     
     def stats_roll(self):
         self.rolls_for_stats = [0, 0, 0, 0, 0, 0]
@@ -321,6 +331,9 @@ class Commoner(Character):
 
     def get_class_features(self):
         return []
+    
+    def class_saving_throws(self):
+        return ["CON", "WIS"]
 
 
 
@@ -346,9 +359,9 @@ class Druid(Character):
             ("Circle of Wildfire", ((2, "Summon Wildfire Spirit"), (6, "Enhanced Bond"), (10, "Cauterizing Flames"), (14, "Blazing Revival")))
         ]
         if self.__char_level__ >= 2:
-            self.subclass = random.choice(list_of_subclasses)
+            return random.choice(list_of_subclasses)
         else:
-            self.subclass = "None"
+            return "None"
     
     def get_asi(self):
         total_asi = 0
@@ -379,13 +392,16 @@ class Druid(Character):
             (20, "Archdruid")
         ]
         if self.__char_level__ >= 2:
-            class_features.extend(self.subclass[1])
+            class_features.extend(self.__subclass__[1])
         return class_features
 
     def get_class_language(self):
-        if self.subclass[0] == "Circle of the Shepherd":
+        if self.__subclass__[0] == "Circle of the Shepherd":
             return ["Sylvan"]
         return []
+    
+    def class_saving_throws(self):
+        return ["INT", "WIS"]
 
 
 
@@ -418,9 +434,9 @@ class Fighter(Character):
             ("Samurai", ((3, "Bonus Proficiencies"), (3, "Fighting Spirit"), (7, "Elegant Courtier"), (10, "Tireless Spirit"), (15, "Rapid Strike"), (18, "Strength Before Death"))) # Bonus Proficiency- skill prof or extra language
         ]
         if self.__char_level__ >= 3:
-            self.subclass = random.choice(list_of_subclasses)
+            return random.choice(list_of_subclasses)
         else:
-            self.subclass = "None"
+            return "None"
     
     def get_asi(self):
         total_asi = 0
@@ -465,13 +481,16 @@ class Fighter(Character):
             (20, "Extra Attack (3)")
         ]
         if self.__char_level__ >= 3:
-            class_features.extend(self.subclass[1])
+            class_features.extend(self.__subclass__[1])
         return class_features
 
     def get_class_language(self):
-        if self.subclass[0] == "Rune Knight":
+        if self.__subclass__[0] == "Rune Knight":
             return ["Giant"]
         return []
+    
+    def class_saving_throws(self):
+        return ["STR", "CON"]
 
 
 
@@ -510,9 +529,9 @@ class Monk(Character):
             ("Way of the Sun Soul", ((3, "Radiant Sun Bolt"), (6, "Searing Arc Strike"), (11, "Searing Sunburst"), (17, "Sun Shield")))
         ]
         if self.__char_level__ >= 3:
-            self.subclass = random.choice(list_of_subclasses)
+            return random.choice(list_of_subclasses)
         else:
-            self.subclass = "None"
+            return "None"
     
     def get_asi(self):
         total_asi = 0
@@ -560,18 +579,28 @@ class Monk(Character):
             (18, "Empty Body"),
             (20, "Perfect Self")
         ]
-        if self.__char_level__ >= 3 and self.subclass[0] == "Way of the Four Elements":
+        if self.__char_level__ >= 3 and self.__subclass__[0] == "Way of the Four Elements":
             if self.__char_level__ >= 17:
-                return class_features.extend([3, "Disciple of the Elements"], [17, "Elemental Disciplines (Four)"])
+                class_features.extend(([3, "Disciple of the Elements"], [17, "Elemental Disciplines (Four)"]))
+                return class_features
             elif self.__char_level__ >= 11:
-                return class_features.extend([3, "Disciple of the Elements"], [11, "Elemental Disciplines (Three)"])
+                class_features.extend(([3, "Disciple of the Elements"], [11, "Elemental Disciplines (Three)"]))
+                return class_features
             elif self.__char_level__ >= 6:
-                return class_features.extend([3, "Disciple of the Elements"], [6, "Elemental Disciplines (Two)"])
+                class_features.extend(([3, "Disciple of the Elements"], [6, "Elemental Disciplines (Two)"]))
+                return class_features
             elif self.__char_level__ >= 3:
-                return class_features.extend([3, "Disciple of the Elements"], [3, "Elemental Disciplines (One)"])
+                class_features.extend(([3, "Disciple of the Elements"], [3, "Elemental Disciplines (One)"]))
+                return class_features
         elif self.__char_level__ >= 3:
-            return class_features.extend(self.subclass[1])
+            class_features.extend(self.__subclass__[1])
+            return class_features
         return class_features
+
+    def class_saving_throws(self):
+        if self.get_char_level() >= 14:
+            return ["STR", "DEX", "CON", "INT", "WIS", "CHA"]
+        return ["STR", "DEX"]
 
 
 
@@ -609,9 +638,9 @@ class Paladin(Character):
             ("Oathbreaker", ((3, "Oath Spells"), (3, "Channel Divinity"), (7, "Aura of Hate"), (15, "Supernatural Resistance"), (20, "Dread Lord")))
         ]
         if self.__char_level__ >= 3:
-            self.subclass = random.choice(list_of_subclasses)
+            return random.choice(list_of_subclasses)
         else:
-            self.subclass = "None"
+            return "None"
     
     def get_asi(self):
         total_asi = 0
@@ -646,8 +675,11 @@ class Paladin(Character):
             (20, "Sacred Oath Feature")
         ]
         if self.__char_level__ >= 3:
-            class_features.extend(self.subclass[1])
+            class_features.extend(self.__subclass__[1])
         return class_features
+    
+    def class_saving_throws(self):
+        return ["WIS", "CHA"]
 
 
 
@@ -674,9 +706,9 @@ class Ranger(Character):
             ("Drakewarden", ((3, "Draconic Gift"), (3, "Drake Companion"), (7, "Bond of Fang and Scale"), (11, "Drake's Breath"), (15, "Perfected Bond")))
         ]
         if self.__char_level__ >= 3:
-            self.subclass = random.choice(list_of_subclasses)
+            return random.choice(list_of_subclasses)
         else:
-            self.subclass = "None"
+            return "None"
     
     def get_asi(self):
         total_asi = 0
@@ -711,13 +743,16 @@ class Ranger(Character):
             (20, "Foe Slayer")
         ]
         if self.__char_level__ >= 3:
-            class_features.extend(self.subclass[1])
+            class_features.extend(self.__subclass__[1])
         return class_features
 
     def get_class_language(self):
-        if self.subclass[0] == "Drakewarden":
+        if self.__subclass__[0] == "Drakewarden":
             return ["Draconic"]
         return []
+    
+    def class_saving_throws(self):
+        return ["STR", "DEX"]
 
 
 
@@ -745,9 +780,9 @@ class Rogue(Character):
             ("Thief", ((3, "Fast Hands"), (3, "Second-Story Work"), (9, "Supreme Sneak"), (13, "Use Magic Device"), (17, "Thief's Reflexes"))) #Use Magic Device- ignore class race & level req on magic items
         ]
         if self.__char_level__ >= 3:
-            self.subclass = random.choice(list_of_subclasses)
+            return random.choice(list_of_subclasses)
         else:
-            self.subclass = "None"
+            return "None"
     
     def get_asi(self):
         total_asi = 0
@@ -790,8 +825,11 @@ class Rogue(Character):
             (20, "Stroke of Luck")
         ]
         if self.__char_level__ >= 3:
-            class_features.extend(self.subclass[1])
+            class_features.extend(self.__subclass__[1])
         return class_features
+    
+    def class_saving_throws(self):
+        return ["DEX", "INT"]
 
 
 
@@ -818,7 +856,7 @@ class Sorcerer(Character):
             ("Phoenix Sorcery", ((1, "Ignite"), (1, "Mantle of Flame"), (6, "Phoenix Spark"), (14, "Nourishing Fire"), (18, "Form of the Phoenix"))),
             ("Lunar Sorcery", ((1, "Moon Fire"), (6, "Lunar Boons"), (6, "Waxing and Waning"), (14, "Lunar Empowerment"), (18, "Lunar Phenomenon")))
         ]
-        self.subclass = random.choice(list_of_subclasses)
+        return random.choice(list_of_subclasses)
 
     def get_asi(self):
         total_asi = 0
@@ -847,15 +885,19 @@ class Sorcerer(Character):
             (17, "Metamagic Improvement"),
             (20, "Sorcerous Restoration")
         ]
-        class_features.extend(self.subclass[1])
+        class_features.extend(self.__subclass__[1])
         return class_features
 
     def get_class_language(self):
-        if self.subclass[0] == "Draconic Bloodline":
+        if self.__subclass__[0] == "Draconic Bloodline":
             return ["Draconic"]
-        if self.subclass[0] == "Storm Sorcery":
+        if self.__subclass__[0] == "Storm Sorcery":
             return ["Primordial"]
         return []
+    
+    def class_saving_throws(self):
+        return ["CON", "CHA"]
+
 
 
 class Warlock(Character):
@@ -881,7 +923,7 @@ class Warlock(Character):
             ("Undead", ((1, "Form of Dread"), (6, "Grave Touched"), (10, "Necrotic Husk"), (14, "Spirit Projection"))),
             ("Undying", ((1, "Among the Dead"), (6, "Defy Death"), (10, "Undying Nature"), (14, "Indestructible Life")))
         ]
-        self.subclass = random.choice(list_of_subclasses)
+        return random.choice(list_of_subclasses)
     
     def get_asi(self):
         total_asi = 0
@@ -912,8 +954,11 @@ class Warlock(Character):
             (17, "Mystic Arcanum (9th level)"),
             (20, "Eldritch Master")
         ]
-        class_features.extend(self.subclass[1])
+        class_features.extend(self.__subclass__[1])
         return class_features
+    
+    def class_saving_throws(self):
+        return ["WIS", "CHA"]
 
 
 
@@ -945,9 +990,9 @@ class Wizard(Character):
             ("War Magic", ((2, "Arcane Deflection"), (2, "Tactical Wit"), (6, "Power Surge"), (10, "Durable Magic"), (14, "Deflecting Shroud")))
         ]
         if self.__char_level__ >= 2:
-            self.subclass = random.choice(list_of_subclasses)
+            return random.choice(list_of_subclasses)
         else:
-            self.subclass = "None"
+            return "None"
     
     def get_asi(self):
         total_asi = 0
@@ -975,5 +1020,8 @@ class Wizard(Character):
             (20, "Signature Spells")
         ]
         if self.__char_level__ >= 2:
-            class_features.extend(self.subclass[1])
+            class_features.extend(self.__subclass__[1])
         return class_features
+    
+    def class_saving_throws(self):
+        return ["INT", "WIS"]

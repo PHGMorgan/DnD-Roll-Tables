@@ -1,30 +1,21 @@
-import csv
-import os
 from program_functions import *
-
-
-#Check if saved characters file exists. If it doesn't, create it and write the header.
-try:
-    if os.path.exists("saved_characters.csv"):
-        print("Saved characters directory csv file exists!")
-    else:
-        with open("saved_characters.csv", mode="w") as csvfile:
-            file_writer = csv.writer(csvfile, delimiter = ",", quotechar = '"')
-            file_writer.writerow(["Character ID", "Name", "Alignment", "Gender", "Race", "Subrace", "Class", "Subclass", "Languages", "Speed", "Size", "Stats", "Level", "HP", "AC", "Weapon", "Armor", "Shield", "Proficiencies", "Character Features"])
-            print("Saved characters directory csv file created!")
-except Exception as e:
-    print(e)
+from parent_character_class import *
 
 
 
 def main():
     program_exit = False
     loop_reset = False
+    #Check if saved characters file exists. If it doesn't, create it and write the header. Also create name and equipment lists.
+    check_or_create_csv()
+    create_name_list()
+    pull_from_equipment()
 
     # First while loop. Prompts user to start while still enabling the fast, bulk, and help options without advancing the program. Also allows for exit.
     while not program_exit:
 
         while not program_exit:
+            loop_reset = False
             user_input = input(f"Press Enter to start rolling a character! Type \"help\" for a full list of commands. ").lower().strip()
             match user_input:
                 case "exit" | "quit":
@@ -44,6 +35,7 @@ def main():
                         except:
                             print("That is not a valid number. Please enter a valid number to bulk roll.")
                     bulk_fast_roll(value)
+                    loop_reset = True
                     break
                 case "help":
                     help_loop_one()
@@ -54,6 +46,9 @@ def main():
 
         if program_exit:
             break
+
+        if loop_reset:
+            continue
         
         char_class = class_roll()
 
@@ -80,6 +75,7 @@ def main():
                         except:
                             print("That is not a valid number. Please enter a valid number to bulk roll.")
                     bulk_fast_roll(value)
+                    loop_reset = True
                     break
                 case "help":
                     help_loop_two()

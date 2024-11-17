@@ -25,6 +25,8 @@ race_weights = [e, e, m, m, e, c, c, c, e, e, e, e, e, c, m, e, m, c, c, c, e, m
 # total common races: 9
 # total exotic races: 17
 # total monstrous races: 11
+level_proficiency_bonus_map = {1:2, 2:2, 3:2, 4:2, 5:3, 6:3, 7:3, 8:3, 9:4, 10:4, 11:4, 12:4, 13:5, 14:5, 15:5, 16:5, 17:6, 18:6, 19:6, 20:6}
+skill_to_ability_map = {"acrobatics":"DEX", "animal handling":"WIS", "arcana":"INT", "athletics":"STR", "decpetion":"CHA", "history":"INT", "insight":"WIS", "intimidation":"CHA", "investigation":"INT", "medicine":"WIS", "nature":"INT", "perception":"WIS", "performance":"CHA", "persuasion":"CHA", "religion":"INT", "sleight of hand":"DEX", "stealth":"DEX", "survival":"WIS"}
 
 # Subrace lists stored below
 aarakocra_subrace_list = [

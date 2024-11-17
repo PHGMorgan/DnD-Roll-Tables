@@ -3,7 +3,7 @@ import random
 import csv
 from DnD_classes import *
 from race_class import *
-from variables_page import max_char_level, char_level_odds, stat_mod_dict, shield_chance, race_weights
+from variables_page import max_char_level, char_level_odds, stat_mod_dict, shield_chance, race_weights, level_proficiency_bonus_map
 
 
 # To-do list:
@@ -18,6 +18,7 @@ from variables_page import max_char_level, char_level_odds, stat_mod_dict, shiel
 # - ---DONE--- Make some weapons two-handed.
 # - Maybe add skill proficiencies/points for the classes.
 # - Should I include backgrounds!?
+# - ---DONE--- Add saving throws
 
 name_list = []
 equipment_list = []
@@ -44,6 +45,7 @@ def pull_from_equipment():
                 file_reader = csv.reader(csvfile)
                 next(file_reader)
                 for row in file_reader:
+                    row[1] = ast.literal_eval(row[1])
                     equipment_list.append(row)
             return equipment_list
         except Exception as e:
@@ -51,33 +53,32 @@ def pull_from_equipment():
     else:
         return equipment_list
 
-            
 
+ 
 class Character:
     def __init__(self, char_id):
         # Set up all variable names
-        self.__char_id__ = char_id
-        self.__name__ = self.name_roll()
-        self.__gender__ = self.random_gender()
-        self.__alignment__ = self.alignment_compiler()
         self.__char_stats_dict__ = {"STR": 0, "DEX": 0, "CON": 0, "INT": 0, "WIS": 0, "CHA": 0}
-        self.rolls_for_stats, self.armor_list, self.weapon_list, self.__features__, self.__languages__ = [], [], [], [], []
-        self.__armor__, self.__weapon__, self.__shield__  = "None", "None", "None"
+        self.rolls_for_stats, self.armor_list, self.weapon_list = [], [], []
+        self.__char_id__ = char_id
         # Run randomizers for each character variable
-        self.race_roll()
-        self.random_char_level()
-        self.stats_roll()
-        self.stats_compile()
-        self.subclass_roll()
-        self.proficiency_compiler()
-        self.features_compiler()
-        self.languages_compiler()
-        self.roll_hp()
+        self.__name__ = self.name_roll()
+        self.__alignment__ = self.alignment_compiler()
+        self.__gender__ = self.random_gender()
+        self.race = self.race_roll()
+        self.__char_level__ = self.random_char_level()
+        self.stats_roll(), self.stats_compile()
+        self.__subclass__ = self.subclass_roll()
+        self.__proficiencies__ = self.proficiency_compiler()
+        self.__features__ = self.features_compiler()
+        self.__languages__ = self.languages_compiler()
+        self.__saving_throws__ = self.saving_throws_compiler() # Heeeeeeeere
+        self.__hp__ = self.roll_hp()
         self.make_equipment_list()
-        self.roll_armor()
-        self.roll_weapon()
-        self.roll_shield()
-        self.calculate_ac()
+        self.__armor__ = self.roll_armor()
+        self.__weapon__ = self.roll_weapon()
+        self.__shield__ = self.roll_shield()
+        self.__ac__ = self.calculate_ac()
 
 
 
@@ -88,59 +89,76 @@ class Character:
     def get_char_name(self):
         return self.__name__
     
+    def get_char_alignment(self):
+        return self.__alignment__
+
     def get_char_gender(self):
         return self.__gender__
     
     def get_char_race(self):
-        return self.race.get_name()
+        return self.race.get_race_name()
     
+    def get_char_true_subrace(self):
+        return self.race.get_true_subrace
+
+    def get_char_subrace(self):
+        return self.race.get_subrace_name()
+
+    def get_char_speed(self):
+        return self.race.get_speed()
+    
+    def get_char_size(self):
+        return self.race.get_size()
+
     def get_char_class(self):
         return self.__char_class__
 
-    def get_char_stats(self):
-        return self.__char_stats_dict__
-    
+    def get_char_saving_throws(self):
+        return self.__saving_throws__
+
     def get_char_level(self):
         return self.__char_level__
-    
+
+    def get_char_stats(self):
+        return self.__char_stats_dict__ 
+
+    def get_char_subclass(self):
+        return self.__subclass__
+
+    def get_char_features(self):
+        self.features_compiler()
+        return self.__features__
+
+    def get_char_proficiencies(self):
+        return self.__proficiencies__
+
+    def get_char_languages(self):
+        return self.__languages__
+
     def get_char_hp(self):
         return self.__hp__
     
-    def get_char_ac(self):
-        return self.__ac__
-    
     def get_char_armor(self):
-        if self.__armor__ == "None":
+        if self.__armor__ == None or self.__armor__ == "None":
             return "None"
         return self.__armor__[2]
     
     def get_char_weapon(self):
-        if self.__weapon__ == "None":
+        if self.__weapon__ == "None" or self.__weapon__ == None:
             return "None"
         return self.__weapon__[2]
     
     def get_char_shield(self):
-        if self.__shield__ == "None":
+        if self.__shield__ == None:
             return "None"
         return self.__shield__[2]
     
-    def get_features(self):
-        self.features_compiler()
-        return self.__features__
-    
-    def get_alignment(self):
-        return self.__alignment__
-
-    def get_subclass(self):
-        if self.subclass == "None":
-            return self.subclass
-        return self.subclass[0]
-
-    def get_languages(self):
-        return self.__languages__
+    def get_char_ac(self):
+        return self.__ac__
 
     def remove_shield(self):
         self.__shield__ = "None"
+
 
 
     # Create the global names list variable from the data in the names.csv file.
@@ -195,7 +213,7 @@ class Character:
             Tiefling, Tortle, Triton, Verdan, YuanTi
         ]
         race = random.choices(races_list, weights=race_weights, k=1)[0]
-        self.race = race()
+        return race()
 
     def secondary_score(self):
         return [2, "CON"]
@@ -301,15 +319,18 @@ class Character:
         for i in range(max_char_level):
             weights_list.append(odds_value)
             odds_value = int(round(char_level_odds * odds_value))
-        self.__char_level__ = random.choices(levels_list, weights=weights_list, k=1)[0]
+        return random.choices(levels_list, weights=weights_list, k=1)[0]
 
+
+
+    # Bunch of compiler functions for gathering and computing information from other functions.
     def proficiency_compiler(self):
         proficiency_list = []
         for item in self.race.get_proficiencies(): # Get list of racial proficiencies.
             proficiency_list.append(item) # Add it to the list if character level is greater than or equial to the level requirement.
         for item in self.get_class_proficiencies(): # Repeat the process for class proficiencies.
             proficiency_list.append(item)
-        self.proficiencies = proficiency_list # Set self.proficiencies equal to the created list.
+        return proficiency_list # Set self.proficiencies equal to the created list.
 
     def features_compiler(self):
         features_list = []
@@ -320,9 +341,9 @@ class Character:
             if self.__char_level__ >= item[0]:
                 features_list.append(item[1])
         if len(features_list) > 0:
-            self.__features__ = features_list
+            return features_list
         else:
-            self.__features__ = ["None"]
+            return ["None"]
 
     def get_class_language(self):
         return []
@@ -331,7 +352,27 @@ class Character:
         languages = []
         languages.extend(self.race.get_languages())
         languages.extend(self.get_class_language())
-        self.__languages__ = set(languages)
+        return set(languages)
+
+    def saving_throws_compiler(self):
+        saving_throws_dict = {}
+        char_stat_mod_dict = {
+            "STR": stat_mod_dict[self.get_char_stats()["STR"]],
+            "DEX": stat_mod_dict[self.get_char_stats()["DEX"]],
+            "CON": stat_mod_dict[self.get_char_stats()["CON"]],
+            "INT": stat_mod_dict[self.get_char_stats()["INT"]],
+            "WIS": stat_mod_dict[self.get_char_stats()["WIS"]],
+            "CHA": stat_mod_dict[self.get_char_stats()["CHA"]]
+        }
+        if self.get_char_level() == 0:
+            saving_throws_dict[self.class_saving_throws()[0]] =  char_stat_mod_dict[self.class_saving_throws()[0]]
+            saving_throws_dict[self.class_saving_throws()[1]] =  char_stat_mod_dict[self.class_saving_throws()[1]]
+            return saving_throws_dict
+        prof_bonus = level_proficiency_bonus_map[self.get_char_level()]
+        for i in self.class_saving_throws():
+            saving_throws_dict[i] =  char_stat_mod_dict[i] + prof_bonus
+        return saving_throws_dict
+
 
 
     # The following section is for functions used to calculate a character's HP.
@@ -351,24 +392,27 @@ class Character:
         if self.subclass_tough_flag()[0] or self.race.tough_flag()[0]: # Check to see if character has a feature to grant extra hp that's signalled with the tough flag.
             hp =+ (self.__char_level__ * self.subclass_tough_flag()[1]) + (self.__char_level__ * self.race.tough_flag()[1])
         if hp <= 0:
-            self.__hp__ = 1
+            return 1
         else:
-            self.__hp__ = hp # Set self.__hp__ to our hp variable.
+            return hp # Set self.__hp__ to our hp variable.
 
 
 
     # The following section is for the functions related to rolling a character's equipment and calculating a character's AC.
     def roll_armor(self):
         if len(self.armor_list) > 0:
-            self.__armor__ = random.choice(self.armor_list)
+            return random.choice(self.armor_list)
+        else:
+            return "None"
 
     def roll_weapon(self):
         if len(self.weapon_list) > 0:
-            self.__weapon__ = random.choice(self.weapon_list)
+            return random.choice(self.weapon_list)
+        else:
+            return "None"
 
     def roll_shield(self):
         if random.randint(1, shield_chance) <= 10:
-            print(self.get_char_weapon().lower() in ["greatclub", "light crossbow", "shortbow", "glaive", "greataxe", "greatsword", "halberd", "lance", "maul", "pike", "heavy crossbow", "longbow"])
             if self.get_char_weapon().lower() in ["greatclub", "light crossbow", "shortbow", "glaive", "greataxe", "greatsword", "halberd", "lance", "maul", "pike", "heavy crossbow", "longbow"]:
                 self.__shield__ = "None"
             else:
@@ -378,38 +422,38 @@ class Character:
         self.shield_availability = "None"
         character_list = pull_from_equipment()
         for row in character_list:
-            if row[0] == "Armor" and  any(item in row[1] for item in self.proficiencies):
+            if row[0] == "Armor" and  any(item in row[1] for item in self.__proficiencies__):
                 self.armor_list.append(row)
-            if row[0] == "Weapon" and any(item in row[1] for item in self.proficiencies):
+            if row[0] == "Weapon" and any(item in row[1] for item in self.__proficiencies__):
                 self.weapon_list.append(row)
-            if row[0] == "Shield" and any(item in row[1] for item in self.proficiencies):
+            if row[0] == "Shield" and any(item in row[1] for item in self.__proficiencies__):
                 self.shield_availability = row
     
     def calculate_ac(self):
         if self.__armor__ == "None":
             if self.__shield__ == "None":
-                self.__ac__ = 10 + stat_mod_dict[self.__char_stats_dict__["DEX"]]
+                return 10 + stat_mod_dict[self.__char_stats_dict__["DEX"]]
             else:
-                self.__ac__ = 12 + stat_mod_dict[self.__char_stats_dict__["DEX"]]
+                return 12 + stat_mod_dict[self.__char_stats_dict__["DEX"]]
         elif self.__shield__ == "None":
             if self.__char_stats_dict__["DEX"] > int(ast.literal_eval(self.__armor__[3])[0]):
-                self.__ac__ = int(ast.literal_eval(self.__armor__[3])[1]) + int(ast.literal_eval(self.__armor__[3])[0])
+                return int(ast.literal_eval(self.__armor__[3])[1]) + int(ast.literal_eval(self.__armor__[3])[0])
             else:
-                self.__ac__ = int(ast.literal_eval(self.__armor__[3])[1]) + stat_mod_dict[self.__char_stats_dict__["DEX"]]
+                return int(ast.literal_eval(self.__armor__[3])[1]) + stat_mod_dict[self.__char_stats_dict__["DEX"]]
         else:
             if self.__char_stats_dict__["DEX"] > int(ast.literal_eval(self.__armor__[3])[0]):
-                self.__ac__ = int(ast.literal_eval(self.__armor__[3])[1]) + int(ast.literal_eval(self.__armor__[3])[0]) + 2
+                return int(ast.literal_eval(self.__armor__[3])[1]) + int(ast.literal_eval(self.__armor__[3])[0]) + 2
             else:
-                self.__ac__ = int(ast.literal_eval(self.__armor__[3])[1]) + stat_mod_dict[self.__char_stats_dict__["DEX"]] + 2
+                return int(ast.literal_eval(self.__armor__[3])[1]) + stat_mod_dict[self.__char_stats_dict__["DEX"]] + 2
 
 
 
     def __str__(self):
         return (
             f"Character name: {self.get_char_name()} \n"
-            f"Character alignment: {self.get_alignment()} \n"
+            f"Character alignment: {self.get_char_alignment()} \n"
             f"Character gender: {self.get_char_gender()} \n"
-            f"Character subrace: {self.race.get_subrace_name()} \n"
+            f"Character subrace: {self.get_char_subrace()} \n"
             f"Character class: {self.get_char_class()} \n"
-            f"Character stats: {', '.join(f'{key}: {value}' for key, value in self.__char_stats_dict__.items())}"
+            f"Character stats: {', '.join(f'{key}: {value}' for key, value in self.get_char_stats().items())}"
         )
